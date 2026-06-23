@@ -1,6 +1,7 @@
 import { getSession } from "@/lib/session"
 import { getPublicProjects } from "@/lib/queries"
 import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 import { ProjectCard } from "@/components/project-card"
 import { Card } from "@/components/ui/card"
 
@@ -37,6 +38,7 @@ export default async function ProjectsPage() {
           </Card>
         )}
       </main>
+      <SiteFooter />
     </div>
   )
 }

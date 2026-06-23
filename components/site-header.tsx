@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ShieldCheck, Bell } from "lucide-react"
 import type { SessionUser } from "@/lib/session"
 import { UserProfileMenu } from "@/components/user-profile-menu"
+import { NotificationsPopover } from "@/components/notifications-popover"
 
 export function SiteHeader({ 
   user, 
@@ -50,18 +51,7 @@ export function SiteHeader({
         <div className="flex items-center gap-4 ml-auto">
           {user ? (
             <div className="flex items-center gap-2">
-              {unreadCount > 0 && (
-                <Link
-                  href="/dashboard/notifications"
-                  className="relative p-2 rounded-lg hover:bg-muted transition-colors"
-                  title="Notifications"
-                >
-                  <Bell className="size-5 text-muted-foreground" />
-                  <span className="absolute top-1 right-1 flex size-4 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-xs font-bold">
-                    {unreadCount > 99 ? "99+" : unreadCount}
-                  </span>
-                </Link>
-              )}
+              <NotificationsPopover unreadCount={unreadCount} />
               <UserProfileMenu user={user} />
             </div>
           ) : (

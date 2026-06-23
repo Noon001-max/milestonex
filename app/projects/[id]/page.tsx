@@ -12,6 +12,7 @@ import {
 import { getOwnerName } from "@/app/actions/projects"
 import { formatCurrency } from "@/lib/roles"
 import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 import { Card } from "@/components/ui/card"
 import { StatusBadge } from "@/components/status-badge"
 import { FundingProgress } from "@/components/funding-progress"
@@ -222,6 +223,7 @@ export default async function ProjectDetailPage({
           </div>
         </div>
       </main>
+      <SiteFooter />
     </div>
   )
 }

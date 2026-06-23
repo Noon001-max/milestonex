@@ -17,6 +17,7 @@ import { getPlatformStats, getPublicProjects } from "@/lib/queries"
 import { getUnreadNotificationsCount } from "@/app/actions/notifications"
 import { formatCurrency } from "@/lib/roles"
 import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 import { ProjectCard } from "@/components/project-card"
 
 export default async function HomePage() {
@@ -216,25 +217,7 @@ export default async function HomePage() {
         </Card>
       </section>
 
-      <footer className="border-t border-border bg-card">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-muted-foreground md:flex-row">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="size-4 text-primary" />
-            <span>Milestone X — Transparent community funding</span>
-          </div>
-          <div className="flex gap-6">
-            <Link href="/projects" className="hover:text-foreground">
-              Projects
-            </Link>
-            <Link href="/transparency" className="hover:text-foreground">
-              Transparency
-            </Link>
-            <Link href="/sign-in" className="hover:text-foreground">
-              Sign in
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

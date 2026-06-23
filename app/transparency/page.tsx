@@ -8,6 +8,7 @@ import {
 } from "@/lib/queries"
 import { formatCurrency } from "@/lib/roles"
 import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 import { Card } from "@/components/ui/card"
 import { FundingProgress } from "@/components/funding-progress"
 import { StatusBadge } from "@/components/status-badge"
@@ -161,6 +162,7 @@ export default async function TransparencyPage() {
           </div>
         </div>
       </main>
+      <SiteFooter />
     </div>
   )
 }
