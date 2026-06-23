@@ -85,9 +85,9 @@ export default async function ProfilePage() {
               <label className="text-sm font-medium text-muted-foreground">Email Verified</label>
               <p className="text-foreground mt-1">
                 {user.emailVerified ? (
-                  <span className="text-green-600">✓ Verified</span>
+                  <span className="text-green-600 font-medium">✓ Verified</span>
                 ) : (
-                  <span className="text-yellow-600">Pending verification</span>
+                  <span className="text-yellow-600 font-medium">Pending verification</span>
                 )}
               </p>
             </div>

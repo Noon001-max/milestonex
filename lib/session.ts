@@ -12,6 +12,7 @@ export type SessionUser = {
   id: string
   name: string
   email: string
+  emailVerified: boolean
   role: Role
 }
 
@@ -22,6 +23,7 @@ export async function getSession() {
     id: session.user.id,
     name: session.user.name,
     email: session.user.email,
+    emailVerified: (session.user as { emailVerified?: boolean }).emailVerified ?? false,
     role: ((session.user as { role?: string }).role ?? "donor") as Role,
   } satisfies SessionUser
 }
