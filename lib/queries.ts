@@ -1,4 +1,4 @@
-import { db } from "@/lib/db"
+import { db, pool } from "@/lib/db"
 import {
   projects,
   milestones,
@@ -47,7 +47,40 @@ export async function getAllProjects() {
     .orderBy(desc(projects.createdAt))
 }
 
-export async function getProjectById(id: number) {
+export async function getProjectById(id: number): Promise<any> {
+  // Check whether the `allocationDone` column exists in the deployed DB.
+  const colRes = await pool.query(
+    `select column_name from information_schema.columns where table_name = $1 and column_name = $2`,
+    ["projects", "allocationDone"],
+  )
+  const hasAllocation = (colRes?.rowCount ?? 0) > 0
+
+  if (hasAllocation) {
+    const rows = await db
+      .select({
+        id: projects.id,
+        ownerId: projects.ownerId,
+        title: projects.title,
+        description: projects.description,
+        category: projects.category,
+        location: projects.location,
+        imageUrl: projects.imageUrl,
+        fundingGoal: projects.fundingGoal,
+        fundedAmount: projects.fundedAmount,
+        escrowBalance: projects.escrowBalance,
+        releasedAmount: projects.releasedAmount,
+        allocationDone: projects.allocationDone,
+        status: projects.status,
+        createdAt: projects.createdAt,
+        updatedAt: projects.updatedAt,
+      })
+      .from(projects)
+      .where(eq(projects.id, id))
+    return rows[0] ?? null
+  }
+
+  // Fallback for older DBs without the column: select the other fields and
+  // synthesize `allocationDone: false` so callers have a consistent shape.
   const rows = await db
     .select({
       id: projects.id,
@@ -61,14 +94,19 @@ export async function getProjectById(id: number) {
       fundedAmount: projects.fundedAmount,
       escrowBalance: projects.escrowBalance,
       releasedAmount: projects.releasedAmount,
-      allocationDone: projects.allocationDone,
       status: projects.status,
       createdAt: projects.createdAt,
       updatedAt: projects.updatedAt,
     })
     .from(projects)
     .where(eq(projects.id, id))
-  return rows[0] ?? null
+
+  const project = rows[0] ?? null
+  if (project) {
+    const p: any = project
+    p.allocationDone = false
+  }
+  return project
 }
 
 export async function getProjectMilestones(projectId: number) {
