@@ -1,8 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
-// menu icon is rendered inside the client `QuickActionsMenu` component
 import type { SessionUser } from "@/lib/session"
-import { Bell } from "lucide-react"
+import { Bell, Menu } from "lucide-react"
 
 export function SiteHeader({ 
   user, 
@@ -16,7 +15,16 @@ export function SiteHeader({
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center px-4">
-        {/* Left: reserved for page-level sidebars; header no longer renders quick actions */}
+        {/* Left: signed-in menu icon */}
+        {user ? (
+          <button
+            type="button"
+            className="mr-4 inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-muted transition-colors"
+            aria-label="Open menu"
+          >
+            <Menu className="size-5" />
+          </button>
+        ) : null}
 
         {/* Center: logo and navigation (left-aligned when logged out) */}
         <div className={`flex-1 flex items-center ${user ? "justify-center" : "justify-start"}`}>
@@ -90,13 +98,15 @@ export function SiteHeader({
                     aria-label="Profile"
                   >
                     {user.image ? (
-                      <Image
-                        src={user.image}
-                        alt={`${user.name}'s avatar`}
-                        width={32}
-                        height={32}
-                        className="rounded-full object-cover"
-                      />
+                      <div className="h-8 w-8 overflow-hidden rounded-full">
+                        <Image
+                          src={user.image}
+                          alt={`${user.name}'s avatar`}
+                          width={32}
+                          height={32}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
                     ) : (
                       <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold">
                         {initials}
