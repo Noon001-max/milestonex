@@ -14,8 +14,8 @@ export function SiteHeader({
 }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <a href="/" className="flex items-center gap-2">
+      <div className="mx-auto flex h-16 max-w-6xl items-center px-4">
+        <a href="/" className="flex items-center gap-2 flex-shrink-0">
           <span className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
             <ShieldCheck className="size-5" />
           </span>
@@ -25,7 +25,7 @@ export function SiteHeader({
         </a>
 
         {!hideNavigation && (
-          <nav className="hidden items-center gap-6 text-sm md:flex">
+          <nav className="hidden items-center gap-6 text-sm md:flex flex-1 justify-center">
             <a
               href="/projects"
               className="text-muted-foreground transition-colors hover:text-foreground"
