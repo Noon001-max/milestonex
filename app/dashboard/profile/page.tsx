@@ -1,11 +1,8 @@
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft } from "lucide-react"
 import { getSession } from "@/lib/session"
-import { SiteHeader } from "@/components/site-header"
 import { Card } from "@/components/ui/card"
 import { ROLE_LABELS } from "@/lib/roles"
-import { ProfileForm } from "@/components/profile-form"
 
 export const dynamic = "force-dynamic"
 
@@ -15,7 +12,6 @@ export default async function ProfilePage() {
   if (!user) {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={null} hideNavigation={true} />
         <main className="mx-auto w-full max-w-4xl px-4 py-12">
           <p className="text-muted-foreground">
             <Link href="/sign-in" className="text-primary hover:underline">
@@ -36,7 +32,6 @@ export default async function ProfilePage() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-3xl px-4 py-12">
         <div className="mb-6 flex flex-col gap-4 rounded-3xl border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -48,11 +43,10 @@ export default async function ProfilePage() {
             </h1>
           </div>
           <Link
-            href="/dashboard"
+            href="/dashboard/profile/edit"
             className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition hover:border-primary hover:text-primary"
           >
-            <ArrowLeft className="size-4" />
-            Back to dashboard
+            Edit profile
           </Link>
         </div>
 
@@ -81,15 +75,6 @@ export default async function ProfilePage() {
             </div>
           </div>
         </Card>
-
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold text-foreground mb-3">Edit your details</h3>
-          <ProfileForm
-            defaultName={user.name}
-            defaultImage={user.image}
-            email={user.email}
-          />
-        </div>
 
         <Card className="p-6">
           <h3 className="text-lg font-semibold text-foreground mb-4">Account Information</h3>
