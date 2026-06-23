@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ShieldCheck } from "lucide-react"
 import type { SessionUser } from "@/lib/session"
+import { UserProfileMenu } from "@/components/user-profile-menu"
 
 export function SiteHeader({ user }: { user: SessionUser | null }) {
   return (
@@ -36,14 +37,17 @@ export function SiteHeader({ user }: { user: SessionUser | null }) {
           </a>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           {user ? (
-            <a
-              href="/dashboard"
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-3 py-1 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-            >
-              Dashboard
-            </a>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/dashboard"
+                className="hidden md:inline-flex items-center justify-center rounded-lg bg-primary px-3 py-1 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+              >
+                Dashboard
+              </Link>
+              <UserProfileMenu user={user} />
+            </div>
           ) : (
             <>
               <a
