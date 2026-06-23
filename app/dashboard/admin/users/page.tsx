@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { getSession } from "@/lib/session"
-import { getAllUsers } from "@/app/actions/admin"
+import { getAllUsers, suspendUser, updateUserRole, deleteUser } from "@/app/actions/admin"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
@@ -31,14 +31,15 @@ export default async function AdminUsersPage() {
             <div className="hidden md:block">
               <Card className="p-2">
                 <table className="w-full text-sm">
-                  <thead className="border-b border-border">
-                    <tr>
-                      <th className="text-left p-2">Name</th>
-                      <th className="text-left p-2">Email</th>
-                      <th className="text-left p-2">Role</th>
-                      <th className="text-left p-2">Joined</th>
-                    </tr>
-                  </thead>
+                      <thead className="border-b border-border">
+                        <tr>
+                          <th className="text-left p-2">Name</th>
+                          <th className="text-left p-2">Email</th>
+                          <th className="text-left p-2">Role</th>
+                          <th className="text-left p-2">Joined</th>
+                          <th className="text-left p-2">Actions</th>
+                        </tr>
+                      </thead>
                   <tbody>
                     {users.map((u) => (
                       <tr key={u.id} className="border-b border-border last:border-0">
@@ -51,6 +52,38 @@ export default async function AdminUsersPage() {
                         </td>
                         <td className="p-2 text-muted-foreground">
                           {new Date(u.createdAt).toLocaleDateString()}
+                        </td>
+                        <td className="p-2">
+                          <div className="flex items-center gap-2">
+                            {u.role === "suspended" ? (
+                              <form action={async function unsuspend(formData: FormData) {
+                                "use server"
+                                const id = String(formData.get("userId"))
+                                await updateUserRole(id, "donor")
+                              }}>
+                                <input type="hidden" name="userId" value={u.id} />
+                                <button type="submit" className="text-sm text-foreground hover:underline">Unsuspend</button>
+                              </form>
+                            ) : (
+                              <form action={async function suspend(formData: FormData) {
+                                "use server"
+                                const id = String(formData.get("userId"))
+                                await suspendUser(id)
+                              }}>
+                                <input type="hidden" name="userId" value={u.id} />
+                                <button type="submit" className="text-sm text-destructive hover:underline">Suspend</button>
+                              </form>
+                            )}
+
+                            <form action={async function remove(formData: FormData) {
+                              "use server"
+                              const id = String(formData.get("userId"))
+                              await deleteUser(id)
+                            }}>
+                              <input type="hidden" name="userId" value={u.id} />
+                              <button type="submit" className="text-sm text-destructive/80 hover:underline">Delete</button>
+                            </form>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -77,6 +110,37 @@ export default async function AdminUsersPage() {
                       <div className="text-sm text-muted-foreground">Joined</div>
                       <div className="text-sm font-medium text-foreground">{new Date(u.createdAt).toLocaleDateString()}</div>
                     </div>
+                  </div>
+
+                  <div className="mt-3 flex items-center justify-end gap-2">
+                    {u.role === "suspended" ? (
+                      <form action={async function unsuspendMobile(formData: FormData) {
+                        "use server"
+                        const id = String(formData.get("userId"))
+                        await updateUserRole(id, "donor")
+                      }}>
+                        <input type="hidden" name="userId" value={u.id} />
+                        <button type="submit" className="rounded-md px-3 py-1 text-sm text-foreground border border-border">Unsuspend</button>
+                      </form>
+                    ) : (
+                      <form action={async function suspendMobile(formData: FormData) {
+                        "use server"
+                        const id = String(formData.get("userId"))
+                        await suspendUser(id)
+                      }}>
+                        <input type="hidden" name="userId" value={u.id} />
+                        <button type="submit" className="rounded-md px-3 py-1 text-sm text-destructive border border-destructive/30">Suspend</button>
+                      </form>
+                    )}
+
+                    <form action={async function deleteMobile(formData: FormData) {
+                      "use server"
+                      const id = String(formData.get("userId"))
+                      await deleteUser(id)
+                    }}>
+                      <input type="hidden" name="userId" value={u.id} />
+                      <button type="submit" className="rounded-md px-3 py-1 text-sm text-destructive bg-destructive/5">Delete</button>
+                    </form>
                   </div>
                 </Card>
               ))}

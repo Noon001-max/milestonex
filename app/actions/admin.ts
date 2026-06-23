@@ -40,3 +40,10 @@ export async function suspendUser(userId: string) {
     .where(eq(user.id, userId))
   revalidatePath("/dashboard/users")
 }
+
+export async function deleteUser(userId: string) {
+  await requireRole(["admin"])
+  await db.delete(user).where(eq(user.id, userId))
+  revalidatePath("/dashboard/admin")
+  revalidatePath("/dashboard/users")
+}
