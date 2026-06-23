@@ -11,7 +11,21 @@ import { and, desc, eq, sql } from "drizzle-orm"
 
 export async function getPublicProjects() {
   return db
-    .select()
+    .select({
+      id: projects.id,
+      title: projects.title,
+      summary: projects.summary,
+      category: projects.category,
+      location: projects.location,
+      imageUrl: projects.imageUrl,
+      fundingGoal: projects.fundingGoal,
+      fundedAmount: projects.fundedAmount,
+      escrowBalance: projects.escrowBalance,
+      releasedAmount: projects.releasedAmount,
+      status: projects.status,
+      createdAt: projects.createdAt,
+      updatedAt: projects.updatedAt,
+    })
     .from(projects)
     .where(
       sql`${projects.status} in ('approved', 'funding', 'completed')`,
