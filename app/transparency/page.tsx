@@ -12,6 +12,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { Card } from "@/components/ui/card"
 import { FundingProgress } from "@/components/funding-progress"
 import { StatusBadge } from "@/components/status-badge"
+import { isDbAvailable } from "@/lib/db/check"
 
 export const dynamic = "force-dynamic"
 
@@ -27,18 +28,26 @@ export default async function TransparencyPage() {
   }
   let projects: any[] = []
   let activity: any[] = []
+  let dbUnavailable = false
 
   try {
-    ;[user, stats, projects, activity] = await Promise.all([
-      getSession(),
-      getPlatformStats(),
-      getPublicProjects(),
-      getRecentActivity(12),
-    ])
+    const ok = await isDbAvailable()
+    if (!ok) {
+      dbUnavailable = true
+      user = await getSession()
+    } else {
+      ;[user, stats, projects, activity] = await Promise.all([
+        getSession(),
+        getPlatformStats(),
+        getPublicProjects(),
+        getRecentActivity(12),
+      ])
+    }
   } catch (err) {
     // If the DB isn't available during build/deploy, fall back to safe defaults
     // and continue rendering a functional transparency page.
     console.error("Transparency data load failed:", err)
+    dbUnavailable = true
     user = await getSession()
   }
 
@@ -78,6 +87,14 @@ export default async function TransparencyPage() {
             balances, and milestone-based releases in real time.
           </p>
         </div>
+
+        {dbUnavailable && (
+          <Card className="mb-6 p-4">
+            <p className="text-sm text-muted-foreground">
+              Real-time transparency data is temporarily unavailable. Showing cached or default values.
+            </p>
+          </Card>
+        )}
 
         <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {cards.map((c) => (
@@ -170,8 +187,7 @@ export default async function TransparencyPage() {
                         </span>
                       </div>
                       <span className="text-xs text-muted-foreground">
-                        {t.note ?? ""} •{" "}
-                        {new Date(t.createdAt).toLocaleDateString()}
+                        {t.note ?? ""} • {new Date(t.createdAt).toLocaleDateString()}
                       </span>
                     </li>
                   ))}
