@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
@@ -76,17 +77,18 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
   return (
     <main className="min-h-svh bg-background flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-md">
-        <Link
-          href="/"
-          className="mb-6 flex items-center justify-center gap-3 text-foreground"
-        >
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-xl font-bold text-primary-foreground">
-            MX
-          </span>
-          <span className="text-lg font-semibold tracking-tight">
+        <div className="mb-6 flex items-center gap-2">
+          <Image
+            src="/logo.png"
+            alt="Milestone X"
+            width={36}
+            height={36}
+            className="rounded-md"
+          />
+          <span className="text-base font-semibold tracking-tight text-foreground">
             Milestone X
           </span>
-        </Link>
+        </div>
 
         <Card className="p-6">
           <div className="mb-6">
