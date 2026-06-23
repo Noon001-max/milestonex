@@ -38,6 +38,12 @@ export default async function ProjectManagePage({
     getProjectMilestones(projectId),
   ])
 
+  const isMilestoneUnlocked = (index: number) =>
+    index === 0 ||
+    milestones.slice(0, index).every((prev) =>
+      ["approved", "released"].includes(prev.status),
+    )
+
   if (!project || project.ownerId !== user.id) {
     return (
       <div className="flex min-h-svh flex-col bg-background">
@@ -67,58 +73,76 @@ export default async function ProjectManagePage({
           <h2 className="text-lg font-semibold text-foreground">Milestones</h2>
           {milestones.length ? (
             <div className="space-y-4">
-              {milestones.map((m) => (
-                <Card key={m.id} className="p-5">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium text-foreground">{m.title}</p>
-                      <p className="text-sm text-muted-foreground">{m.description}</p>
-                      <p className="mt-1 text-sm font-medium text-primary">
-                        {formatCurrency(m.amount)}
-                      </p>
-                    </div>
-                    <StatusBadge status={m.status} />
-                  </div>
-
-                  {m.status === "pending" && <EvidenceForm milestoneId={m.id} />}
-
-                  {m.status !== "pending" && (m.evidenceNote || m.evidenceUrls) && (
-                    <div className="mt-4 space-y-3 border-t border-border pt-4">
-                      <p className="text-sm font-medium text-foreground">Submitted proof</p>
-                      {m.evidenceNote ? (
-                        <p className="text-sm leading-relaxed text-muted-foreground">
-                          {m.evidenceNote}
+              {milestones.map((m, index) => {
+                const unlocked = isMilestoneUnlocked(index)
+                return (
+                  <Card
+                    key={m.id}
+                    className={`p-5 ${
+                      m.status === "pending" && !unlocked
+                        ? "opacity-80 ring-1 ring-border bg-muted"
+                        : ""
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium text-foreground">{m.title}</p>
+                        <p className="text-sm text-muted-foreground">{m.description}</p>
+                        <p className="mt-1 text-sm font-medium text-primary">
+                          {formatCurrency(m.amount)}
                         </p>
-                      ) : null}
-                      {m.evidenceUrls ? (
-                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                          {m.evidenceUrls
-                            .split(/\s*[\n,]\s*/)
-                            .map((u) => u.trim())
-                            .filter(Boolean)
-                            .map((url) => (
-                              <a
-                                key={url}
-                                href={url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="overflow-hidden rounded-lg border border-input"
-                              >
-                                <Image
-                                  src={url || "/placeholder.svg"}
-                                  alt="Milestone proof"
-                                  width={400}
-                                  height={300}
-                                  className="h-28 w-full object-cover"
-                                />
-                              </a>
-                            ))}
-                        </div>
-                      ) : null}
+                      </div>
+                      <StatusBadge status={m.status} />
                     </div>
-                  )}
-                </Card>
-              ))}
+
+                    {m.status === "pending" && unlocked && (
+                      <EvidenceForm milestoneId={m.id} />
+                    )}
+
+                    {m.status === "pending" && !unlocked && (
+                      <div className="mt-4 rounded-lg border border-border bg-muted p-4 text-sm text-muted-foreground">
+                        Milestone {index + 1} will unlock after the previous milestone is approved.
+                      </div>
+                    )}
+
+                    {m.status !== "pending" && (m.evidenceNote || m.evidenceUrls) && (
+                      <div className="mt-4 space-y-3 border-t border-border pt-4">
+                        <p className="text-sm font-medium text-foreground">Submitted proof</p>
+                        {m.evidenceNote ? (
+                          <p className="text-sm leading-relaxed text-muted-foreground">
+                            {m.evidenceNote}
+                          </p>
+                        ) : null}
+                        {m.evidenceUrls ? (
+                          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                            {m.evidenceUrls
+                              .split(/\s*[\n,]\s*/)
+                              .map((u) => u.trim())
+                              .filter(Boolean)
+                              .map((url) => (
+                                <a
+                                  key={url}
+                                  href={url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="overflow-hidden rounded-lg border border-input"
+                                >
+                                  <Image
+                                    src={url || "/placeholder.svg"}
+                                    alt="Milestone proof"
+                                    width={400}
+                                    height={300}
+                                    className="h-28 w-full object-cover"
+                                  />
+                                </a>
+                              ))}
+                          </div>
+                        ) : null}
+                      </div>
+                    )}
+                  </Card>
+                )
+              })}
             </div>
           ) : (
             <Card className="p-6">

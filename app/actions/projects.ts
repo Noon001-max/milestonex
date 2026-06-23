@@ -229,3 +229,5 @@ export async function getReleasedFundsHistory() {
     .leftJoin(milestones, eq(milestones.id, transactions.milestoneId))
     .where(eq(transactions.type, "release"))
     .orderBy(desc(transactions.createdAt))
+}
+
