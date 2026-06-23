@@ -34,11 +34,39 @@ export async function getPublicProjects() {
 }
 
 export async function getAllProjects() {
-  return db.select().from(projects).orderBy(desc(projects.createdAt))
+  return db
+    .select({
+      id: projects.id,
+      title: projects.title,
+      summary: projects.summary,
+      fundingGoal: projects.fundingGoal,
+      status: projects.status,
+      ownerId: projects.ownerId,
+    })
+    .from(projects)
+    .orderBy(desc(projects.createdAt))
 }
 
 export async function getProjectById(id: number) {
-  const rows = await db.select().from(projects).where(eq(projects.id, id))
+  const rows = await db
+    .select({
+      id: projects.id,
+      ownerId: projects.ownerId,
+      title: projects.title,
+      description: projects.description,
+      category: projects.category,
+      location: projects.location,
+      imageUrl: projects.imageUrl,
+      fundingGoal: projects.fundingGoal,
+      fundedAmount: projects.fundedAmount,
+      escrowBalance: projects.escrowBalance,
+      releasedAmount: projects.releasedAmount,
+      status: projects.status,
+      createdAt: projects.createdAt,
+      updatedAt: projects.updatedAt,
+    })
+    .from(projects)
+    .where(eq(projects.id, id))
   return rows[0] ?? null
 }
 
