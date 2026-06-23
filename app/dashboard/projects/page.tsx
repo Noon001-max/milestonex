@@ -3,7 +3,6 @@ import { FileText, Plus } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { getMyProjects } from "@/app/actions/projects"
 import { getProjectMilestones } from "@/lib/queries"
-import { SiteHeader } from "@/components/site-header"
 import { Card } from "@/components/ui/card"
 import { formatCurrency } from "@/lib/roles"
 import { StatusBadge } from "@/components/status-badge"
@@ -15,7 +14,6 @@ export default async function OwnerDashboard() {
   if (!user) {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={null} />
         <main className="mx-auto w-full max-w-6xl px-4 py-16">
           <p className="text-muted-foreground">
             <Link href="/sign-in" className="text-primary hover:underline">
@@ -32,7 +30,6 @@ export default async function OwnerDashboard() {
   if (user.role !== "owner") {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={user} />
         <main className="mx-auto w-full max-w-6xl px-4 py-16">
           <p className="text-muted-foreground">
             This page is for project owners only. Please check your dashboard for your role.
@@ -49,7 +46,6 @@ export default async function OwnerDashboard() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
         <div className="mb-6 flex items-center justify-between">
           <div>

@@ -3,7 +3,6 @@ import Image from "next/image"
 import { ArrowLeft } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { getProjectById, getProjectMilestones } from "@/lib/queries"
-import { SiteHeader } from "@/components/site-header"
 import { Card } from "@/components/ui/card"
 import { formatCurrency } from "@/lib/roles"
 import { StatusBadge } from "@/components/status-badge"
@@ -23,7 +22,6 @@ export default async function ProjectManagePage({
   if (!user) {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={user} hideNavigation={true} />
         <main className="mx-auto w-full max-w-6xl px-4 py-16">
           <p className="text-muted-foreground">
             <Link href="/sign-in" className="text-primary hover:underline">
@@ -44,7 +42,6 @@ export default async function ProjectManagePage({
   if (!project || project.ownerId !== user.id) {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={user} hideNavigation={true} />
         <main className="mx-auto w-full max-w-6xl px-4 py-16">
           <p className="text-muted-foreground">Project not found or access denied.</p>
         </main>
@@ -54,7 +51,6 @@ export default async function ProjectManagePage({
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
         <div className="mb-6">
           <a href="/dashboard/projects" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-4">

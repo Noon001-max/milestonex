@@ -2,7 +2,6 @@ import Link from "next/link"
 import { ArrowLeft, AlertCircle } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { getAllDisputes, updateDispute } from "@/app/actions/disputes"
-import { SiteHeader } from "@/components/site-header"
 import { Card } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
@@ -16,7 +15,6 @@ export default async function DisputesPage() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
         <div className="mb-6">
           <a href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-4">

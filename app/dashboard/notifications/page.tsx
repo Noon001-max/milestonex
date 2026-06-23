@@ -2,7 +2,6 @@ import Link from "next/link"
 import { ArrowLeft, Bell } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { getMyNotifications } from "@/app/actions/notifications"
-import { SiteHeader } from "@/components/site-header"
 import { Card } from "@/components/ui/card"
 
 export const dynamic = "force-dynamic"
@@ -13,7 +12,6 @@ export default async function NotificationsPage() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-4xl px-4 py-12">
         <div className="mb-6">
           <h1 className="text-3xl font-semibold tracking-tight text-foreground">

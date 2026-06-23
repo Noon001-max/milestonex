@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { getSession } from "@/lib/session"
-import { SiteHeader } from "@/components/site-header"
 import { Card } from "@/components/ui/card"
 
 export const dynamic = "force-dynamic"
@@ -12,7 +11,6 @@ export default async function SettingsPage() {
   if (!user) {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={null} hideNavigation={true} />
         <main className="mx-auto w-full max-w-4xl px-4 py-12">
           <p className="text-muted-foreground">
             <Link href="/sign-in" className="text-primary hover:underline">
@@ -27,7 +25,6 @@ export default async function SettingsPage() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-4xl px-4 py-12">
         <div className="mb-6 flex items-center justify-between">
           <div>

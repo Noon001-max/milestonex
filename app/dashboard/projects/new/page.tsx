@@ -1,6 +1,5 @@
 import { ArrowLeft } from "lucide-react"
 import { getSession } from "@/lib/session"
-import { SiteHeader } from "@/components/site-header"
 import { NewProjectForm } from "@/components/new-project-form"
 
 export const dynamic = "force-dynamic"
@@ -12,7 +11,6 @@ export default async function NewProjectPage() {
   if (!user || user.role !== "owner") {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={user} hideNavigation={true} />
         <main className="mx-auto w-full max-w-3xl px-4 py-12">
           <p className="text-muted-foreground">
             Only project owners can submit projects. Please contact an administrator if you need to change your role.
@@ -24,7 +22,6 @@ export default async function NewProjectPage() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-3xl px-4 py-12">
         <div className="mb-4">
           <a

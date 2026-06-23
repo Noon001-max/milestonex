@@ -5,7 +5,6 @@ import { redirect } from "next/navigation"
 import { getAllProjects } from "@/lib/queries"
 import { getAllUsers } from "@/app/actions/admin"
 import { getAllDisputes } from "@/app/actions/disputes"
-import { SiteHeader } from "@/components/site-header"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -30,7 +29,6 @@ export default async function AdminDashboard() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
         <div className="mb-6 flex items-center justify-between">
           <div>

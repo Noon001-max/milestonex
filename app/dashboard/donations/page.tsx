@@ -2,7 +2,6 @@ import Link from "next/link"
 import { ArrowLeft, Lock, Banknote, TrendingUp } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { getMyDonations } from "@/app/actions/donations"
-import { SiteHeader } from "@/components/site-header"
 import { Card } from "@/components/ui/card"
 import { StatusBadge } from "@/components/status-badge"
 import { formatCurrency } from "@/lib/roles"
@@ -14,7 +13,6 @@ export default async function DonorDashboard() {
   if (!user) {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={null} />
         <main className="mx-auto w-full max-w-6xl px-4 py-16">
           <p className="text-muted-foreground">
             <Link href="/sign-in" className="text-primary hover:underline">
@@ -34,7 +32,6 @@ export default async function DonorDashboard() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
         <div className="mb-6">
           <div className="mb-4">

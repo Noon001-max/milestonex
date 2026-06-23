@@ -3,7 +3,6 @@ import { ArrowLeft, Banknote, FileText, TrendingUp } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { getMyProjects } from "@/app/actions/projects"
-import { SiteHeader } from "@/components/site-header"
 import { Card } from "@/components/ui/card"
 import { formatCurrency } from "@/lib/roles"
 import { StatusBadge } from "@/components/status-badge"
@@ -18,7 +17,6 @@ export default async function AuditorDashboard() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
         <div className="mb-6">
           <a href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-4">
