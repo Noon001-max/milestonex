@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { formatCurrency } from "@/lib/roles"
 import { StatusBadge } from "@/components/status-badge"
+import { AdminProjectCard } from "@/components/admin-project-card"
 
 export const dynamic = "force-dynamic"
 
@@ -78,25 +79,14 @@ export default async function AdminDashboard() {
           {pendingProjects.length > 0 ? (
             <div className="grid gap-4">
               {pendingProjects.map((p) => (
-                <Card key={p.id} className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <a
-                        href={`/dashboard/projects/${p.id}`}
-                        className="font-medium text-foreground hover:underline"
-                      >
-                        {p.title}
-                      </a>
-                      <p className="text-sm text-muted-foreground line-clamp-1">
-                        {p.summary}
-                      </p>
-                    </div>
-                    <StatusBadge status={p.status} />
-                  </div>
-                  <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
-                    <span>Goal: {formatCurrency(p.fundingGoal)}</span>
-                  </div>
-                </Card>
+                <AdminProjectCard
+                  key={p.id}
+                  id={p.id}
+                  title={p.title}
+                  summary={p.summary}
+                  fundingGoal={p.fundingGoal}
+                  status={p.status}
+                />
               ))}
             </div>
           ) : (
