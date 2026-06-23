@@ -1,9 +1,11 @@
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowLeft } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { SiteHeader } from "@/components/site-header"
 import { Card } from "@/components/ui/card"
 import { ROLE_LABELS } from "@/lib/roles"
+import { ProfileForm } from "@/components/profile-form"
 
 export const dynamic = "force-dynamic"
 
@@ -50,9 +52,19 @@ export default async function ProfilePage() {
 
         <Card className="p-6 mb-6">
           <div className="flex items-start gap-6">
-            <div className="w-20 h-20 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold">
-              {initials}
-            </div>
+            {user.image ? (
+              <Image
+                src={user.image || "/placeholder.svg"}
+                alt={`${user.name}'s profile photo`}
+                width={80}
+                height={80}
+                className="size-20 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-20 h-20 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold">
+                {initials}
+              </div>
+            )}
             <div>
               <h2 className="text-2xl font-semibold text-foreground">{user.name}</h2>
               <p className="text-muted-foreground mt-1">{user.email}</p>
@@ -66,17 +78,18 @@ export default async function ProfilePage() {
           </div>
         </Card>
 
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-foreground mb-3">Edit your details</h3>
+          <ProfileForm
+            defaultName={user.name}
+            defaultImage={user.image}
+            email={user.email}
+          />
+        </div>
+
         <Card className="p-6">
           <h3 className="text-lg font-semibold text-foreground mb-4">Account Information</h3>
           <div className="grid gap-4">
-            <div>
-              <label className="text-sm font-medium text-muted-foreground">Name</label>
-              <p className="text-foreground mt-1">{user.name}</p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-muted-foreground">Email</label>
-              <p className="text-foreground mt-1">{user.email}</p>
-            </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">User ID</label>
               <p className="text-foreground text-xs font-mono mt-1">{user.id}</p>
@@ -85,7 +98,7 @@ export default async function ProfilePage() {
               <label className="text-sm font-medium text-muted-foreground">Email Verified</label>
               <p className="text-foreground mt-1">
                 {user.emailVerified ? (
-                  <span className="text-green-600 font-medium">✓ Verified</span>
+                  <span className="text-green-600 font-medium">Verified</span>
                 ) : (
                   <span className="text-yellow-600 font-medium">Pending verification</span>
                 )}
@@ -99,7 +112,7 @@ export default async function ProfilePage() {
             href="/dashboard/settings"
             className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
-            Edit Settings
+            Account Settings
           </Link>
         </div>
       </main>

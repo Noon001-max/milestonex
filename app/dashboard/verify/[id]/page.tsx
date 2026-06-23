@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowLeft, CheckCircle2, XCircle } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { getProjectById, getProjectMilestones } from "@/lib/queries"
@@ -100,17 +101,39 @@ export default async function VerifyMilestonePage({
           </p>
         </Card>
 
-        {milestone.evidenceNote && (
+        {(milestone.evidenceNote || milestone.evidenceUrls) && (
           <Card className="p-6 mb-6">
             <h3 className="font-semibold text-foreground mb-2">Evidence submitted</h3>
-            <p className="text-sm text-muted-foreground whitespace-pre-line">
-              {milestone.evidenceNote}
-            </p>
-            {milestone.evidenceUrls && (
-              <p className="mt-2 text-xs text-muted-foreground">
-                URLs: {milestone.evidenceUrls}
+            {milestone.evidenceNote ? (
+              <p className="text-sm text-muted-foreground whitespace-pre-line">
+                {milestone.evidenceNote}
               </p>
-            )}
+            ) : null}
+            {milestone.evidenceUrls ? (
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {milestone.evidenceUrls
+                  .split(/\s*[\n,]\s*/)
+                  .map((u) => u.trim())
+                  .filter(Boolean)
+                  .map((url) => (
+                    <a
+                      key={url}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="overflow-hidden rounded-lg border border-input"
+                    >
+                      <Image
+                        src={url || "/placeholder.svg"}
+                        alt="Milestone proof"
+                        width={400}
+                        height={300}
+                        className="h-28 w-full object-cover"
+                      />
+                    </a>
+                  ))}
+              </div>
+            ) : null}
           </Card>
         )}
 

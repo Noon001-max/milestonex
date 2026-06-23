@@ -14,6 +14,7 @@ export type SessionUser = {
   name: string
   email: string
   emailVerified: boolean
+  image: string | null
   role: Role
 }
 
@@ -25,6 +26,7 @@ export async function getSession() {
     name: session.user.name,
     email: session.user.email,
     emailVerified: (session.user as { emailVerified?: boolean }).emailVerified ?? false,
+    image: (session.user as { image?: string | null }).image ?? null,
     role: ((session.user as { role?: string }).role ?? "donor") as Role,
   } satisfies SessionUser
 }
