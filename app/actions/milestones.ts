@@ -16,13 +16,43 @@ export async function submitMilestoneEvidence(
   const u = await requireUser()
 
   const [m] = await db
-    .select()
+    .select({
+      id: milestones.id,
+      projectId: milestones.projectId,
+      title: milestones.title,
+      description: milestones.description,
+      amount: milestones.amount,
+      dueDate: milestones.dueDate,
+      orderIndex: milestones.orderIndex,
+      status: milestones.status,
+      evidenceNote: milestones.evidenceNote,
+      evidenceUrls: milestones.evidenceUrls,
+      submittedAt: milestones.submittedAt,
+      createdAt: milestones.createdAt,
+      updatedAt: milestones.updatedAt,
+    })
     .from(milestones)
     .where(eq(milestones.id, milestoneId))
   if (!m) throw new Error("Milestone not found")
 
   const [project] = await db
-    .select()
+    .select({
+      id: projects.id,
+      ownerId: projects.ownerId,
+      title: projects.title,
+      summary: projects.summary,
+      description: projects.description,
+      category: projects.category,
+      location: projects.location,
+      imageUrl: projects.imageUrl,
+      fundingGoal: projects.fundingGoal,
+      fundedAmount: projects.fundedAmount,
+      escrowBalance: projects.escrowBalance,
+      releasedAmount: projects.releasedAmount,
+      status: projects.status,
+      createdAt: projects.createdAt,
+      updatedAt: projects.updatedAt,
+    })
     .from(projects)
     .where(eq(projects.id, m.projectId))
   if (!project) throw new Error("Project not found")
@@ -82,7 +112,23 @@ export async function submitVerification(
     .where(eq(milestones.id, milestoneId))
 
   const [project] = await db
-    .select()
+    .select({
+      id: projects.id,
+      ownerId: projects.ownerId,
+      title: projects.title,
+      summary: projects.summary,
+      description: projects.description,
+      category: projects.category,
+      location: projects.location,
+      imageUrl: projects.imageUrl,
+      fundingGoal: projects.fundingGoal,
+      fundedAmount: projects.fundedAmount,
+      escrowBalance: projects.escrowBalance,
+      releasedAmount: projects.releasedAmount,
+      status: projects.status,
+      createdAt: projects.createdAt,
+      updatedAt: projects.updatedAt,
+    })
     .from(projects)
     .where(eq(projects.id, m.projectId))
   if (project) {

@@ -16,7 +16,23 @@ export async function contribute(
   if (!amount || amount <= 0) throw new Error("Enter a valid amount")
 
   const [project] = await db
-    .select()
+    .select({
+      id: projects.id,
+      ownerId: projects.ownerId,
+      title: projects.title,
+      summary: projects.summary,
+      description: projects.description,
+      category: projects.category,
+      location: projects.location,
+      imageUrl: projects.imageUrl,
+      fundingGoal: projects.fundingGoal,
+      fundedAmount: projects.fundedAmount,
+      escrowBalance: projects.escrowBalance,
+      releasedAmount: projects.releasedAmount,
+      status: projects.status,
+      createdAt: projects.createdAt,
+      updatedAt: projects.updatedAt,
+    })
     .from(projects)
     .where(eq(projects.id, projectId))
   if (!project) throw new Error("Project not found")

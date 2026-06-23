@@ -49,7 +49,23 @@ export async function createProject(formData: FormData) {
       fundingGoal,
       status: "pending",
     })
-    .returning()
+    .returning({
+      id: projects.id,
+      ownerId: projects.ownerId,
+      title: projects.title,
+      summary: projects.summary,
+      description: projects.description,
+      category: projects.category,
+      location: projects.location,
+      imageUrl: projects.imageUrl,
+      fundingGoal: projects.fundingGoal,
+      fundedAmount: projects.fundedAmount,
+      escrowBalance: projects.escrowBalance,
+      releasedAmount: projects.releasedAmount,
+      status: projects.status,
+      createdAt: projects.createdAt,
+      updatedAt: projects.updatedAt,
+    })
 
   if (parsedMilestones.length > 0) {
     await db.insert(milestones).values(
@@ -78,7 +94,23 @@ export async function createProject(formData: FormData) {
 export async function getMyProjects() {
   const u = await requireUser()
   return db
-    .select()
+    .select({
+      id: projects.id,
+      ownerId: projects.ownerId,
+      title: projects.title,
+      summary: projects.summary,
+      description: projects.description,
+      category: projects.category,
+      location: projects.location,
+      imageUrl: projects.imageUrl,
+      fundingGoal: projects.fundingGoal,
+      fundedAmount: projects.fundedAmount,
+      escrowBalance: projects.escrowBalance,
+      releasedAmount: projects.releasedAmount,
+      status: projects.status,
+      createdAt: projects.createdAt,
+      updatedAt: projects.updatedAt,
+    })
     .from(projects)
     .where(eq(projects.ownerId, u.id))
     .orderBy(desc(projects.createdAt))
@@ -94,7 +126,23 @@ export async function reviewProject(projectId: number, approve: boolean) {
       updatedAt: new Date(),
     })
     .where(eq(projects.id, projectId))
-    .returning()
+    .returning({
+      id: projects.id,
+      ownerId: projects.ownerId,
+      title: projects.title,
+      summary: projects.summary,
+      description: projects.description,
+      category: projects.category,
+      location: projects.location,
+      imageUrl: projects.imageUrl,
+      fundingGoal: projects.fundingGoal,
+      fundedAmount: projects.fundedAmount,
+      escrowBalance: projects.escrowBalance,
+      releasedAmount: projects.releasedAmount,
+      status: projects.status,
+      createdAt: projects.createdAt,
+      updatedAt: projects.updatedAt,
+    })
 
   if (project) {
     await notify({
@@ -125,7 +173,21 @@ export async function releaseMilestoneFunds(milestoneId: number) {
   const u = await requireRole(["auditor"])
 
   const [m] = await db
-    .select()
+    .select({
+      id: milestones.id,
+      projectId: milestones.projectId,
+      title: milestones.title,
+      description: milestones.description,
+      amount: milestones.amount,
+      dueDate: milestones.dueDate,
+      orderIndex: milestones.orderIndex,
+      status: milestones.status,
+      evidenceNote: milestones.evidenceNote,
+      evidenceUrls: milestones.evidenceUrls,
+      submittedAt: milestones.submittedAt,
+      createdAt: milestones.createdAt,
+      updatedAt: milestones.updatedAt,
+    })
     .from(milestones)
     .where(eq(milestones.id, milestoneId))
   if (!m) throw new Error("Milestone not found")
@@ -134,7 +196,23 @@ export async function releaseMilestoneFunds(milestoneId: number) {
   }
 
   const [project] = await db
-    .select()
+    .select({
+      id: projects.id,
+      ownerId: projects.ownerId,
+      title: projects.title,
+      summary: projects.summary,
+      description: projects.description,
+      category: projects.category,
+      location: projects.location,
+      imageUrl: projects.imageUrl,
+      fundingGoal: projects.fundingGoal,
+      fundedAmount: projects.fundedAmount,
+      escrowBalance: projects.escrowBalance,
+      releasedAmount: projects.releasedAmount,
+      status: projects.status,
+      createdAt: projects.createdAt,
+      updatedAt: projects.updatedAt,
+    })
     .from(projects)
     .where(eq(projects.id, m.projectId))
   if (!project) throw new Error("Project not found")
@@ -214,9 +292,43 @@ export async function getApprovedMilestones() {
 export async function allocateMilestonesOnStart(projectId: number) {
   // Fetch project and milestones
   const [project, ms] = await Promise.all([
-    db.select().from(projects).where(eq(projects.id, projectId)).then((r) => r[0]),
     db
-      .select()
+      .select({
+        id: projects.id,
+        ownerId: projects.ownerId,
+        title: projects.title,
+        summary: projects.summary,
+        description: projects.description,
+        category: projects.category,
+        location: projects.location,
+        imageUrl: projects.imageUrl,
+        fundingGoal: projects.fundingGoal,
+        fundedAmount: projects.fundedAmount,
+        escrowBalance: projects.escrowBalance,
+        releasedAmount: projects.releasedAmount,
+        status: projects.status,
+        createdAt: projects.createdAt,
+        updatedAt: projects.updatedAt,
+      })
+      .from(projects)
+      .where(eq(projects.id, projectId))
+      .then((r) => r[0]),
+    db
+      .select({
+        id: milestones.id,
+        projectId: milestones.projectId,
+        title: milestones.title,
+        description: milestones.description,
+        amount: milestones.amount,
+        dueDate: milestones.dueDate,
+        orderIndex: milestones.orderIndex,
+        status: milestones.status,
+        evidenceNote: milestones.evidenceNote,
+        evidenceUrls: milestones.evidenceUrls,
+        submittedAt: milestones.submittedAt,
+        createdAt: milestones.createdAt,
+        updatedAt: milestones.updatedAt,
+      })
       .from(milestones)
       .where(eq(milestones.projectId, projectId))
       .orderBy(milestones.orderIndex),
@@ -225,7 +337,10 @@ export async function allocateMilestonesOnStart(projectId: number) {
   if (!ms || ms.length === 0) return
 
   // Idempotency: do nothing if allocation already ran
-  if (project.allocationDone) return
+  if (project) {
+    const proj: any = project
+    if (proj.allocationDone) return
+  }
 
   const goal = project.fundingGoal || 0
   // startup allocation: 30% of funding goal
