@@ -2,12 +2,11 @@ import { redirect } from "next/navigation"
 import { getSession } from "@/lib/session"
 import { getApprovedMilestones, releaseMilestoneFunds } from "@/app/actions/projects"
 import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { formatCurrency } from "@/lib/roles"
 
 export const dynamic = "force-dynamic"
 
-export default async function AuditorMilestonesPage() {
+export default async function ReleaseFundsPage() {
   const user = await getSession()
   if (!user) return redirect("/sign-in")
   if (user.role !== "auditor") return redirect("/dashboard")
@@ -17,15 +16,13 @@ export default async function AuditorMilestonesPage() {
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              Release funds
-            </h1>
-            <p className="mt-1 text-muted-foreground">
-              Review approved milestones and release funds from escrow.
-            </p>
-          </div>
+        <div className="mb-6">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+            Release funds
+          </h1>
+          <p className="mt-1 text-muted-foreground">
+            Review approved milestones and release funds from escrow.
+          </p>
         </div>
 
         {milestones.length > 0 ? (
@@ -36,9 +33,9 @@ export default async function AuditorMilestonesPage() {
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-3">
                       <h2 className="text-lg font-semibold text-foreground truncate">{m.title}</h2>
-                      <Badge variant="secondary" className="bg-primary/10 text-primary">
+                      <span className="rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
                         Approved
-                      </Badge>
+                      </span>
                     </div>
                     <p className="mt-2 text-sm text-muted-foreground">{m.description}</p>
                     <p className="mt-2 text-sm text-muted-foreground">Project: {m.projectTitle}</p>

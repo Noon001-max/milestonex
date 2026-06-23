@@ -64,14 +64,14 @@ export default function RoleSidebar({
     ],
     admin: [
       { id: "overview", label: "Overview", href: "/dashboard/admin" },
-      { id: "approve-projects", label: "Approve projects", href: "/dashboard/admin/projects" },
-      { id: "approve-milestones", label: "Approve milestones", href: "/dashboard/admin/milestones" },
-      { id: "users", label: "Manage users", href: "/dashboard/admin/users" },
+      { id: "approve-projects", label: "Approve projects", href: "/dashboard/approve-projects" },
+      { id: "approve-milestones", label: "Approve milestones", href: "/dashboard/approve-milestones" },
+      { id: "users", label: "Manage users", href: "/dashboard/manage-users" },
     ],
     auditor: [
       { id: "auditor", label: "Audit dashboard", href: "/dashboard/auditor" },
-      { id: "milestones", label: "Release funds", href: "/dashboard/auditor/milestones" },
-      { id: "released", label: "Released funds report", href: "/dashboard/auditor/released" },
+      { id: "release-funds", label: "Release funds", href: "/dashboard/release-funds" },
+      { id: "released-report", label: "Released funds report", href: "/dashboard/released-funds-report" },
       { id: "disputes", label: "Disputes", href: "/dashboard/disputes" },
     ],
     suspended: [

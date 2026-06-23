@@ -185,8 +185,8 @@ export async function releaseMilestoneFunds(milestoneId: number) {
   })
 
   revalidatePath(`/projects/${m.projectId}`)
-  revalidatePath("/dashboard/auditor/milestones")
-  revalidatePath("/dashboard/auditor/released")
+  revalidatePath("/dashboard/release-funds")
+  revalidatePath("/dashboard/released-funds-report")
   revalidatePath("/dashboard/projects")
 }
 
