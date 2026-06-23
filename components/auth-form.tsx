@@ -78,10 +78,10 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
       <div className="w-full max-w-md">
         <Link
           href="/"
-          className="mb-6 flex items-center justify-center gap-2 text-foreground"
+          className="mb-6 flex items-center justify-center gap-3 text-foreground"
         >
-          <span className="flex size-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <ShieldCheck className="size-5" />
+          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-xl font-bold text-primary-foreground">
+            MX
           </span>
           <span className="text-lg font-semibold tracking-tight">
             Milestone X
@@ -170,29 +170,38 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
                           : r.value === "admin"
                           ? ShieldCheck
                           : Banknote
+                      const selected = role === r.value
                       return (
                         <button
                           key={r.value}
                           type="button"
-                          onClick={() => setRole(r.value)}
-                          aria-pressed={role === r.value}
-                          className={`flex items-start gap-3 rounded-md border p-3 text-left transition-colors text-sm ${
-                            role === r.value
-                              ? "border-primary bg-secondary"
-                              : "border-border hover:bg-muted"
+                          onClick={() => {
+                            setRole(r.value)
+                            setShowAdvanced(false)
+                          }}
+                          aria-pressed={selected}
+                          className={`group relative flex items-start gap-3 rounded-2xl border p-4 text-left transition-all text-sm shadow-sm ${
+                            selected
+                              ? "border-primary bg-primary/10 shadow-primary/20"
+                              : "border-border bg-background hover:border-primary hover:bg-muted"
                           }`}
                         >
-                          <span className="mt-1">
-                            <Icon className="size-5 text-primary" />
+                          <span className={`grid h-10 w-10 place-items-center rounded-2xl transition-colors ${selected ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary"}`}>
+                            <Icon className="size-5" />
                           </span>
                           <span className="flex-1">
-                            <span className="block text-sm font-medium text-foreground">
+                            <span className="block text-sm font-semibold text-foreground">
                               {r.label}
                             </span>
                             <span className="block text-xs text-muted-foreground">
                               {r.description}
                             </span>
                           </span>
+                          {selected ? (
+                            <span className="absolute right-3 top-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                              ✓
+                            </span>
+                          ) : null}
                         </button>
                       )
                     })}
@@ -200,7 +209,6 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
                 ) : (
                   <div className="rounded-md border border-border bg-muted p-3 text-sm text-muted-foreground">
                     Default role: <strong className="text-foreground">Donor / Investor</strong>
-                    <div className="text-xs mt-1">You can change this after signup from your profile.</div>
                   </div>
                 )}
               </fieldset>
