@@ -22,7 +22,11 @@ export async function getUnreadNotificationsCount() {
     .select({ count: notifications.id })
     .from(notifications)
     .where(and(eq(notifications.userId, u.id), eq(notifications.read, false)))
-  return result.length
+  // result is an array with a single row containing the count
+  const row = result[0]
+  // support BigInt or numeric count types
+  const count = row?.count ?? 0
+  return Number(count)
 }
 
 export async function markNotificationRead(id: number) {

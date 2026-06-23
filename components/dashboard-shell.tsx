@@ -8,9 +8,11 @@ import RoleSidebar from "@/components/role-sidebar"
 export default function DashboardShell({
   user,
   children,
+  unreadCount = 0,
 }: {
   user: SessionUser
   children: React.ReactNode
+  unreadCount?: number
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -18,6 +20,7 @@ export default function DashboardShell({
     <div className="min-h-svh flex flex-col bg-background">
       <SiteHeader
         user={user}
+        unreadCount={unreadCount}
         hideNavigation={true}
         showMenuButton={true}
         onMenuClick={() => setSidebarOpen(true)}

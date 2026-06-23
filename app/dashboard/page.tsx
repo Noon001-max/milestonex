@@ -24,7 +24,7 @@ export default async function DashboardPage() {
 
   switch (user.role) {
     case "donor":
-      redirect("/dashboard/donor")
+      redirect("/dashboard/donations")
     case "owner":
       redirect("/dashboard/projects")
     case "verifier":
