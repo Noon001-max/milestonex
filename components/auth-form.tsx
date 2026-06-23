@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
-import { ShieldCheck } from "lucide-react"
+import { ShieldCheck, Users, Briefcase, CheckCircle2, Banknote } from "lucide-react"
 
 export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
   const router = useRouter()
@@ -20,6 +20,8 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
   const [role, setRole] = useState<Role>("donor")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [showAdvanced, setShowAdvanced] = useState(false)
+  const [success, setSuccess] = useState<string | null>(null)
 
   const isSignUp = mode === "sign-up"
 
@@ -28,7 +30,26 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
     setError(null)
     setLoading(true)
 
-    const { error } = isSignUp
+    // Basic inline validation for sign-up
+    if (isSignUp) {
+      if (!name || name.trim().length < 2) {
+        setLoading(false)
+        setError("Please enter your full name")
+        return
+      }
+      if (!email.includes("@")) {
+        setLoading(false)
+        setError("Enter a valid email address")
+        return
+      }
+      if (!password || password.length < 8) {
+        setLoading(false)
+        setError("Password must be at least 8 characters")
+        return
+      }
+    }
+
+    const result = isSignUp
       ? await authClient.signUp.email({
           email,
           password,
@@ -40,13 +61,16 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
 
     setLoading(false)
 
-    if (error) {
-      setError(error.message ?? "Something went wrong")
+    if (result.error) {
+      setError(result.error.message ?? "Something went wrong")
       return
     }
 
-    router.push("/dashboard")
-    router.refresh()
+    setSuccess(isSignUp ? "Account created — redirecting..." : "Signed in — redirecting...")
+    setTimeout(() => {
+      router.push("/dashboard")
+      router.refresh()
+    }, 700)
   }
 
   return (
@@ -118,41 +142,79 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
                 <legend className="text-sm font-medium text-foreground mb-2">
                   Account type
                 </legend>
-                <div className="grid gap-2">
-                  {ROLES.map((r) => (
-                    <label
-                      key={r.value}
-                      className={`flex cursor-pointer items-start gap-3 rounded-md border p-3 text-left transition-colors ${
-                        role === r.value
-                          ? "border-primary bg-secondary"
-                          : "border-border hover:bg-muted"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="role"
-                        value={r.value}
-                        checked={role === r.value}
-                        onChange={() => setRole(r.value)}
-                        className="mt-1 accent-primary"
-                      />
-                      <span>
-                        <span className="block text-sm font-medium text-foreground">
-                          {r.label}
-                        </span>
-                        <span className="block text-xs text-muted-foreground">
-                          {r.description}
-                        </span>
-                      </span>
-                    </label>
-                  ))}
+                <p className="text-xs text-muted-foreground mb-2">
+                  Choose the role that best matches how you'll use the platform.
+                </p>
+
+                <div className="flex items-center gap-3 mb-2">
+                  <label className="text-sm text-muted-foreground">Advanced options</label>
+                  <button
+                    type="button"
+                    onClick={() => setShowAdvanced((s) => !s)}
+                    className="text-sm text-primary underline-offset-4 hover:underline"
+                  >
+                    {showAdvanced ? "Hide" : "Show"}
+                  </button>
                 </div>
+
+                {showAdvanced ? (
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    {ROLES.filter((r) => r.value !== "suspended").map((r) => {
+                      const Icon =
+                        r.value === "donor"
+                          ? Users
+                          : r.value === "owner"
+                          ? Briefcase
+                          : r.value === "verifier"
+                          ? CheckCircle2
+                          : r.value === "admin"
+                          ? ShieldCheck
+                          : Banknote
+                      return (
+                        <button
+                          key={r.value}
+                          type="button"
+                          onClick={() => setRole(r.value)}
+                          aria-pressed={role === r.value}
+                          className={`flex items-start gap-3 rounded-md border p-3 text-left transition-colors text-sm ${
+                            role === r.value
+                              ? "border-primary bg-secondary"
+                              : "border-border hover:bg-muted"
+                          }`}
+                        >
+                          <span className="mt-1">
+                            <Icon className="size-5 text-primary" />
+                          </span>
+                          <span className="flex-1">
+                            <span className="block text-sm font-medium text-foreground">
+                              {r.label}
+                            </span>
+                            <span className="block text-xs text-muted-foreground">
+                              {r.description}
+                            </span>
+                          </span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                ) : (
+                  <div className="rounded-md border border-border bg-muted p-3 text-sm text-muted-foreground">
+                    Default role: <strong className="text-foreground">Donor / Investor</strong>
+                    <div className="text-xs mt-1">You can change this after signup from your profile.</div>
+                  </div>
+                )}
               </fieldset>
             )}
 
             {error && (
               <p className="text-sm text-destructive" role="alert">
                 {error}
+              </p>
+            )}
+
+            {success && (
+              <p className="text-sm text-success" role="status">
+                {success}
               </p>
             )}
 
