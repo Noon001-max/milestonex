@@ -61,6 +61,7 @@ export async function getProjectById(id: number) {
       fundedAmount: projects.fundedAmount,
       escrowBalance: projects.escrowBalance,
       releasedAmount: projects.releasedAmount,
+      allocationDone: projects.allocationDone,
       status: projects.status,
       createdAt: projects.createdAt,
       updatedAt: projects.updatedAt,
