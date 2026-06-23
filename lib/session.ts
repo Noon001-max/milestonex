@@ -7,7 +7,7 @@ export type Role =
   | "verifier"
   | "admin"
   | "auditor"
-  
+  | "suspended"
 
 export type SessionUser = {
   id: string

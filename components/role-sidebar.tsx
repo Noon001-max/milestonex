@@ -70,9 +70,12 @@ export default function RoleSidebar({
     ],
     auditor: [
       { id: "auditor", label: "Audit dashboard", href: "/dashboard/auditor" },
+      { id: "milestones", label: "Release funds", href: "/dashboard/auditor/milestones" },
+      { id: "released", label: "Released funds report", href: "/dashboard/auditor/released" },
       { id: "disputes", label: "Disputes", href: "/dashboard/disputes" },
     ],
     suspended: [
+      { id: "dashboard", label: "Account status", href: "/dashboard/suspended" },
       { id: "help", label: "Account help", href: "/support" },
     ],
   }

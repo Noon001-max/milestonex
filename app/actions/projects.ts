@@ -120,9 +120,9 @@ export async function getOwnerName(ownerId: string) {
   return rows[0]?.name ?? "Unknown"
 }
 
-// Release approved milestone funds from escrow (admin action)
+// Release approved milestone funds from escrow (auditor action)
 export async function releaseMilestoneFunds(milestoneId: number) {
-  const u = await requireRole(["admin"])
+  const u = await requireRole(["auditor"])
 
   const [m] = await db
     .select()
@@ -185,6 +185,47 @@ export async function releaseMilestoneFunds(milestoneId: number) {
   })
 
   revalidatePath(`/projects/${m.projectId}`)
-  revalidatePath("/dashboard/admin")
+  revalidatePath("/dashboard/auditor/milestones")
+  revalidatePath("/dashboard/auditor/released")
   revalidatePath("/dashboard/projects")
 }
+
+// Get approved milestones for auditor release
+export async function getApprovedMilestones() {
+  await requireRole(["auditor"])
+  return db
+    .select({
+      id: milestones.id,
+      title: milestones.title,
+      description: milestones.description,
+      amount: milestones.amount,
+      status: milestones.status,
+      projectId: milestones.projectId,
+      projectTitle: projects.title,
+      escrowBalance: projects.escrowBalance,
+    })
+    .from(milestones)
+    .innerJoin(projects, eq(projects.id, milestones.projectId))
+    .where(eq(milestones.status, "approved"))
+    .orderBy(desc(milestones.updatedAt))
+}
+
+// Get released funds history for auditor report
+export async function getReleasedFundsHistory() {
+  await requireRole(["auditor"])
+  return db
+    .select({
+      id: transactions.id,
+      milestoneId: transactions.milestoneId,
+      projectId: transactions.projectId,
+      amount: transactions.amount,
+      note: transactions.note,
+      createdAt: transactions.createdAt,
+      projectTitle: projects.title,
+      milestoneTitle: milestones.title,
+    })
+    .from(transactions)
+    .innerJoin(projects, eq(projects.id, transactions.projectId))
+    .leftJoin(milestones, eq(milestones.id, transactions.milestoneId))
+    .where(eq(transactions.type, "release"))
+    .orderBy(desc(transactions.createdAt))

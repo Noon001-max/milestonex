@@ -30,6 +30,11 @@ export const ROLES: {
     label: "Auditor / Partner",
     description: "Review escrow accounting, audits, and financial accountability.",
   },
+  {
+    value: "suspended",
+    label: "Suspended account",
+    description: "Limited access while your account is under review. Contact support for assistance.",
+  },
 ]
 
 export const ROLE_LABELS: Record<Role, string> = {
@@ -38,6 +43,7 @@ export const ROLE_LABELS: Record<Role, string> = {
   verifier: "Community Verifier",
   admin: "Administrator",
   auditor: "Auditor / Partner",
+  suspended: "Suspended account",
 }
 
 export function formatCurrency(amount: number): string {

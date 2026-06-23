@@ -33,6 +33,8 @@ export default async function DashboardPage() {
       redirect("/dashboard/admin")
     case "auditor":
       redirect("/dashboard/auditor")
+    case "suspended":
+      redirect("/dashboard/suspended")
     default:
       return (
         <div className="flex min-h-svh flex-col bg-background">
