@@ -50,13 +50,24 @@
 
 :root {
   color-scheme: light;
-  --background: oklch(0.985 0.006 95);
-  --foreground: oklch(0.24 0.02 160);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.24 0.02 160);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.24 0.02 160);
-  --primary: oklch(0.45 0.09 160);
+  --background: var(--app-background);
+  --foreground: var(--app-text);
+  --card: var(--app-surface);
+  --card-foreground: var(--app-text);
+  --popover: var(--app-surface);
+  --popover-foreground: var(--app-text);
+  --primary: var(--app-accent);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--app-secondary-surface);
+  --secondary-foreground: var(--app-text-secondary);
+  --muted: var(--app-secondary-surface);
+  --muted-foreground: var(--app-text-secondary);
+  --accent: var(--app-accent);
+  --accent-foreground: #FFFFFF;
+  --destructive: var(--app-error);
+  --border: var(--app-border);
+  --input: var(--app-border);
+  --ring: var(--app-accent);
     --sidebar-ring: oklch(0.45 0.09 160);
 
     /* App Color System - Light Theme */
@@ -72,16 +83,6 @@
     --app-accent-hover: #0B1F33;
     --app-success: #2E7D5B;
     --app-error: #C0392B;
-  --secondary: oklch(0.95 0.012 150);
-  --secondary-foreground: oklch(0.32 0.04 160);
-  --muted: oklch(0.95 0.008 120);
-  --muted-foreground: oklch(0.52 0.02 150);
-  --accent: oklch(0.8 0.12 85);
-  --accent-foreground: oklch(0.28 0.04 80);
-  --destructive: oklch(0.55 0.2 27);
-  --border: oklch(0.9 0.01 140);
-  --input: oklch(0.9 0.01 140);
-  --ring: oklch(0.45 0.09 160);
   --chart-1: oklch(0.45 0.09 160);
   --chart-2: oklch(0.8 0.12 85);
   --chart-3: oklch(0.6 0.07 200);
@@ -100,13 +101,24 @@
 
 .dark {
   color-scheme: dark;
-  --background: oklch(0.2 0.02 160);
-  --foreground: oklch(0.96 0.01 95);
-  --card: oklch(0.25 0.025 160);
-  --card-foreground: oklch(0.96 0.01 95);
-  --popover: oklch(0.25 0.025 160);
-  --popover-foreground: oklch(0.96 0.01 95);
-  --primary: oklch(0.7 0.12 160);
+  --background: var(--app-background);
+  --foreground: var(--app-text);
+  --card: var(--app-surface);
+  --card-foreground: var(--app-text);
+  --popover: var(--app-surface);
+  --popover-foreground: var(--app-text);
+  --primary: var(--app-accent);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--app-secondary-surface);
+  --secondary-foreground: var(--app-text-secondary);
+  --muted: var(--app-secondary-surface);
+  --muted-foreground: var(--app-text-secondary);
+  --accent: var(--app-accent);
+  --accent-foreground: #FFFFFF;
+  --destructive: var(--app-error);
+  --border: var(--app-border);
+  --input: var(--app-border);
+  --ring: var(--app-accent);
 
     /* App Color System - Dark Theme */
     --app-background: #000000;
@@ -121,17 +133,6 @@
     --app-accent-hover: #2563EB;
     --app-success: #22C55E;
     --app-error: #EF4444;
-  --primary-foreground: oklch(0.2 0.02 160);
-  --secondary: oklch(0.3 0.03 160);
-  --secondary-foreground: oklch(0.96 0.01 95);
-  --muted: oklch(0.3 0.02 160);
-  --muted-foreground: oklch(0.72 0.02 140);
-  --accent: oklch(0.8 0.12 85);
-  --accent-foreground: oklch(0.25 0.04 80);
-  --destructive: oklch(0.65 0.19 22);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.7 0.12 160);
   --chart-1: oklch(0.7 0.12 160);
   --chart-2: oklch(0.8 0.12 85);
   --chart-3: oklch(0.65 0.08 200);
@@ -150,24 +151,24 @@
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
     color-scheme: dark;
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
+    --background: var(--app-background);
+    --foreground: var(--app-text);
+    --card: var(--app-surface);
+    --card-foreground: var(--app-text);
+    --popover: var(--app-surface);
+    --popover-foreground: var(--app-text);
+    --primary: var(--app-accent);
+    --primary-foreground: #000000;
+    --secondary: var(--app-secondary-surface);
+    --secondary-foreground: var(--app-text-secondary);
+    --muted: var(--app-secondary-surface);
+    --muted-foreground: var(--app-text-secondary);
+    --accent: var(--app-accent);
+    --accent-foreground: #FFFFFF;
+    --destructive: var(--app-error);
+    --border: var(--app-border);
+    --input: var(--app-border);
+    --ring: var(--app-accent);
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);
