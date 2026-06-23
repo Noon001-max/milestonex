@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { getSession } from "@/lib/session"
 import { Card } from "@/components/ui/card"
 
