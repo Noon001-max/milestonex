@@ -33,14 +33,14 @@ export function SiteHeader({
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center px-4">
-        <div className="flex items-center">
+      <div className="mx-auto grid h-16 max-w-6xl grid-cols-[auto_1fr_auto] items-center px-4">
+        <div className="flex items-center min-w-[3rem]">
           {user ? (
             showMenuButton ? (
               <button
                 type="button"
                 onClick={onMenuClick}
-                className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-accent/50 md:hidden"
+                className="inline-flex items-center justify-center rounded-md p-2 text-foreground hover:bg-accent/50 md:hidden"
                 aria-label="Open menu"
               >
                 <Menu className="size-5" />
@@ -51,7 +51,7 @@ export function SiteHeader({
           )}
         </div>
 
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex items-center justify-center">
           {user ? (
             renderLogo()
           ) : (
@@ -80,7 +80,7 @@ export function SiteHeader({
           )}
         </div>
 
-        <div className="flex items-center gap-4 justify-end">
+        <div className="flex items-center gap-4 justify-end min-w-[10rem]">
           {user ? (
             (() => {
               const initials = user.name
