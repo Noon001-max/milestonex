@@ -12,6 +12,11 @@ export default async function EditProfilePage() {
     redirect("/sign-in")
   }
 
+  if (user.role === "suspended") {
+    // Suspended users may not edit their profile
+    redirect("/dashboard/profile")
+  }
+
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-3xl px-4 py-12">

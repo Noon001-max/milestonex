@@ -43,7 +43,7 @@ export default async function ProjectDetailPage({
       getOwnerName(project.ownerId),
     ])
 
-  const canFund = ["approved", "funding"].includes(project.status)
+  const canFund = ["approved", "funding", "started"].includes(project.status)
 
   return (
     <div className="flex min-h-svh flex-col bg-background">

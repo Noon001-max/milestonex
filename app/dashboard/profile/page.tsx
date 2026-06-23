@@ -50,10 +50,7 @@ export default async function ProfilePage() {
                   {initials}
                 </div>
               )}
-              <div>
-                <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                  Profile
-                </p>
+              <div>                
                 <h1 className="text-3xl font-semibold tracking-tight text-foreground">
                   My Profile
                 </h1>
@@ -66,18 +63,24 @@ export default async function ProfilePage() {
             </div>
 
             <div className="flex flex-col gap-3 sm:items-end">
-              <Link
-                href="/dashboard/profile/edit"
-                className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition hover:border-primary hover:text-primary"
-              >
-                Edit profile
-              </Link>
-              <Link
-                href="/dashboard/settings"
-                className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-              >
-                Account Settings
-              </Link>
+              {user.role !== "suspended" ? (
+                <>
+                  <Link
+                    href="/dashboard/profile/edit"
+                    className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition hover:border-primary hover:text-primary"
+                  >
+                    Edit profile
+                  </Link>
+                  <Link
+                    href="/dashboard/settings"
+                    className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                  >
+                    Account Settings
+                  </Link>
+                </>
+              ) : (
+                <div className="text-sm text-muted-foreground">Your account is suspended. Contact support for help.</div>
+              )}
               <LogoutButton className="w-full sm:w-auto" />
             </div>
           </div>

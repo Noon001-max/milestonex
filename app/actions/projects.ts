@@ -210,6 +210,113 @@ export async function getApprovedMilestones() {
     .orderBy(desc(milestones.updatedAt))
 }
 
+// Allocate milestone amounts when project first reaches start threshold (50% funded)
+export async function allocateMilestonesOnStart(projectId: number) {
+  // Fetch project and milestones
+  const [project, ms] = await Promise.all([
+    db.select().from(projects).where(eq(projects.id, projectId)).then((r) => r[0]),
+    db
+      .select()
+      .from(milestones)
+      .where(eq(milestones.projectId, projectId))
+      .orderBy(milestones.orderIndex),
+  ])
+  if (!project) throw new Error("Project not found")
+  if (!ms || ms.length === 0) return
+
+  // Idempotency: do nothing if allocation already ran
+  if (project.allocationDone) return
+
+  const goal = project.fundingGoal || 0
+  // startup allocation: 30% of funding goal
+  const startup = Math.round(goal * 0.3)
+  const remainingTotal = goal - startup
+
+  if (ms.length === 1) {
+    // single milestone gets the whole goal
+    await db
+      .update(milestones)
+      .set({ amount: goal, updatedAt: new Date() })
+      .where(eq(milestones.id, ms[0].id))
+    return
+  }
+
+  // update first milestone to startup amount
+  await db
+    .update(milestones)
+    .set({ amount: startup, updatedAt: new Date() })
+    .where(eq(milestones.id, ms[0].id))
+
+  // Auto-release the startup portion to the owner (deduct from escrow)
+  const releaseAmount = Math.min(startup, project.escrowBalance || 0)
+  if (releaseAmount > 0) {
+    // mark first milestone released
+    await db
+      .update(milestones)
+      .set({ status: "released", updatedAt: new Date() })
+      .where(eq(milestones.id, ms[0].id))
+
+    // update project escrow and released totals and mark allocation done + started
+    await db
+      .update(projects)
+      .set({
+        escrowBalance: (project.escrowBalance || 0) - releaseAmount,
+        releasedAmount: (project.releasedAmount || 0) + releaseAmount,
+        allocationDone: true,
+        status: "started",
+        updatedAt: new Date(),
+      })
+      .where(eq(projects.id, projectId))
+
+    // record transaction
+    await db.insert(transactions).values({
+      projectId,
+      milestoneId: ms[0].id,
+      type: "release",
+      amount: releaseAmount,
+      actorId: null,
+      note: `Initial startup release for milestone "${ms[0].title}"`,
+    })
+
+    // notify owner
+    try {
+      await notify({
+        userId: project.ownerId,
+        title: "Initial funds released",
+        body: `${releaseAmount} released to your project "${project.title}" to start work.`,
+        type: "fund_release",
+      })
+    } catch (err) {
+      // ignore notify errors
+    }
+
+    revalidatePath(`/projects/${projectId}`)
+    revalidatePath("/dashboard")
+    revalidatePath("/dashboard/projects")
+    revalidatePath("/dashboard/released-funds-report")
+  } else {
+    // ensure allocationDone flag is set even if nothing was released
+    await db
+      .update(projects)
+      .set({ allocationDone: true, status: "started", updatedAt: new Date() })
+      .where(eq(projects.id, projectId))
+  }
+
+  // distribute remaining equally among remaining milestones
+  const rest = ms.slice(1)
+  const per = Math.floor(remainingTotal / rest.length)
+  let remainder = remainingTotal - per * rest.length
+
+  for (const m of rest) {
+    const amt = per + (remainder > 0 ? 1 : 0)
+    if (remainder > 0) remainder -= 1
+    await db
+      .update(milestones)
+      .set({ amount: amt, updatedAt: new Date() })
+      .where(eq(milestones.id, m.id))
+  }
+}
+
 // Get released funds history for auditor report
 export async function getReleasedFundsHistory() {
   await requireRole(["auditor"])

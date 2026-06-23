@@ -1,11 +1,11 @@
 import { put } from "@vercel/blob"
 import { type NextRequest, NextResponse } from "next/server"
-import { requireUser } from "@/lib/session"
+import { requireActiveUser } from "@/lib/session"
 
 export async function POST(request: NextRequest) {
   try {
-    // Only authenticated users can upload
-    await requireUser()
+    // Only authenticated, non-suspended users can upload
+    await requireActiveUser()
 
     const formData = await request.formData()
     const file = formData.get("file") as File | null

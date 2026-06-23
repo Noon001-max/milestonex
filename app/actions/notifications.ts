@@ -36,6 +36,7 @@ export async function markNotificationRead(id: number) {
     .set({ read: true })
     .where(and(eq(notifications.id, id), eq(notifications.userId, u.id)))
   revalidatePath("/dashboard/notifications")
+  revalidatePath("/dashboard")
 }
 
 export async function markAllNotificationsRead() {
@@ -45,4 +46,5 @@ export async function markAllNotificationsRead() {
     .set({ read: true })
     .where(eq(notifications.userId, u.id))
   revalidatePath("/dashboard/notifications")
+  revalidatePath("/dashboard")
 }

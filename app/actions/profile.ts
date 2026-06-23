@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache"
 // Update the signed-in user's own profile (name + avatar image).
 // Scoped strictly to the session user id — a user can never edit another user's row.
 export async function updateProfile(formData: FormData) {
-  const current = await requireUser()
+  const current = await requireActiveUser()
 
   const name = (formData.get("name") as string | null)?.trim() ?? ""
   const image = ((formData.get("image") as string | null) ?? "").trim()

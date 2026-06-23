@@ -37,6 +37,14 @@ export async function requireUser(): Promise<SessionUser> {
   return user
 }
 
+export async function requireActiveUser(): Promise<SessionUser> {
+  const user = await requireUser()
+  if (user.role === "suspended") {
+    throw new Error("Forbidden: account suspended")
+  }
+  return user
+}
+
 export async function requireRole(roles: Role[]): Promise<SessionUser> {
   const user = await requireUser()
   if (!roles.includes(user.role)) {

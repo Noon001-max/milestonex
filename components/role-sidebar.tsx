@@ -76,7 +76,6 @@ export default function RoleSidebar({
     ],
     suspended: [
       { id: "dashboard", label: "Account status", href: "/dashboard/suspended" },
-      { id: "help", label: "Account help", href: "/support" },
     ],
   }
 
@@ -85,6 +84,10 @@ export default function RoleSidebar({
 
   const getItemClassName = (href: string) => {
     const isActive = pathname === href || pathname?.startsWith(`${href}/`)
+    if (user.role === "suspended") {
+      return `block px-3 py-2 rounded ${isActive ? "bg-destructive/10 text-destructive shadow-sm" : "text-destructive hover:bg-destructive/5"}`
+    }
+
     return `block px-3 py-2 rounded ${isActive ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-muted"}`
   }
 

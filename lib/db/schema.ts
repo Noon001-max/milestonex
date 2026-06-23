@@ -77,6 +77,7 @@ export const projects = pgTable("projects", {
   fundedAmount: integer("fundedAmount").notNull().default(0),
   escrowBalance: integer("escrowBalance").notNull().default(0),
   releasedAmount: integer("releasedAmount").notNull().default(0),
+  allocationDone: boolean("allocationDone").notNull().default(false),
   // pending | approved | rejected | funding | completed
   status: text("status").notNull().default("pending"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),

@@ -20,7 +20,7 @@ export async function contribute(
     .from(projects)
     .where(eq(projects.id, projectId))
   if (!project) throw new Error("Project not found")
-  if (!["approved", "funding"].includes(project.status)) {
+  if (!["approved", "funding", "started"].includes(project.status)) {
     throw new Error("This project is not currently accepting funds")
   }
 
@@ -72,6 +72,31 @@ export async function contribute(
     body: `${u.name} contributed ${amount} to "${project.title}".`,
     type: "donation",
   })
+
+  // After the contribution, check whether the project crossed the 50% funding threshold
+  const updatedProject = await db
+    .select()
+    .from(projects)
+    .where(eq(projects.id, projectId))
+    .then((r) => r[0])
+
+  const fundingGoal = updatedProject.fundingGoal || 0
+  const prevFunded = project.fundedAmount
+  const newFunded = updatedProject.fundedAmount
+  if (prevFunded < fundingGoal * 0.5 && newFunded >= fundingGoal * 0.5) {
+    // allocate milestone distribution on first reach of 50%
+    try {
+      const { allocateMilestonesOnStart } = await import("@/app/actions/projects")
+      await allocateMilestonesOnStart(projectId)
+      // mark project status as started
+      await db
+        .update(projects)
+        .set({ status: "started", updatedAt: new Date() })
+        .where(eq(projects.id, projectId))
+    } catch (err) {
+      console.error("Failed to allocate milestones on start:", err)
+    }
+  }
 
   revalidatePath(`/projects/${projectId}`)
   revalidatePath("/dashboard")

@@ -22,6 +22,19 @@ export default async function SettingsPage() {
     )
   }
 
+  if (user.role === "suspended") {
+    // Suspended users can only view their profile and notifications
+    return (
+      <div className="flex min-h-svh flex-col bg-background">
+        <main className="mx-auto w-full max-w-4xl px-4 py-12">
+          <p className="text-muted-foreground">
+            Your account is suspended. You can view your profile and notifications, but account settings are disabled. Please contact support for help.
+          </p>
+        </main>
+      </div>
+    )
+  }
+
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-4xl px-4 py-12">
