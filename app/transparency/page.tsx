@@ -16,12 +16,31 @@ import { StatusBadge } from "@/components/status-badge"
 export const dynamic = "force-dynamic"
 
 export default async function TransparencyPage() {
-  const [user, stats, projects, activity] = await Promise.all([
-    getSession(),
-    getPlatformStats(),
-    getPublicProjects(),
-    getRecentActivity(12),
-  ])
+  let user = null
+  let stats = {
+    totalProjects: 0,
+    totalRaised: 0,
+    totalEscrow: 0,
+    totalReleased: 0,
+    verifiedMilestones: 0,
+    totalMilestones: 0,
+  }
+  let projects: any[] = []
+  let activity: any[] = []
+
+  try {
+    ;[user, stats, projects, activity] = await Promise.all([
+      getSession(),
+      getPlatformStats(),
+      getPublicProjects(),
+      getRecentActivity(12),
+    ])
+  } catch (err) {
+    // If the DB isn't available during build/deploy, fall back to safe defaults
+    // and continue rendering a functional transparency page.
+    console.error("Transparency data load failed:", err)
+    user = await getSession()
+  }
 
   const cards = [
     {
