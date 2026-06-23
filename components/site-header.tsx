@@ -15,16 +15,7 @@ export function SiteHeader({
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center px-4">
-        {/* Left: signed-in menu icon */}
-        {user ? (
-          <button
-            type="button"
-            className="mr-4 inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-muted transition-colors"
-            aria-label="Open menu"
-          >
-            <Menu className="size-5" />
-          </button>
-        ) : null}
+        {/* Left: signed-in menu icon is handled by the role sidebar component on dashboard pages */}
 
         {/* Center: logo and navigation (left-aligned when logged out) */}
         <div className={`flex-1 flex items-center ${user ? "justify-center" : "justify-start"}`}>

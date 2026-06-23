@@ -1,7 +1,6 @@
 import React from "react"
 import { getSession } from "@/lib/session"
 import { SiteHeader } from "@/components/site-header"
-import RoleSidebar from "@/components/role-sidebar"
 
 export const dynamic = "force-dynamic"
 
@@ -13,8 +12,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <SiteHeader user={user} hideNavigation={true} />
 
       <div className="flex w-full">
-        {user ? <RoleSidebar user={user} /> : null}
-        <main className="flex-1 md:pl-72">{children}</main>
+        {/* Page-level layouts should render their own sidebars (admin/verify/etc.) */}
+        <main className="flex-1">{children}</main>
       </div>
     </div>
   )
