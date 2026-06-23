@@ -156,6 +156,8 @@ export function NewProjectForm() {
         </div>
       </Card>
 
+      </div>
+
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
       <div className="mt-4 flex items-center gap-3">
