@@ -1,16 +1,10 @@
 import Link from "next/link"
 import Image from "next/image"
-import { MoreHorizontal } from "lucide-react"
+// menu icon is rendered inside the client `QuickActionsMenu` component
 import type { SessionUser } from "@/lib/session"
 import { UserProfileMenu } from "@/components/user-profile-menu"
 import { NotificationsPopover } from "@/components/notifications-popover"
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu"
+import QuickActionsMenu from "@/components/quick-actions-menu"
 
 export function SiteHeader({ 
   user, 
@@ -26,32 +20,11 @@ export function SiteHeader({
       <div className="mx-auto flex h-16 max-w-6xl items-center px-4">
         {/* Left: quick actions menu (shows when logged in) */}
         <div className="flex items-center w-12">
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  aria-label="Quick actions"
-                  className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-accent/50"
-                >
-                  <MoreHorizontal className="size-5" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="bottom" align="start">
-                <DropdownMenuLabel>Quick actions</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <a href="/projects/new">New project</a>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <a href="/projects">My projects</a>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <a href="/dashboard">Dashboard</a>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <div />
-          )}
+                  {user ? (
+                    <QuickActionsMenu user={user} />
+                  ) : (
+                    <div />
+                  )}
         </div>
 
         {/* Center: logo and navigation */}
