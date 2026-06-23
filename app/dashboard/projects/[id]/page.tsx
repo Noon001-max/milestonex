@@ -1,15 +1,13 @@
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowLeft } from "lucide-react"
 import { getSession } from "@/lib/session"
-import { getMyProjects } from "@/app/actions/projects"
 import { getProjectById, getProjectMilestones } from "@/lib/queries"
 import { SiteHeader } from "@/components/site-header"
 import { Card } from "@/components/ui/card"
 import { formatCurrency } from "@/lib/roles"
 import { StatusBadge } from "@/components/status-badge"
-import { submitMilestoneEvidence } from "@/app/actions/milestones"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
+import { EvidenceForm } from "@/components/evidence-form"
 
 export const dynamic = "force-dynamic"
 
@@ -91,33 +89,42 @@ export default async function ProjectManagePage({
                     <StatusBadge status={m.status} />
                   </div>
 
-                  {m.status === "pending" && (
-                    <form action={submitEvidenceForm} className="mt-4 space-y-3">
-                      <input type="hidden" name="milestoneId" value={m.id} />
-                      <div>
-                        <Label htmlFor={`evidenceNote-${m.id}`}>Evidence note</Label>
-                        <Textarea
-                          id={`evidenceNote-${m.id}`}
-                          name="evidenceNote"
-                          rows={3}
-                          placeholder="Describe what was accomplished, provide photo/video links"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor={`evidenceUrls-${m.id}`}>Evidence URLs</Label>
-                        <Textarea
-                          id={`evidenceUrls-${m.id}`}
-                          name="evidenceUrls"
-                          placeholder="https://drive.google.com/..."
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="inline-flex items-center justify-center rounded-lg bg-primary px-3 py-1 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-                      >
-                        Submit for verification
-                      </button>
-                    </form>
+                  {m.status === "pending" && <EvidenceForm milestoneId={m.id} />}
+
+                  {m.status !== "pending" && (m.evidenceNote || m.evidenceUrls) && (
+                    <div className="mt-4 space-y-3 border-t border-border pt-4">
+                      <p className="text-sm font-medium text-foreground">Submitted proof</p>
+                      {m.evidenceNote ? (
+                        <p className="text-sm leading-relaxed text-muted-foreground">
+                          {m.evidenceNote}
+                        </p>
+                      ) : null}
+                      {m.evidenceUrls ? (
+                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                          {m.evidenceUrls
+                            .split(/\s*[\n,]\s*/)
+                            .map((u) => u.trim())
+                            .filter(Boolean)
+                            .map((url) => (
+                              <a
+                                key={url}
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="overflow-hidden rounded-lg border border-input"
+                              >
+                                <Image
+                                  src={url || "/placeholder.svg"}
+                                  alt="Milestone proof"
+                                  width={400}
+                                  height={300}
+                                  className="h-28 w-full object-cover"
+                                />
+                              </a>
+                            ))}
+                        </div>
+                      ) : null}
+                    </div>
                   )}
                 </Card>
               ))}
@@ -131,12 +138,4 @@ export default async function ProjectManagePage({
       </main>
     </div>
   )
-}
-
-async function submitEvidenceForm(formData: FormData) {
-  "use server"
-  const milestoneId = Number(formData.get("milestoneId"))
-  const evidenceNote = formData.get("evidenceNote") as string
-  const evidenceUrls = formData.get("evidenceUrls") as string
-  await submitMilestoneEvidence(milestoneId, evidenceNote, evidenceUrls)
 }
