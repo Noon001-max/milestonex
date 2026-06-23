@@ -1,7 +1,6 @@
-import Link from "next/link"
-import { ArrowLeft, Bell } from "lucide-react"
+import { Bell } from "lucide-react"
 import { getSession } from "@/lib/session"
-import { getMyNotifications } from "@/app/actions/notifications"
+import { getMyNotifications, markAllNotificationsRead } from "@/app/actions/notifications"
 import { Card } from "@/components/ui/card"
 
 export const dynamic = "force-dynamic"
@@ -9,14 +8,30 @@ export const dynamic = "force-dynamic"
 export default async function NotificationsPage() {
   const user = await getSession()
   const notifications = await getMyNotifications()
+  const hasUnread = notifications.some((n) => !n.read)
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-4xl px-4 py-12">
-        <div className="mb-6">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-            Notifications
-          </h1>
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+              Notifications
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Your recent alerts and activity updates.
+            </p>
+          </div>
+          {hasUnread && (
+            <form action={markAllNotificationsRead} className="self-start">
+              <button
+                type="submit"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+              >
+                Mark all as read
+              </button>
+            </form>
+          )}
         </div>
 
         {notifications.length > 0 ? (

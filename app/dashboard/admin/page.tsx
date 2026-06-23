@@ -5,6 +5,7 @@ import { redirect } from "next/navigation"
 import { getAllProjects } from "@/lib/queries"
 import { getAllUsers } from "@/app/actions/admin"
 import { getAllDisputes } from "@/app/actions/disputes"
+import { getAdminMilestoneQueue } from "@/app/actions/milestones"
 import { Card } from "@/components/ui/card"
 
 export const dynamic = "force-dynamic"
@@ -14,14 +15,16 @@ export default async function AdminDashboard() {
   if (!user) return redirect("/sign-in")
   if (user.role !== "admin") return redirect("/dashboard")
 
-  const [projects, allUsers, disputes] = await Promise.all([
+  const [projects, allUsers, disputes, milestones] = await Promise.all([
     getAllProjects(),
     getAllUsers(),
     getAllDisputes(),
+    getAdminMilestoneQueue(),
   ])
 
   const pendingProjects = projects.filter((project) => project.status === "pending")
   const openDisputes = disputes.filter((dispute) => dispute.status === "open")
+  const pendingMilestones = milestones.length
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
@@ -66,6 +69,17 @@ export default async function AdminDashboard() {
             <p className="mt-3 text-2xl font-semibold text-foreground">{openDisputes.length}</p>
             <Link href="/dashboard/admin/disputes" className="mt-4 inline-flex text-sm font-medium text-primary hover:underline">
               Review disputes
+            </Link>
+          </Card>
+
+          <Card className="p-4">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <ArrowLeft className="size-4" />
+              <span>Milestone approvals</span>
+            </div>
+            <p className="mt-3 text-2xl font-semibold text-foreground">{pendingMilestones}</p>
+            <Link href="/dashboard/admin/milestones" className="mt-4 inline-flex text-sm font-medium text-primary hover:underline">
+              Review milestones
             </Link>
           </Card>
         </div>

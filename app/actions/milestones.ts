@@ -140,6 +140,26 @@ export async function decideMilestone(
   revalidatePath("/dashboard/projects")
 }
 
+export async function getAdminMilestoneQueue() {
+  await requireRole(["admin"])
+  return db
+    .select({
+      id: milestones.id,
+      title: milestones.title,
+      description: milestones.description,
+      amount: milestones.amount,
+      status: milestones.status,
+      evidenceNote: milestones.evidenceNote,
+      evidenceUrls: milestones.evidenceUrls,
+      submittedAt: milestones.submittedAt,
+      projectId: milestones.projectId,
+      projectTitle: projects.title,
+    })
+    .from(milestones)
+    .innerJoin(projects, eq(projects.id, milestones.projectId))
+    .where(eq(milestones.status, "verifying"))
+}
+
 // Milestones awaiting verification (for verifier queue)
 export async function getVerificationQueue() {
   await requireRole(["verifier", "admin"])
