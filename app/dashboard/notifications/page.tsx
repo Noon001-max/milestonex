@@ -16,10 +16,6 @@ export default async function NotificationsPage() {
       <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-4xl px-4 py-12">
         <div className="mb-6">
-          <a href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-4">
-            <ArrowLeft className="size-4" />
-            Dashboard
-          </a>
           <h1 className="text-3xl font-semibold tracking-tight text-foreground">
             Notifications
           </h1>

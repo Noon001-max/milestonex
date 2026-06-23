@@ -15,7 +15,6 @@ export default async function DashboardPage() {
   if (!user) {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={null} />
         <main className="mx-auto w-full max-w-6xl px-4 py-16">
           <p className="text-muted-foreground">
             <Link href="/sign-in" className="text-primary hover:underline">

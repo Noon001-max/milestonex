@@ -37,42 +37,46 @@ export default async function ProfilePage() {
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <SiteHeader user={user} hideNavigation={true} />
-      <main className="mx-auto w-full max-w-4xl px-4 py-12">
-        <div className="mb-6 flex items-center justify-between">
+      <main className="mx-auto w-full max-w-3xl px-4 py-12">
+        <div className="mb-6 flex flex-col gap-4 rounded-3xl border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+              Profile
+            </p>
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
               My Profile
             </h1>
           </div>
-          <a href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="size-4 inline mr-1" />
-            Dashboard
-          </a>
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition hover:border-primary hover:text-primary"
+          >
+            <ArrowLeft className="size-4" />
+            Back to dashboard
+          </Link>
         </div>
 
         <Card className="p-6 mb-6">
-          <div className="flex items-start gap-6">
+          <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-center">
             {user.image ? (
               <Image
                 src={user.image || "/placeholder.svg"}
                 alt={`${user.name}'s profile photo`}
-                width={80}
-                height={80}
-                className="size-20 rounded-full object-cover"
+                width={96}
+                height={96}
+                className="h-24 w-24 rounded-full object-cover"
               />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold">
+              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary text-primary-foreground text-3xl font-bold">
                 {initials}
               </div>
             )}
-            <div>
+            <div className="flex-1 text-center sm:text-left">
               <h2 className="text-2xl font-semibold text-foreground">{user.name}</h2>
-              <p className="text-muted-foreground mt-1">{user.email}</p>
-              <div className="mt-3 flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Role:</span>
-                <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium capitalize">
-                  {ROLE_LABELS[user.role] || user.role}
-                </span>
+              <p className="mt-1 text-muted-foreground">{user.email}</p>
+              <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary capitalize">
+                <span>Role:</span>
+                <span>{ROLE_LABELS[user.role] || user.role}</span>
               </div>
             </div>
           </div>
