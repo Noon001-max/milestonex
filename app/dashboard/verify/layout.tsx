@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation"
 import { getSession } from "@/lib/session"
-import DashboardShell from "@/components/dashboard-shell"
 
 export const dynamic = "force-dynamic"
 
@@ -9,5 +8,5 @@ export default async function VerifyLayout({ children }: { children: React.React
   if (!user) return redirect("/sign-in")
   if (user.role !== "verifier") return redirect("/dashboard")
 
-  return <DashboardShell user={user}>{children}</DashboardShell>
+  return <>{children}</>
 }
