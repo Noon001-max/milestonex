@@ -67,10 +67,10 @@ export default function RoleSidebar({
       { id: "approve-projects", label: "Approve projects", href: "/dashboard/admin/projects" },
       { id: "approve-milestones", label: "Approve milestones", href: "/dashboard/admin/milestones" },
       { id: "users", label: "Manage users", href: "/dashboard/admin/users" },
-      { id: "disputes", label: "Disputes", href: "/dashboard/admin/disputes" },
     ],
     auditor: [
       { id: "auditor", label: "Audit dashboard", href: "/dashboard/auditor" },
+      { id: "disputes", label: "Disputes", href: "/dashboard/disputes" },
     ],
     suspended: [
       { id: "help", label: "Account help", href: "/support" },

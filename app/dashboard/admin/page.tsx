@@ -1,10 +1,9 @@
 ﻿import Link from "next/link"
-import { ArrowLeft, FileText, Users, AlertCircle } from "lucide-react"
+import { ArrowLeft, FileText, Users } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { getAllProjects } from "@/lib/queries"
 import { getAllUsers } from "@/app/actions/admin"
-import { getAllDisputes } from "@/app/actions/disputes"
 import { getAdminMilestoneQueue } from "@/app/actions/milestones"
 import { Card } from "@/components/ui/card"
 
@@ -15,15 +14,13 @@ export default async function AdminDashboard() {
   if (!user) return redirect("/sign-in")
   if (user.role !== "admin") return redirect("/dashboard")
 
-  const [projects, allUsers, disputes, milestones] = await Promise.all([
+  const [projects, allUsers, milestones] = await Promise.all([
     getAllProjects(),
     getAllUsers(),
-    getAllDisputes(),
     getAdminMilestoneQueue(),
   ])
 
   const pendingProjects = projects.filter((project) => project.status === "pending")
-  const openDisputes = disputes.filter((dispute) => dispute.status === "open")
   const pendingMilestones = milestones.length
 
   return (
@@ -34,7 +31,7 @@ export default async function AdminDashboard() {
             Admin overview
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            Review administrator metrics and navigate to Projects, Users, or Disputes management from the sidebar or links below.
+            Review administrator metrics and navigate to Projects, Users, and Milestone approvals from the sidebar or links below.
           </p>
         </div>
 
@@ -58,17 +55,6 @@ export default async function AdminDashboard() {
             <p className="mt-3 text-2xl font-semibold text-foreground">{allUsers.length}</p>
             <Link href="/dashboard/admin/users" className="mt-4 inline-flex text-sm font-medium text-primary hover:underline">
               Manage users
-            </Link>
-          </Card>
-
-          <Card className="p-4">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <AlertCircle className="size-4" />
-              <span>Open disputes</span>
-            </div>
-            <p className="mt-3 text-2xl font-semibold text-foreground">{openDisputes.length}</p>
-            <Link href="/dashboard/admin/disputes" className="mt-4 inline-flex text-sm font-medium text-primary hover:underline">
-              Review disputes
             </Link>
           </Card>
 

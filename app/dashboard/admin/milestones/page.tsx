@@ -48,7 +48,9 @@ export default async function AdminMilestonesPage() {
 
                   <div className="flex flex-col gap-3 sm:text-right">
                     <p className="text-sm text-muted-foreground">Submitted at</p>
-                    <p className="text-sm font-medium text-foreground">{new Date(m.submittedAt).toLocaleString()}</p>
+                    <p className="text-sm font-medium text-foreground">
+                      {m.submittedAt ? new Date(m.submittedAt).toLocaleString() : "Pending"}
+                    </p>
                   </div>
                 </div>
 

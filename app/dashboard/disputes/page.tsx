@@ -1,5 +1,5 @@
-import Link from "next/link"
-import { ArrowLeft, AlertCircle } from "lucide-react"
+import { redirect } from "next/navigation"
+import { AlertCircle } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { getAllDisputes, updateDispute } from "@/app/actions/disputes"
 import { Card } from "@/components/ui/card"
@@ -11,6 +11,9 @@ export const dynamic = "force-dynamic"
 
 export default async function DisputesPage() {
   const user = await getSession()
+  if (!user) return redirect("/sign-in")
+  if (user.role !== "auditor") return redirect("/dashboard")
+
   const disputes = await getAllDisputes()
 
   return (

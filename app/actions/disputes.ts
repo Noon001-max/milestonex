@@ -29,7 +29,7 @@ export async function raiseDispute(
 }
 
 export async function getAllDisputes() {
-  await requireRole(["admin", "auditor"])
+  await requireRole(["auditor"])
   return db
     .select({
       id: disputes.id,
@@ -52,7 +52,7 @@ export async function updateDispute(
   status: "investigating" | "resolved",
   resolution: string,
 ) {
-  await requireRole(["admin"])
+  await requireRole(["auditor"])
 
   const [d] = await db
     .update(disputes)
