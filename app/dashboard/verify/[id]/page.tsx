@@ -24,7 +24,7 @@ export default async function VerifyMilestonePage({
   if (!user || !["verifier", "admin"].includes(user.role)) {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={user} />
+        <SiteHeader user={user} hideNavigation={true} />
         <main className="mx-auto w-full max-w-6xl px-4 py-16">
           <p className="text-muted-foreground">
             Access denied. Verifier or admin role required.
@@ -43,7 +43,7 @@ export default async function VerifyMilestonePage({
   if (!milestone) {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={user} />
+        <SiteHeader user={user} hideNavigation={true} />
         <main className="mx-auto w-full max-w-6xl px-4 py-16">
           <p className="text-muted-foreground">Milestone not found.</p>
         </main>
@@ -55,7 +55,7 @@ export default async function VerifyMilestonePage({
   if (!project) {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={user} />
+        <SiteHeader user={user} hideNavigation={true} />
         <main className="mx-auto w-full max-w-6xl px-4 py-16">
           <p className="text-muted-foreground">Project not found.</p>
         </main>
@@ -65,7 +65,7 @@ export default async function VerifyMilestonePage({
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} />
+      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-3xl px-4 py-12">
         <div className="mb-6">
           <a href="/dashboard/verify" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-4">

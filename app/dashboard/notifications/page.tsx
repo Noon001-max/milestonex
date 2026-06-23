@@ -13,7 +13,7 @@ export default async function NotificationsPage() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} />
+      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-4xl px-4 py-12">
         <div className="mb-6">
           <a href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-4">

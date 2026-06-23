@@ -74,7 +74,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} />
+      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
         <div className="mb-8">
           <h1 className="text-3xl font-semibold tracking-tight text-foreground">

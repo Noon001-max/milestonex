@@ -12,7 +12,7 @@ export default async function NewProjectPage() {
   if (!user || user.role !== "owner") {
     return (
       <div className="flex min-h-svh flex-col bg-background">
-        <SiteHeader user={user} />
+        <SiteHeader user={user} hideNavigation={true} />
         <main className="mx-auto w-full max-w-3xl px-4 py-12">
           <p className="text-muted-foreground">
             Only project owners can submit projects. Please contact an administrator if you need to change your role.
@@ -24,7 +24,7 @@ export default async function NewProjectPage() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} />
+      <SiteHeader user={user} hideNavigation={true} />
       <main className="mx-auto w-full max-w-3xl px-4 py-12">
         <div className="mb-4">
           <a

@@ -2,14 +2,16 @@ import Link from "next/link"
 import { ShieldCheck, Bell } from "lucide-react"
 import type { SessionUser } from "@/lib/session"
 import { UserProfileMenu } from "@/components/user-profile-menu"
-import { getUnreadNotificationsCount } from "@/app/actions/notifications"
 
-export async function SiteHeader({ user }: { user: SessionUser | null }) {
-  let unreadCount = 0
-  if (user) {
-    unreadCount = await getUnreadNotificationsCount()
-  }
-
+export function SiteHeader({ 
+  user, 
+  unreadCount = 0,
+  hideNavigation = false 
+}: { 
+  user: SessionUser | null
+  unreadCount?: number
+  hideNavigation?: boolean
+}) {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
@@ -22,41 +24,44 @@ export async function SiteHeader({ user }: { user: SessionUser | null }) {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-6 text-sm md:flex">
-          <a
-            href="/projects"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Projects
-          </a>
-          <a
-            href="/transparency"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Transparency
-          </a>
-          <a
-            href="/#how-it-works"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            How it works
-          </a>
-        </nav>
+        {!hideNavigation && (
+          <nav className="hidden items-center gap-6 text-sm md:flex">
+            <a
+              href="/projects"
+              className="text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Projects
+            </a>
+            <a
+              href="/transparency"
+              className="text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Transparency
+            </a>
+            <a
+              href="/#how-it-works"
+              className="text-muted-foreground transition-colors hover:text-foreground"
+            >
+              How it works
+            </a>
+          </nav>
+        )}
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 ml-auto">
           {user ? (
             <div className="flex items-center gap-2">
-              <Link
-                href="/dashboard"
-                className="hidden md:inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-3 py-1 text-sm font-medium text-primary-foreground hover:bg-primary/90 relative"
-              >
-                Dashboard
-                {unreadCount > 0 && (
-                  <span className="absolute -top-2 -right-2 flex size-5 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-xs font-bold">
+              {unreadCount > 0 && (
+                <Link
+                  href="/dashboard/notifications"
+                  className="relative p-2 rounded-lg hover:bg-muted transition-colors"
+                  title="Notifications"
+                >
+                  <Bell className="size-5 text-muted-foreground" />
+                  <span className="absolute top-1 right-1 flex size-4 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-xs font-bold">
                     {unreadCount > 99 ? "99+" : unreadCount}
                   </span>
-                )}
-              </Link>
+                </Link>
+              )}
               <UserProfileMenu user={user} />
             </div>
           ) : (
