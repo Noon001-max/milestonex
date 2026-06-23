@@ -4,6 +4,7 @@ import React from "react"
 import Link from "next/link"
 import { Menu, X } from "lucide-react"
 import type { SessionUser } from "@/lib/session"
+import { ROLE_LABELS } from "@/lib/roles"
 
 type Item = {
   id: string
@@ -21,7 +22,7 @@ export default function RoleSidebar({ user, overrides }: { user: SessionUser; ov
     ],
     owner: [
       { id: "my-projects", label: "My projects", href: "/dashboard/projects" },
-      { id: "new-project", label: "Create project", href: "/projects/new" },
+      { id: "new-project", label: "Create project", href: "/dashboard/projects/new" },
     ],
     verifier: [
       { id: "queue", label: "Verification queue", href: "/dashboard/verify" },
@@ -34,7 +35,7 @@ export default function RoleSidebar({ user, overrides }: { user: SessionUser; ov
       { id: "disputes", label: "Disputes", href: "/dashboard/admin/disputes" },
     ],
     auditor: [
-      { id: "auditor", label: "Auditor view", href: "/dashboard/auditor" },
+      { id: "auditor", label: "Audit dashboard", href: "/dashboard/auditor" },
     ],
     suspended: [
       { id: "help", label: "Account help", href: "/support" },
@@ -47,7 +48,7 @@ export default function RoleSidebar({ user, overrides }: { user: SessionUser; ov
     <>
       {/* Sidebar for md+ */}
       <aside className="hidden md:flex flex-col w-72 h-screen fixed left-0 top-16 p-4 border-r border-sidebar-border bg-popover z-30">
-        <h3 className="text-lg font-medium capitalize">{user.role}</h3>
+        <h3 className="text-lg font-medium">{ROLE_LABELS[user.role] || user.role}</h3>
         <nav className="mt-4 flex-1 flex flex-col gap-2">
           {items.map((it) => (
             <Link key={it.id} href={it.href} className="block px-3 py-2 rounded hover:bg-muted">
@@ -70,7 +71,7 @@ export default function RoleSidebar({ user, overrides }: { user: SessionUser; ov
         <div className="fixed inset-0 z-50 flex">
           <div className="w-72 max-w-full bg-popover p-4 border-r border-sidebar-border h-screen">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium capitalize">{user.role}</h3>
+              <h3 className="text-lg font-medium">{ROLE_LABELS[user.role] || user.role}</h3>
               <button onClick={() => setOpen(false)} className="p-2 rounded-md text-muted-foreground hover:bg-accent/50">
                 <X />
               </button>

@@ -3,7 +3,7 @@ import { getMyDonations } from "@/app/actions/donations"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
-import { formatCurrency } from "@/lib/roles"
+import { formatCurrency, ROLE_LABELS } from "@/lib/roles"
 import { Users, FileText, CheckCircle2, AlertCircle, FileSearch } from "lucide-react"
 import { StatusBadge } from "@/components/status-badge"
 
@@ -28,48 +28,6 @@ export default async function DashboardPage() {
 
   const donations = await getMyDonations()
 
-  const roleCards = [
-    {
-      role: "donor",
-      label: "Support projects",
-      href: "/dashboard/donations",
-      icon: Users,
-      desc: "Browse and fund community projects",
-    },
-    {
-      role: "owner",
-      label: "My projects",
-      href: "/dashboard/projects",
-      icon: FileText,
-      desc: "Submit and manage your projects",
-    },
-    {
-      role: "verifier",
-      label: "Verify milestones",
-      href: "/dashboard/verify",
-      icon: CheckCircle2,
-      desc: "Review and verify submitted evidence",
-    },
-    {
-      role: "admin",
-      label: "Admin panel",
-      href: "/dashboard/admin",
-      icon: AlertCircle,
-      desc: "Approve projects, manage disputes",
-    },
-    {
-      role: "auditor",
-      label: "Auditor view",
-      href: "/dashboard/auditor",
-      icon: FileSearch,
-      desc: "Review financial and audit reports",
-    },
-  ]
-
-  const availableLinks = roleCards.filter(
-    (c) => c.role === user.role || user.role === "admin",
-  )
-
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
@@ -79,8 +37,8 @@ export default async function DashboardPage() {
           </h1>
           <p className="mt-1 text-muted-foreground">
             Role:{" "}
-            <Badge variant="secondary" className="capitalize">
-              {user.role}
+            <Badge variant="secondary">
+              {ROLE_LABELS[user.role] || user.role}
             </Badge>
           </p>
         </div>
@@ -121,24 +79,14 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid gap-4">
-          <h2 className="text-lg font-semibold text-foreground">
-            Quick actions
-          </h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {availableLinks.map((c) => (
-              <a
-                key={c.role}
-                href={c.href}
-                className="flex h-auto justify-start gap-3 rounded-lg border border-border p-4 hover:bg-muted"
-              >
-                <c.icon className="size-5 text-primary" />
-                <div>
-                  <p className="font-medium text-foreground">{c.label}</p>
-                  <p className="text-xs text-muted-foreground">{c.desc}</p>
-                </div>
-              </a>
-            ))}
-          </div>
+          <Card className="p-6">
+            <h2 className="text-lg font-semibold text-foreground">
+              Use the sidebar to access your role dashboard
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Navigation for your current role is available on the left. The dashboard content here shows your recent contributions and summary information.
+            </p>
+          </Card>
         </div>
       </main>
     </div>

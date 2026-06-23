@@ -8,27 +8,27 @@ export const ROLES: {
   {
     value: "donor",
     label: "Donor / Investor",
-    description: "Fund projects, track progress, and vote on milestones.",
+    description: "Fund projects, follow milestone progress, and keep funds accountable.",
   },
   {
     value: "owner",
     label: "Project Owner",
-    description: "Submit projects, define milestones, and request fund release.",
+    description: "Submit projects, define milestones, and request escrow releases.",
   },
   {
     value: "verifier",
     label: "Community Verifier",
-    description: "Inspect progress and submit milestone verification reports.",
+    description: "Inspect work, verify milestone evidence, and submit verification reports.",
   },
   {
     value: "admin",
     label: "Administrator",
-    description: "Approve projects, manage users, and resolve disputes.",
+    description: "Approve projects, manage disputes, and enforce platform policy.",
   },
   {
     value: "auditor",
     label: "Auditor / Partner",
-    description: "Review financial records and accountability reports.",
+    description: "Review escrow accounting, audits, and financial accountability.",
   },
 ]
 
