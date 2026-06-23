@@ -89,9 +89,19 @@ export function SiteHeader({
                     className="flex items-center gap-2 rounded-full p-1 hover:bg-muted transition-colors"
                     aria-label="Profile"
                   >
-                    <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold">
-                      {initials}
-                    </div>
+                    {user.image ? (
+                      <Image
+                        src={user.image}
+                        alt={`${user.name}'s avatar`}
+                        width={32}
+                        height={32}
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold">
+                        {initials}
+                      </div>
+                    )}
                   </Link>
                 </div>
               )
