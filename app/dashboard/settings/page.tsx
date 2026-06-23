@@ -1,5 +1,3 @@
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { Card } from "@/components/ui/card"
 
@@ -26,16 +24,10 @@ export default async function SettingsPage() {
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-4xl px-4 py-12">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
+<div className="mb-6">
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
               Account Settings
             </h1>
-          </div>
-          <a href="/dashboard/profile" className="text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="size-4 inline mr-1" />
-            Back to Profile
-          </a>
         </div>
 
         <div className="space-y-6">

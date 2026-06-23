@@ -1,5 +1,4 @@
-import Link from "next/link"
-import { ArrowLeft, CheckCircle2 } from "lucide-react"
+import { CheckCircle2 } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { getCompletedVerifications } from "@/app/actions/milestones"
@@ -21,10 +20,6 @@ export default async function CompletedVerificationsPage() {
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
         <div className="mb-6">
-          <a href="/dashboard/verify" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-4">
-            <ArrowLeft className="size-4" />
-            Verification queue
-          </a>
           <h1 className="text-3xl font-semibold tracking-tight text-foreground">
             Completed verifications
           </h1>

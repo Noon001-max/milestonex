@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { ProfileForm } from "@/components/profile-form"
@@ -28,12 +27,6 @@ export default async function EditProfilePage() {
               Update your name and avatar. Email changes are managed through account settings.
             </p>
           </div>
-          <Link
-            href="/dashboard/profile"
-            className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:border-primary hover:text-primary"
-          >
-            Back to profile
-          </Link>
         </div>
 
         <Card className="p-0">

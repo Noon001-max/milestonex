@@ -81,7 +81,7 @@ export default function RoleSidebar({
 
   const getItemClassName = (href: string) => {
     const isActive = pathname === href || pathname?.startsWith(`${href}/`)
-    return `block px-3 py-2 rounded ${isActive ? "bg-muted text-foreground font-semibold" : "hover:bg-muted"}`
+    return `block px-3 py-2 rounded ${isActive ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-muted"}`
   }
 
   return (

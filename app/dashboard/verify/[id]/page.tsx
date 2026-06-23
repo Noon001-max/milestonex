@@ -1,6 +1,5 @@
-import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, CheckCircle2, XCircle } from "lucide-react"
+import { CheckCircle2, XCircle } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { getProjectById, getProjectMilestones } from "@/lib/queries"
 import { submitVerification } from "@/app/actions/milestones"
@@ -64,10 +63,6 @@ export default async function VerifyMilestonePage({
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-3xl px-4 py-12">
         <div className="mb-6">
-          <a href="/dashboard/verify" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-4">
-            <ArrowLeft className="size-4" />
-            Verification queue
-          </a>
           <h1 className="text-3xl font-semibold tracking-tight text-foreground mb-2">
             Milestone verification
           </h1>

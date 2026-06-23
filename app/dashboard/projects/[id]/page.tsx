@@ -1,6 +1,5 @@
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { getProjectById, getProjectMilestones } from "@/lib/queries"
 import { Card } from "@/components/ui/card"
@@ -53,10 +52,6 @@ export default async function ProjectManagePage({
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
         <div className="mb-6">
-          <a href="/dashboard/projects" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-4">
-            <ArrowLeft className="size-4" />
-            My projects
-          </a>
           <h1 className="text-3xl font-semibold tracking-tight text-foreground">
             {project.title}
           </h1>
