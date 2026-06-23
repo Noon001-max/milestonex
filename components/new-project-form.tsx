@@ -30,6 +30,14 @@ export function NewProjectForm() {
   const [category, setCategory] = React.useState<string>("community")
   const [submitting, setSubmitting] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
+  const [preview, setPreview] = React.useState({
+    title: "",
+    summary: "",
+    description: "",
+    category: "community",
+    location: "",
+    milestones: [{ title: "", amount: "", description: "" }, { title: "", amount: "", description: "" }, { title: "", amount: "", description: "" }],
+  })
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -48,12 +56,27 @@ export function NewProjectForm() {
     }
   }
 
+  function updateField<K extends keyof typeof preview>(key: K, value: any) {
+    setPreview((p) => ({ ...p, [key]: value }))
+  }
+
+  function updateMilestone(index: number, field: string, value: string) {
+    setPreview((p) => {
+      const ms = [...p.milestones]
+      ms[index] = { ...ms[index], [field]: value }
+      return { ...p, milestones: ms }
+    })
+  }
+
+  const totalGoal = preview.milestones.reduce((sum, m) => sum + Number(m.amount || 0), 0)
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <Card className="space-y-4 p-6">
+    <form onSubmit={handleSubmit} className="grid gap-6 md:grid-cols-3">
+      <div className="md:col-span-2">
+        <Card className="space-y-4 p-6">
         <div>
           <Label htmlFor="title">Project title</Label>
-          <Input id="title" name="title" required placeholder="e.g., Clean Water Initiative" />
+          <Input id="title" name="title" required placeholder="e.g., Clean Water Initiative" value={preview.title} onChange={(e) => updateField('title', e.target.value)} />
         </div>
 
         <div>
@@ -63,6 +86,8 @@ export function NewProjectForm() {
             name="summary"
             required
             placeholder="One sentence describing the project impact"
+            value={preview.summary}
+            onChange={(e) => updateField('summary', e.target.value)}
           />
         </div>
 
@@ -72,15 +97,17 @@ export function NewProjectForm() {
             id="description"
             name="description"
             required
-            rows={4}
+            rows={6}
             placeholder="Describe goals, timeline, budget, and expected outcomes"
+            value={preview.description}
+            onChange={(e) => updateField('description', e.target.value)}
           />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="flex flex-col gap-2">
             <Label htmlFor="category">Category</Label>
-            <Select value={category} onValueChange={(v) => setCategory(v as string)}>
+            <Select value={category} onValueChange={(v) => { setCategory(v as string); updateField('category', v) }}>
               <SelectTrigger id="category" className="w-full">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
@@ -95,7 +122,7 @@ export function NewProjectForm() {
           </div>
           <div>
             <Label htmlFor="location">Location</Label>
-            <Input id="location" name="location" placeholder="e.g., Nairobi, Kenya" />
+            <Input id="location" name="location" placeholder="e.g., Nairobi, Kenya" value={preview.location} onChange={(e) => updateField('location', e.target.value)} />
           </div>
         </div>
 
@@ -109,14 +136,16 @@ export function NewProjectForm() {
           <div className="mt-2 space-y-3">
             {[0, 1, 2].map((i) => (
               <div key={i} className="grid gap-2 sm:grid-cols-3">
-                <Input name={`milestones[${i}].title`} placeholder={`Milestone ${i + 1} title`} />
+                <Input name={`milestones[${i}].title`} placeholder={`Milestone ${i + 1} title`} value={preview.milestones[i].title} onChange={(e) => updateMilestone(i, 'title', e.target.value)} />
                 <Input
                   name={`milestones[${i}].amount`}
                   type="number"
                   min="0"
-                  placeholder="Amount (Ksh)"
+                  placeholder="Amount"
+                  value={preview.milestones[i].amount}
+                  onChange={(e) => updateMilestone(i, 'amount', e.target.value)}
                 />
-                <Input name={`milestones[${i}].description`} placeholder="Description" />
+                <Input name={`milestones[${i}].description`} placeholder="Description" value={preview.milestones[i].description} onChange={(e) => updateMilestone(i, 'description', e.target.value)} />
               </div>
             ))}
             <p className="text-xs text-muted-foreground">
@@ -129,14 +158,64 @@ export function NewProjectForm() {
 
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {submitting ? <Loader2 className="size-4 animate-spin" /> : null}
-        Submit for review
-      </button>
+      <div className="mt-4 flex items-center gap-3">
+        <button
+          type="submit"
+          disabled={submitting}
+          className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {submitting ? <Loader2 className="size-4 animate-spin" /> : null}
+          Submit proposal
+        </button>
+        <button type="button" className="text-sm text-muted-foreground" onClick={() => { setPreview({ title: '', summary: '', description: '', category: 'community', location: '', milestones: [{ title: '', amount: '', description: '' }, { title: '', amount: '', description: '' }, { title: '', amount: '', description: '' }] }); setCategory('community') }}>
+          Reset
+        </button>
+      </div>
+
+      <aside className="hidden md:block md:col-span-1">
+        <div className="sticky top-20 space-y-4">
+          <Card className="p-4">
+            <h3 className="text-lg font-semibold">Preview</h3>
+            <p className="text-sm text-muted-foreground mt-1">How your proposal appears to reviewers</p>
+
+            <div className="mt-4">
+              <div className="h-40 w-full rounded-md bg-muted/40 flex items-center justify-center text-muted-foreground">Image</div>
+              <h4 className="mt-3 text-lg font-medium">{preview.title || 'Project title'}</h4>
+              <p className="text-sm text-muted-foreground mt-1">{preview.summary || 'Short summary goes here.'}</p>
+
+              <div className="mt-3">
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>Category</span>
+                  <span className="font-medium text-foreground">{preview.category}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm text-muted-foreground mt-1">
+                  <span>Location</span>
+                  <span className="font-medium text-foreground">{preview.location || '—'}</span>
+                </div>
+              </div>
+
+              <div className="mt-4 border-t pt-3">
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>Funding goal</span>
+                  <span className="font-semibold">{new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(totalGoal)}</span>
+                </div>
+
+                <div className="mt-2 space-y-2">
+                  {preview.milestones.map((m, i) => (
+                    <div key={i} className="flex items-start justify-between">
+                      <div>
+                        <div className="text-sm font-medium">{m.title || `Milestone ${i + 1}`}</div>
+                        <div className="text-xs text-muted-foreground">{m.description || ''}</div>
+                      </div>
+                      <div className="text-sm font-semibold">{m.amount ? new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(Number(m.amount)) : '-'}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </aside>
     </form>
   )
 }

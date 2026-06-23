@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db"
 import { user } from "@/lib/db/schema"
-import { requireUser } from "@/lib/session"
+import { requireActiveUser } from "@/lib/session"
 import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 

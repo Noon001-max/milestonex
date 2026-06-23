@@ -21,13 +21,16 @@ export default async function NewProjectPage() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <main className="mx-auto w-full max-w-3xl px-4 py-12">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground mb-2">
-          Submit a new project
-        </h1>
-        <p className="text-muted-foreground mb-8">
-          Describe your project, set milestones, and request funding.
-        </p>
+      <main className="mx-auto w-full max-w-6xl px-4 py-10">
+        <div className="mb-6">
+          <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
+            New project proposal
+          </h1>
+          <p className="text-muted-foreground mt-2 max-w-2xl">
+            Propose your project with clear goals and milestones. Use the preview on the right
+            to verify how your proposal will appear to reviewers and donors.
+          </p>
+        </div>
 
         <NewProjectForm />
       </main>
