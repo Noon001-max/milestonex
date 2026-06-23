@@ -3,38 +3,60 @@ import Image from "next/image"
 import type { SessionUser } from "@/lib/session"
 import { Bell, Menu } from "lucide-react"
 
-export function SiteHeader({ 
-  user, 
+export function SiteHeader({
+  user,
   unreadCount = 0,
-  hideNavigation = false 
-}: { 
+  hideNavigation = false,
+  showMenuButton = false,
+  onMenuClick,
+}: {
   user: SessionUser | null
   unreadCount?: number
   hideNavigation?: boolean
+  showMenuButton?: boolean
+  onMenuClick?: () => void
 }) {
+  const renderLogo = () => (
+    <Link href="/" className="flex items-center gap-2">
+      <Image
+        src="/logo.png"
+        alt="Milestone X"
+        width={36}
+        height={36}
+        className="rounded-md"
+      />
+      <span className="text-base font-semibold tracking-tight text-foreground">
+        Milestone X
+      </span>
+    </Link>
+  )
+
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center px-4">
-        {/* Left: signed-in menu icon is handled by the role sidebar component on dashboard pages */}
+        <div className="flex items-center">
+          {user ? (
+            showMenuButton ? (
+              <button
+                type="button"
+                onClick={onMenuClick}
+                className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-accent/50 md:hidden"
+                aria-label="Open menu"
+              >
+                <Menu className="size-5" />
+              </button>
+            ) : null
+          ) : (
+            renderLogo()
+          )}
+        </div>
 
-        {/* Center: logo and navigation (left-aligned when logged out) */}
-        <div className={`flex-1 flex items-center ${user ? "justify-center" : "justify-start"}`}>
-          <div className="flex items-center gap-2">
-            <Link href="/" className="flex items-center gap-2">
-              <Image
-                src="/logo.png"
-                alt="Milestone X"
-                width={36}
-                height={36}
-                className="rounded-md"
-              />
-              <span className="text-base font-semibold tracking-tight text-foreground">
-                Milestone X
-              </span>
-            </Link>
-
-            {!hideNavigation && (
-              <nav className="hidden items-center gap-6 text-sm md:flex ml-6">
+        <div className="flex flex-1 items-center justify-center">
+          {user ? (
+            renderLogo()
+          ) : (
+            !hideNavigation && (
+              <nav className="hidden items-center gap-6 text-sm md:flex">
                 <a
                   href="/projects"
                   className="text-muted-foreground transition-colors hover:text-foreground"
@@ -54,12 +76,11 @@ export function SiteHeader({
                   How it works
                 </a>
               </nav>
-            )}
-          </div>
+            )
+          )}
         </div>
 
-        {/* Right: user controls */}
-        <div className="flex items-center gap-4 w-48 justify-end">
+        <div className="flex items-center gap-4 justify-end">
           {user ? (
             (() => {
               const initials = user.name

@@ -1,4 +1,4 @@
-import Link from "next/link"
+﻿import Link from "next/link"
 import { ArrowLeft, FileText, Users, AlertCircle } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
@@ -6,11 +6,6 @@ import { getAllProjects } from "@/lib/queries"
 import { getAllUsers } from "@/app/actions/admin"
 import { getAllDisputes } from "@/app/actions/disputes"
 import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { formatCurrency } from "@/lib/roles"
-import { StatusBadge } from "@/components/status-badge"
-import { AdminProjectCard } from "@/components/admin-project-card"
 
 export const dynamic = "force-dynamic"
 
@@ -18,155 +13,85 @@ export default async function AdminDashboard() {
   const user = await getSession()
   if (!user) return redirect("/sign-in")
   if (user.role !== "admin") return redirect("/dashboard")
+
   const [projects, allUsers, disputes] = await Promise.all([
     getAllProjects(),
     getAllUsers(),
     getAllDisputes(),
   ])
 
-  const pendingProjects = projects.filter((p) => p.status === "pending")
-  const openDisputes = disputes.filter((d) => d.status === "open")
+  const pendingProjects = projects.filter((project) => project.status === "pending")
+  const openDisputes = disputes.filter((dispute) => dispute.status === "open")
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              Admin panel
+              Admin overview
             </h1>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+              Review administrator metrics and navigate to Projects, Users, or Disputes management from the sidebar or links below.
+            </p>
           </div>
-          <a href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="size-4 inline" />
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="size-4" />
             Dashboard
-          </a>
+          </Link>
         </div>
 
         <div className="mb-8 grid gap-4 sm:grid-cols-3">
           <Card className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground">
               <FileText className="size-4" />
-              <span>Pending projects</span>
+              <span>Pending approvals</span>
             </div>
-            <p className="mt-1 text-2xl font-semibold text-foreground">
-              {pendingProjects.length}
-            </p>
+            <p className="mt-3 text-2xl font-semibold text-foreground">{pendingProjects.length}</p>
+            <Link href="/dashboard/admin/projects" className="mt-4 inline-flex text-sm font-medium text-primary hover:underline">
+              Review projects
+            </Link>
           </Card>
-          <Card className="p-4">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <AlertCircle className="size-4" />
-              <span>Open disputes</span>
-            </div>
-            <p className="mt-1 text-2xl font-semibold text-foreground">
-              {openDisputes.length}
-            </p>
-          </Card>
+
           <Card className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground">
               <Users className="size-4" />
               <span>Total users</span>
             </div>
-            <p className="mt-1 text-2xl font-semibold text-foreground">
-              {allUsers.length}
-            </p>
+            <p className="mt-3 text-2xl font-semibold text-foreground">{allUsers.length}</p>
+            <Link href="/dashboard/admin/users" className="mt-4 inline-flex text-sm font-medium text-primary hover:underline">
+              Manage users
+            </Link>
+          </Card>
+
+          <Card className="p-4">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <AlertCircle className="size-4" />
+              <span>Open disputes</span>
+            </div>
+            <p className="mt-3 text-2xl font-semibold text-foreground">{openDisputes.length}</p>
+            <Link href="/dashboard/admin/disputes" className="mt-4 inline-flex text-sm font-medium text-primary hover:underline">
+              Review disputes
+            </Link>
           </Card>
         </div>
 
-        {/* Project approvals */}
-        <div className="mb-10">
-          <h2 className="text-lg font-semibold text-foreground mb-4">
-            Project approvals
-          </h2>
-          {pendingProjects.length > 0 ? (
-            <div className="grid gap-4">
-              {pendingProjects.map((p) => (
-                <AdminProjectCard
-                  key={p.id}
-                  id={p.id}
-                  title={p.title}
-                  summary={p.summary}
-                  fundingGoal={p.fundingGoal}
-                  status={p.status}
-                />
-              ))}
-            </div>
-          ) : (
-            <Card className="p-6">
-              <p className="text-muted-foreground">No pending projects.</p>
-            </Card>
-          )}
-        </div>
-
-        {/* Users */}
-        <div className="mb-10">
-          <h2 className="text-lg font-semibold text-foreground mb-4">
-            User management
-          </h2>
-          {allUsers.length > 0 ? (
-            <Card className="p-2">
-              <table className="w-full text-sm">
-                <thead className="border-b border-border">
-                  <tr>
-                    <th className="text-left p-2">Name</th>
-                    <th className="text-left p-2">Email</th>
-                    <th className="text-left p-2">Role</th>
-                    <th className="text-left p-2">Joined</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {allUsers.map((u) => (
-                    <tr key={u.id} className="border-b border-border last:border-0">
-                      <td className="p-2 font-medium text-foreground">{u.name}</td>
-                      <td className="p-2 text-muted-foreground">{u.email}</td>
-                      <td className="p-2">
-                        <Badge variant="outline" className="capitalize">
-                          {u.role}
-                        </Badge>
-                      </td>
-                      <td className="p-2 text-muted-foreground">
-                        {new Date(u.createdAt).toLocaleDateString()}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </Card>
-          ) : (
-            <Card className="p-6">
-              <p className="text-muted-foreground">No users found.</p>
-            </Card>
-          )}
-        </div>
-
-        {/* Disputes */}
-        <div>
-          <h2 className="text-lg font-semibold text-foreground mb-4">
-            Disputes
-          </h2>
-          {disputes.length > 0 ? (
-            <div className="grid gap-4">
-              {disputes.map((d) => (
-                <Card key={d.id} className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="font-medium text-foreground">{d.subject}</p>
-                      <p className="text-sm text-muted-foreground line-clamp-1">
-                        {d.details}
-                      </p>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        Raised by: {d.raisedByName}
-                      </p>
-                    </div>
-                    <StatusBadge status={d.status} />
-                  </div>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <Card className="p-6">
-              <p className="text-muted-foreground">No disputes recorded.</p>
-            </Card>
-          )}
+        <div className="grid gap-4 sm:grid-cols-3">
+          <Card className="p-4">
+            <h2 className="text-base font-semibold text-foreground">Project approvals</h2>
+            <p className="mt-2 text-sm text-muted-foreground">Approve or reject new project submissions from creators.</p>
+          </Card>
+          <Card className="p-4">
+            <h2 className="text-base font-semibold text-foreground">User management</h2>
+            <p className="mt-2 text-sm text-muted-foreground">Review accounts, roles, and platform access.</p>
+          </Card>
+          <Card className="p-4">
+            <h2 className="text-base font-semibold text-foreground">Dispute review</h2>
+            <p className="mt-2 text-sm text-muted-foreground">Track complaints and resolve disputes raised by donors or auditors.</p>
+          </Card>
         </div>
       </main>
     </div>
