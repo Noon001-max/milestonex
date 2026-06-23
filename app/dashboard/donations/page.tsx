@@ -34,12 +34,6 @@ export default async function DonorDashboard() {
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
         <div className="mb-6">
-          <div className="mb-4">
-            <a href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1">
-              <ArrowLeft className="size-4" />
-              Dashboard
-            </a>
-          </div>
           <h1 className="text-3xl font-semibold tracking-tight text-foreground">
             My contributions
           </h1>

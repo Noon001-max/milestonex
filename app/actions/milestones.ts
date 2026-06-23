@@ -160,3 +160,26 @@ export async function getVerificationQueue() {
     .innerJoin(projects, eq(projects.id, milestones.projectId))
     .where(eq(milestones.status, "submitted"))
 }
+
+export async function getCompletedVerifications() {
+  const user = await requireRole(["verifier", "admin"])
+
+  return db
+    .select({
+      id: verifications.id,
+      milestoneId: verifications.milestoneId,
+      projectId: verifications.projectId,
+      verifierName: verifications.verifierName,
+      decision: verifications.decision,
+      report: verifications.report,
+      reviewedAt: verifications.createdAt,
+      projectTitle: projects.title,
+      milestoneTitle: milestones.title,
+      milestoneAmount: milestones.amount,
+      milestoneStatus: milestones.status,
+    })
+    .from(verifications)
+    .innerJoin(projects, eq(projects.id, verifications.projectId))
+    .innerJoin(milestones, eq(milestones.id, verifications.milestoneId))
+    .where(eq(verifications.verifierId, user.id))
+}

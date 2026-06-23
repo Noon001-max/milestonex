@@ -2,6 +2,7 @@
 
 import React from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 import type { SessionUser } from "@/lib/session"
 import { ROLE_LABELS } from "@/lib/roles"
@@ -75,7 +76,13 @@ export default function RoleSidebar({
     ],
   }
 
+  const pathname = usePathname()
   const items = overrides ?? (baseItems[user.role] ?? [])
+
+  const getItemClassName = (href: string) => {
+    const isActive = pathname === href || pathname?.startsWith(`${href}/`)
+    return `block px-3 py-2 rounded ${isActive ? "bg-muted text-foreground font-semibold" : "hover:bg-muted"}`
+  }
 
   return (
     <>
@@ -83,7 +90,7 @@ export default function RoleSidebar({
         <h3 className="text-lg font-medium">{ROLE_LABELS[user.role] || user.role}</h3>
         <nav className="mt-4 flex-1 flex flex-col gap-2">
           {items.map((it) => (
-            <Link key={it.id} href={it.href} className="block px-3 py-2 rounded hover:bg-muted">
+            <Link key={it.id} href={it.href} className={getItemClassName(it.href)}>
               {it.label}
             </Link>
           ))}
@@ -115,7 +122,7 @@ export default function RoleSidebar({
                 <Link
                   key={it.id}
                   href={it.href}
-                  className="block px-3 py-2 rounded hover:bg-muted"
+                  className={getItemClassName(it.href)}
                   onClick={handleClose}
                 >
                   {it.label}

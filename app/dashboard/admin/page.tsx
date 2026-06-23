@@ -26,22 +26,13 @@ export default async function AdminDashboard() {
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
-        <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              Admin overview
-            </h1>
-            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-              Review administrator metrics and navigate to Projects, Users, or Disputes management from the sidebar or links below.
-            </p>
-          </div>
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="size-4" />
-            Dashboard
-          </Link>
+        <div className="mb-6">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+            Admin overview
+          </h1>
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+            Review administrator metrics and navigate to Projects, Users, or Disputes management from the sidebar or links below.
+          </p>
         </div>
 
         <div className="mb-8 grid gap-4 sm:grid-cols-3">
