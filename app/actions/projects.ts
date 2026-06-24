@@ -1,6 +1,6 @@
 "use server"
 
-import { db } from "@/lib/db"
+import { db, pool } from "@/lib/db"
 import { put } from "@vercel/blob"
 import { projects, milestones, user, transactions } from "@/lib/db/schema"
 import { requireRole, requireUser } from "@/lib/session"
@@ -351,6 +351,16 @@ export async function getApprovedMilestones() {
 // Allocate milestone amounts when project first reaches start threshold (50% funded)
 export async function allocateMilestonesOnStart(projectId: number) {
   // Fetch project and milestones
+  const hasAllocationDone = async () => {
+    const colRes = await pool.query(
+      `select column_name from information_schema.columns where table_name = $1 and column_name = $2`,
+      ["projects", "allocationDone"],
+    )
+    return (colRes?.rowCount ?? 0) > 0
+  }
+
+  const allocationSupported = await hasAllocationDone()
+
   const [project, ms] = await Promise.all([
     db
       .select({
@@ -397,7 +407,7 @@ export async function allocateMilestonesOnStart(projectId: number) {
   if (!ms || ms.length === 0) return
 
   // Idempotency: do nothing if allocation already ran
-  if (project) {
+  if (project && allocationSupported) {
     const proj: any = project
     if (proj.allocationDone) return
   }
@@ -437,7 +447,7 @@ export async function allocateMilestonesOnStart(projectId: number) {
       .set({
         escrowBalance: (project.escrowBalance || 0) - releaseAmount,
         releasedAmount: (project.releasedAmount || 0) + releaseAmount,
-        allocationDone: true,
+        ...(allocationSupported ? { allocationDone: true } : {}),
         status: "started",
         updatedAt: new Date(),
       })
@@ -473,7 +483,7 @@ export async function allocateMilestonesOnStart(projectId: number) {
     // ensure allocationDone flag is set even if nothing was released
     await db
       .update(projects)
-      .set({ allocationDone: true, status: "started", updatedAt: new Date() })
+      .set({ ...(allocationSupported ? { allocationDone: true } : {}), status: "started", updatedAt: new Date() })
       .where(eq(projects.id, projectId))
   }
 
