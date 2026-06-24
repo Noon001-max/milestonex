@@ -89,12 +89,6 @@ export default async function ProjectManagePage({
                         <p className="mt-1 text-sm font-medium text-primary">
                           {formatCurrency(m.amount)}
                         </p>
-                        {index === 0 && project.allocationDone && m.status === "released" && (
-                          <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-primary/10 px-2 py-1 text-sm font-medium text-primary">
-                            <span>Auto-released</span>
-                            <span className="font-semibold">{formatCurrency(m.amount)}</span>
-                          </div>
-                        )}
                       </div>
                       <StatusBadge status={m.status} />
                     </div>

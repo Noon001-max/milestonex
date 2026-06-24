@@ -5,6 +5,7 @@ import { redirect } from "next/navigation"
 import { getAllProjects } from "@/lib/queries"
 import { getAllUsers } from "@/app/actions/admin"
 import { getAdminMilestoneQueue } from "@/app/actions/milestones"
+import { getReadyToStartProjects } from "@/app/actions/projects"
 import { Card } from "@/components/ui/card"
 
 export const dynamic = "force-dynamic"
@@ -14,13 +15,15 @@ export default async function AdminDashboard() {
   if (!user) return redirect("/sign-in")
   if (user.role !== "admin") return redirect("/dashboard")
 
-  const [projects, allUsers, milestones] = await Promise.all([
+  const [projects, allUsers, milestones, readyToStart] = await Promise.all([
     getAllProjects(),
     getAllUsers(),
     getAdminMilestoneQueue(),
+    getReadyToStartProjects(),
   ])
 
   const pendingProjects = projects.filter((project) => project.status === "pending")
+  const readyToStartCount = readyToStart.length
   const pendingMilestones = milestones.length
 
   return (
@@ -66,6 +69,17 @@ export default async function AdminDashboard() {
             <p className="mt-3 text-2xl font-semibold text-foreground">{pendingMilestones}</p>
             <Link href="/dashboard/admin/milestones" className="mt-4 inline-flex text-sm font-medium text-primary hover:underline">
               Review milestones
+            </Link>
+          </Card>
+
+          <Card className="p-4">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <ArrowLeft className="size-4" />
+              <span>Ready to start</span>
+            </div>
+            <p className="mt-3 text-2xl font-semibold text-foreground">{readyToStartCount}</p>
+            <Link href="/dashboard/admin/ready-to-start" className="mt-4 inline-flex text-sm font-medium text-primary hover:underline">
+              Review ready-to-start
             </Link>
           </Card>
         </div>
