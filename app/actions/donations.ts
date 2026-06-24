@@ -104,11 +104,6 @@ export async function contribute(
     try {
       const { allocateMilestonesOnStart } = await import("@/app/actions/projects")
       await allocateMilestonesOnStart(projectId)
-      // mark project status as started
-      await db
-        .update(projects)
-        .set({ status: "started", updatedAt: new Date() })
-        .where(eq(projects.id, projectId))
     } catch (err) {
       console.error("Failed to allocate milestones on start:", err)
     }
