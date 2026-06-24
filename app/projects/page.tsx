@@ -174,6 +174,7 @@ function ProjectsPageClient({ user, projects, dbUnavailable }: { user: any; proj
                   </div>
                 )}
               </div>
+            </div>
             </>
         )}
 
