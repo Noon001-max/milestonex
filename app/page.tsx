@@ -10,7 +10,6 @@ import {
   Banknote,
   ArrowRight,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { getSession } from "@/lib/session"
 import { getPlatformStats, getPublicProjects } from "@/lib/queries"
@@ -61,8 +60,8 @@ export default async function HomePage() {
       <SiteHeader user={user} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-slate-950/5">
-        <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-primary/20 to-transparent" />
+      <section className="relative overflow-hidden bg-background">
+        <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-primary/10 to-transparent" />
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 md:grid-cols-2 md:py-24">
           <div className="flex flex-col gap-6">
             <span className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
@@ -71,12 +70,13 @@ export default async function HomePage() {
             </span>
             <div className="space-y-5">
               <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-                Fund community projects you can actually trust
+                A premium funding platform for trusted community impact
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
-                Milestone X holds every contribution in escrow and releases it
-                only when community verifiers confirm real progress.
-                Accountability is built into every step.
+                Every contribution is held safely in escrow until milestones are approved.
+              </p>
+              <p className="max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
+                Verified progress. Community verifiers confirm milestones before funds are released.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
@@ -94,23 +94,13 @@ export default async function HomePage() {
                 Start a project
               </a>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <Card className="overflow-hidden rounded-3xl border border-border bg-background/90 p-5 shadow-sm shadow-slate-950/5">
-                <p className="text-sm font-medium uppercase tracking-[0.22em] text-muted-foreground">
-                  Secure escrow funding
-                </p>
-                <p className="mt-3 text-base leading-7 text-foreground">
-                  Every contribution is held safely in escrow until milestones are approved.
-                </p>
-              </Card>
-              <Card className="overflow-hidden rounded-3xl border border-border bg-background/90 p-5 shadow-sm shadow-slate-950/5">
-                <p className="text-sm font-medium uppercase tracking-[0.22em] text-muted-foreground">
-                  Verified progress
-                </p>
-                <p className="mt-3 text-base leading-7 text-foreground">
-                  Community verifiers confirm milestones before funds are released.
-                </p>
-              </Card>
+            <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+              <span className="rounded-full border border-border/70 bg-background/80 px-4 py-2">
+                Secure escrow funding
+              </span>
+              <span className="rounded-full border border-border/70 bg-background/80 px-4 py-2">
+                Verified progress
+              </span>
             </div>
           </div>
 
