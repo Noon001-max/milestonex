@@ -17,6 +17,12 @@ type MilestoneInput = {
 export async function createProject(formData: FormData) {
   try {
     const u = await requireRole(["owner"])
+    // Debug: log minimal user info to help trace server errors (dev only)
+    try {
+      console.debug("createProject invoked by user:", { userId: u.id })
+    } catch (e) {
+      // ignore
+    }
 
     // Validate required fields
     const title = (formData.get("title") as string)?.trim()
@@ -46,6 +52,8 @@ export async function createProject(formData: FormData) {
       throw new Error("Please add at least one milestone")
     }
 
+    console.debug("createProject parsedMilestones", { count: parsedMilestones.length })
+
     const fundingGoal = parsedMilestones.reduce(
       (sum, m) => sum + (Number(m.amount) || 0),
       0,
@@ -55,11 +63,15 @@ export async function createProject(formData: FormData) {
       throw new Error("At least one milestone must have an amount greater than 0")
     }
 
+    console.debug("createProject fundingGoal", { fundingGoal })
+
     // If a file was attached under 'imageUrl', upload it to blob storage
     let uploadedImageUrl: string | null = null
     try {
-      const possibleFile = formData.get("imageUrl") as File | null
-      if (possibleFile && (possibleFile as any).size) {
+      const possibleFile = formData.get("imageUrl") as File | string | null
+      const isFile = possibleFile && typeof (possibleFile as any).size === "number"
+      console.debug("createProject image field", { type: typeof possibleFile, isFile })
+      if (isFile && (possibleFile as any).size) {
         // Basic validation
         if (!(possibleFile as File).type.startsWith("image/")) {
           throw new Error("Only image files are allowed")
