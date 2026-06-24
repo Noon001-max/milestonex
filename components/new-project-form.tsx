@@ -25,6 +25,12 @@ const CATEGORIES = [
   { value: "environment", label: "Environment" },
 ] as const
 
+const MAX_MILESTONES = 10
+
+function createBlankMilestone() {
+  return { title: "", amount: "", description: "" }
+}
+
 export function NewProjectForm() {
   const router = useRouter()
   const [category, setCategory] = React.useState<string>("community")
@@ -36,7 +42,7 @@ export function NewProjectForm() {
     description: "",
     category: "community",
     location: "",
-    milestones: [{ title: "", amount: "", description: "" }, { title: "", amount: "", description: "" }, { title: "", amount: "", description: "" }],
+    milestones: [createBlankMilestone(), createBlankMilestone(), createBlankMilestone()],
   })
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -65,6 +71,13 @@ export function NewProjectForm() {
       const ms = [...p.milestones]
       ms[index] = { ...ms[index], [field]: value }
       return { ...p, milestones: ms }
+    })
+  }
+
+  function addMilestone() {
+    setPreview((p) => {
+      if (p.milestones.length >= MAX_MILESTONES) return p
+      return { ...p, milestones: [...p.milestones, createBlankMilestone()] }
     })
   }
 
@@ -119,6 +132,7 @@ export function NewProjectForm() {
                 ))}
               </SelectContent>
             </Select>
+            <input type="hidden" name="category" value={category} />
           </div>
           <div>
             <Label htmlFor="location">Location</Label>
@@ -134,44 +148,72 @@ export function NewProjectForm() {
         <div>
           <Label>Milestones</Label>
           <div className="mt-2 space-y-3">
-            {[0, 1, 2].map((i) => (
+            {preview.milestones.map((milestone, i) => (
               <div key={i} className="grid gap-2 sm:grid-cols-3">
-                <Input name={`milestones[${i}].title`} placeholder={`Milestone ${i + 1} title`} value={preview.milestones[i].title} onChange={(e) => updateMilestone(i, 'title', e.target.value)} />
+                <Input name={`milestones[${i}].title`} placeholder={`Milestone ${i + 1} title`} value={milestone.title} onChange={(e) => updateMilestone(i, 'title', e.target.value)} />
                 <Input
                   name={`milestones[${i}].amount`}
                   type="number"
                   min="0"
                   placeholder="Amount"
-                  value={preview.milestones[i].amount}
+                  value={milestone.amount}
                   onChange={(e) => updateMilestone(i, 'amount', e.target.value)}
                 />
-                <Input name={`milestones[${i}].description`} placeholder="Description" value={preview.milestones[i].description} onChange={(e) => updateMilestone(i, 'description', e.target.value)} />
+                <Input name={`milestones[${i}].description`} placeholder="Description" value={milestone.description} onChange={(e) => updateMilestone(i, 'description', e.target.value)} />
               </div>
             ))}
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+              <button
+                type="button"
+                className="text-sm text-primary hover:text-primary/80"
+                onClick={addMilestone}
+                disabled={preview.milestones.length >= MAX_MILESTONES}
+              >
+                + Add milestone
+              </button>
+              <span className="text-xs text-muted-foreground">
+                You can add up to {MAX_MILESTONES} milestones.
+              </span>
+            </div>
             <p className="text-xs text-muted-foreground">
               Leave blank any milestones you don&apos;t need. The funding goal is the sum of
               milestone amounts.
             </p>
           </div>
         </div>
+
+        <div className="border-t border-border/70 pt-4">
+          {error ? <p className="text-sm text-destructive mb-3">{error}</p> : null}
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-end sm:items-center">
+            <button
+              type="button"
+              className="text-sm text-muted-foreground"
+              onClick={() => {
+                setPreview({
+                  title: '',
+                  summary: '',
+                  description: '',
+                  category: 'community',
+                  location: '',
+                  milestones: [createBlankMilestone(), createBlankMilestone(), createBlankMilestone()],
+                })
+                setCategory('community')
+              }}
+            >
+              Reset
+            </button>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {submitting ? <Loader2 className="size-4 animate-spin" /> : null}
+              Submit proposal
+            </button>
+          </div>
+        </div>
       </Card>
 
-      </div>
-
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
-
-      <div className="mt-4 flex items-center gap-3">
-        <button
-          type="submit"
-          disabled={submitting}
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {submitting ? <Loader2 className="size-4 animate-spin" /> : null}
-          Submit proposal
-        </button>
-        <button type="button" className="text-sm text-muted-foreground" onClick={() => { setPreview({ title: '', summary: '', description: '', category: 'community', location: '', milestones: [{ title: '', amount: '', description: '' }, { title: '', amount: '', description: '' }, { title: '', amount: '', description: '' }] }); setCategory('community') }}>
-          Reset
-        </button>
       </div>
 
       <aside className="hidden md:block md:col-span-1">
