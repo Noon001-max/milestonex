@@ -71,9 +71,33 @@ export function NewProjectForm() {
     
     setSubmitting(true)
     try {
+      const formEl = e.currentTarget
+
+      // If an image file was selected, upload it to /api/upload first to avoid
+      // sending large file bodies to the Server Action (which has a 1MB limit).
+      const fileInput = formEl.querySelector('input[name="imageUrl"]') as HTMLInputElement | null
+      let uploadedUrl: string | null = null
+      if (fileInput?.files?.[0]) {
+        const uploadForm = new FormData()
+        uploadForm.append("file", fileInput.files[0])
+        const res = await fetch("/api/upload", { method: "POST", body: uploadForm })
+        if (!res.ok) {
+          const payload = await res.json().catch(() => ({}))
+          throw new Error(payload?.error || "Image upload failed")
+        }
+        const data = await res.json()
+        uploadedUrl = data.url
+      }
+
       const formData = new FormData(e.currentTarget)
       // Ensure category is set
       formData.set("category", category)
+      // If we uploaded the image, replace the file entry with the returned URL
+      if (uploadedUrl) {
+        formData.delete("imageUrl")
+        formData.set("imageUrl", uploadedUrl)
+      }
+
       await createProject(formData)
       router.push("/dashboard/projects")
       router.refresh()
