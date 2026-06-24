@@ -61,64 +61,110 @@ export default async function HomePage() {
       <SiteHeader user={user} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 md:grid-cols-2 md:py-24">
+      <section className="relative overflow-hidden bg-slate-950/5">
+        <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-primary/20 to-transparent" />
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 md:grid-cols-2 md:py-24">
           <div className="flex flex-col gap-6">
-            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
-              <ShieldCheck className="size-3.5" />
+            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+              <ShieldCheck className="size-4" />
               Escrow-backed, milestone-verified funding
             </span>
-            <h1 className="text-balance text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-5xl">
-              Fund community projects you can actually trust
-            </h1>
-            <p className="text-pretty text-lg leading-relaxed text-muted-foreground">
-              Milestone X holds every contribution in escrow and releases it
-              only when community verifiers confirm real progress. Full
-              transparency, from donation to delivery.
-            </p>
+            <div className="space-y-5">
+              <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+                Fund community projects you can actually trust
+              </h1>
+              <p className="max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
+                Milestone X holds every contribution in escrow and releases it
+                only when community verifiers confirm real progress.
+                Accountability is built into every step.
+              </p>
+            </div>
             <div className="flex flex-wrap items-center gap-3">
               <a
                 href="/projects"
-                className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/20 transition hover:bg-primary/90"
               >
                 Browse projects
                 <ArrowRight className="size-4 ml-2" />
               </a>
               <a
                 href="/sign-up"
-                className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-6 py-3 text-sm font-medium hover:bg-muted"
+                className="inline-flex items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-sm font-medium hover:bg-muted"
               >
                 Start a project
               </a>
             </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Card className="overflow-hidden rounded-3xl border border-border bg-background/90 p-5 shadow-sm shadow-slate-950/5">
+                <p className="text-sm font-medium uppercase tracking-[0.22em] text-muted-foreground">
+                  Secure escrow funding
+                </p>
+                <p className="mt-3 text-base leading-7 text-foreground">
+                  Every contribution is held safely in escrow until milestones are approved.
+                </p>
+              </Card>
+              <Card className="overflow-hidden rounded-3xl border border-border bg-background/90 p-5 shadow-sm shadow-slate-950/5">
+                <p className="text-sm font-medium uppercase tracking-[0.22em] text-muted-foreground">
+                  Verified progress
+                </p>
+                <p className="mt-3 text-base leading-7 text-foreground">
+                  Community verifiers confirm milestones before funds are released.
+                </p>
+              </Card>
+            </div>
           </div>
 
-          <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-border">
-            <Image
-              src="/hero-community.png"
-              alt="A community collaborating on a local development project"
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover"
-            />
+          <div className="relative overflow-hidden rounded-[2rem] border border-border bg-gradient-to-br from-slate-950 via-slate-950/80 to-slate-950/90 p-3 shadow-xl shadow-slate-950/10">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(59,130,246,0.16),_transparent_40%)]" />
+            <div className="relative h-full overflow-hidden rounded-[1.75rem] bg-muted">
+              <Image
+                src="/hero-community.png"
+                alt="A community collaborating on a local development project"
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+              />
+            </div>
           </div>
         </div>
       </section>
 
       {/* Stats */}
-      <section className="border-y border-border bg-card">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-10 md:grid-cols-4">
-          <Stat label="Active projects" value={String(stats.totalProjects)} />
-          <Stat label="Total raised" value={formatCurrency(stats.totalRaised)} />
-          <Stat
-            label="Secured in escrow"
-            value={formatCurrency(stats.totalEscrow)}
-          />
-          <Stat
-            label="Milestones verified"
-            value={`${stats.verifiedMilestones}/${stats.totalMilestones}`}
-          />
+      <section className="border-y border-border bg-card py-10">
+        <div className="mx-auto grid max-w-6xl gap-4 px-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Card className="p-6">
+            <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
+              Active projects
+            </p>
+            <p className="mt-4 text-3xl font-semibold text-foreground">
+              {stats.totalProjects}
+            </p>
+          </Card>
+          <Card className="p-6">
+            <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
+              Total raised
+            </p>
+            <p className="mt-4 text-3xl font-semibold text-foreground">
+              {formatCurrency(stats.totalRaised)}
+            </p>
+          </Card>
+          <Card className="p-6">
+            <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
+              Secured in escrow
+            </p>
+            <p className="mt-4 text-3xl font-semibold text-foreground">
+              {formatCurrency(stats.totalEscrow)}
+            </p>
+          </Card>
+          <Card className="p-6">
+            <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
+              Milestones verified
+            </p>
+            <p className="mt-4 text-3xl font-semibold text-foreground">
+              {stats.verifiedMilestones}/{stats.totalMilestones}
+            </p>
+          </Card>
         </div>
       </section>
 

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Lock, Banknote, TrendingUp, CheckCircle2 } from "lucide-react"
+import { Lock, Banknote, TrendingUp, CheckCircle2, Users } from "lucide-react"
 import { getSession } from "@/lib/session"
 import {
   getPlatformStats,
@@ -53,6 +53,11 @@ export default async function TransparencyPage() {
 
   const cards = [
     {
+      icon: Users,
+      label: "Active projects",
+      value: String(stats.totalProjects),
+    },
+    {
       icon: TrendingUp,
       label: "Total raised",
       value: formatCurrency(stats.totalRaised),
@@ -96,14 +101,14 @@ export default async function TransparencyPage() {
           </Card>
         )}
 
-        <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mb-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {cards.map((c) => (
             <Card key={c.label} className="flex flex-col gap-3 p-6">
               <span className="flex size-10 items-center justify-center rounded-md bg-primary/10 text-primary">
                 <c.icon className="size-5" />
               </span>
               <div>
-                <p className="text-2xl font-semibold tracking-tight text-foreground">
+                <p className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
                   {c.value}
                 </p>
                 <p className="text-sm text-muted-foreground">{c.label}</p>

@@ -28,7 +28,7 @@ export async function getPublicProjects() {
     })
     .from(projects)
     .where(
-      sql`${projects.status} in ('approved', 'funding', 'completed')`,
+      sql`${projects.status} in ('approved', 'funding', 'started', 'completed')`,
     )
     .orderBy(desc(projects.createdAt))
 }
@@ -150,7 +150,7 @@ export async function getPlatformStats() {
       totalReleased: sql<number>`coalesce(sum(${projects.releasedAmount}), 0)::int`,
     })
     .from(projects)
-    .where(sql`${projects.status} in ('approved', 'funding', 'completed')`)
+    .where(sql`${projects.status} in ('approved', 'funding', 'started', 'completed')`)
 
   const agg = result[0] ?? {
     totalProjects: 0,
