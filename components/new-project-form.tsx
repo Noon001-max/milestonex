@@ -106,8 +106,8 @@ export function NewProjectForm() {
   const totalGoal = preview.milestones.reduce((sum, m) => sum + Number(m.amount || 0), 0)
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-6 md:grid-cols-3">
-      <div className="md:col-span-2">
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="w-full max-w-2xl">
         <Card className="space-y-4 p-6">
         <div>
           <Label htmlFor="title">Project title</Label>
@@ -237,59 +237,6 @@ export function NewProjectForm() {
       </Card>
 
       </div>
-
-      <aside className="hidden md:block md:col-span-1">
-        <div className="sticky top-20 space-y-4">
-          <Card className="p-4">
-            <h3 className="text-lg font-semibold">Preview</h3>
-            <p className="text-sm text-muted-foreground mt-1">How your proposal appears to reviewers</p>
-
-            <div className="mt-4">
-              {preview.milestones.find(m => m.amount) ? (
-                <div className="h-40 w-full rounded-md bg-muted/40 overflow-hidden flex items-center justify-center text-muted-foreground">
-                  {/* Preview would show image here if uploaded */}
-                  {/* For now showing placeholder */}
-                  <div className="text-center text-sm">Project preview</div>
-                </div>
-              ) : (
-                <div className="h-40 w-full rounded-md bg-muted/40 flex items-center justify-center text-muted-foreground">Project preview</div>
-              )}
-              <h4 className="mt-3 text-lg font-medium">{preview.title || 'Project title'}</h4>
-              <p className="text-sm text-muted-foreground mt-1">{preview.summary || 'Short summary goes here.'}</p>
-
-              <div className="mt-3">
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>Category</span>
-                  <span className="font-medium text-foreground">{preview.category}</span>
-                </div>
-                <div className="flex items-center justify-between text-sm text-muted-foreground mt-1">
-                  <span>Location</span>
-                  <span className="font-medium text-foreground">{preview.location || '—'}</span>
-                </div>
-              </div>
-
-              <div className="mt-4 border-t pt-3">
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>Funding goal</span>
-                  <span className="font-semibold">{new Intl.NumberFormat("en-KE", { style: 'currency', currency: 'KES', maximumFractionDigits: 0 }).format(totalGoal)}</span>
-                </div>
-
-                <div className="mt-2 space-y-2">
-                  {preview.milestones.map((m, i) => (
-                    <div key={i} className="flex items-start justify-between">
-                      <div>
-                        <div className="text-sm font-medium">{m.title || `Milestone ${i + 1}`}</div>
-                        <div className="text-xs text-muted-foreground">{m.description || ''}</div>
-                      </div>
-                      <div className="text-sm font-semibold">{m.amount ? new Intl.NumberFormat("en-KE", { style: 'currency', currency: 'KES', maximumFractionDigits: 0 }).format(Number(m.amount)) : '-'}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
-      </aside>
     </form>
   )
 }

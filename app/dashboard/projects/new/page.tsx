@@ -27,8 +27,7 @@ export default async function NewProjectPage() {
             New project proposal
           </h1>
           <p className="text-muted-foreground mt-2 max-w-2xl">
-            Propose your project with clear goals and milestones. Use the preview on the right
-            to verify how your proposal will appear to reviewers and donors.
+            Propose your project with clear goals and milestones. Fill in all details and define your funding milestones.
           </p>
         </div>
 
