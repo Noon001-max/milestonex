@@ -75,9 +75,9 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
   }
 
   return (
-    <main className="min-h-svh bg-background flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-md">
-        <div className="mb-6 flex items-center gap-2">
+    <main className="min-h-svh bg-background flex flex-col items-center justify-start px-4 py-10">
+      <div className="w-full max-w-md flex flex-col">
+        <div className="mb-8 flex items-center justify-center gap-2">
           <Image
             src="/logo.png"
             alt="Milestone X"
@@ -210,7 +210,8 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
                   </div>
                 ) : (
                   <div className="rounded-md border border-border bg-muted p-3 text-sm text-muted-foreground">
-                    Default role: <strong className="text-foreground">Donor / Investor</strong>
+                    Selected role: <strong className="text-foreground">{ROLES.find(r => r.value === role)?.label || 'Donor / Investor'}</strong>
+                    <p className="text-xs mt-1">{ROLES.find(r => r.value === role)?.description}</p>
                   </div>
                 )}
               </fieldset>
