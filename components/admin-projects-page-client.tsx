@@ -1,27 +1,31 @@
-import { redirect } from "next/navigation"
-import { getSession } from "@/lib/session"
-import { getAllProjects } from "@/lib/queries"
-import { AdminProjectsPageClient } from "@/components/admin-projects-page-client"
+"use client"
 
-export const dynamic = "force-dynamic"
+import { useMemo, useState } from "react"
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Search, Filter, X } from "lucide-react"
+import { formatCurrency } from "@/lib/roles"
+import { StatusBadge } from "@/components/status-badge"
+import { AdminProjectCard } from "@/components/admin-project-card"
 
-export default async function Page() {
-  const user = await getSession()
-  if (!user) return redirect("/sign-in")
-  if (user.role !== "admin") return redirect("/dashboard")
+type ProjectStatus = "pending" | "approved" | "rejected" | "funding" | "started" | "completed"
 
-  const projects = await getAllProjects()
-
-  return <AdminProjectsPageClient projects={projects} />
+type AdminProjectsPageClientProps = {
+  projects: any[]
 }
 
-  const statusOptions: { value: ProjectStatus; label: string; color: string; icon: string }[] = [
-    { value: "pending", label: "Pending review", color: "bg-yellow-100 dark:bg-yellow-900/30", icon: "⏳" },
-    { value: "approved", label: "Approved", color: "bg-green-100 dark:bg-green-900/30", icon: "✓" },
-    { value: "rejected", label: "Rejected", color: "bg-red-100 dark:bg-red-900/30", icon: "✕" },
-    { value: "funding", label: "Fundraising", color: "bg-blue-100 dark:bg-blue-900/30", icon: "💰" },
-    { value: "started", label: "Active", color: "bg-purple-100 dark:bg-purple-900/30", icon: "▶" },
-    { value: "completed", label: "Completed", color: "bg-emerald-100 dark:bg-emerald-900/30", icon: "✔" },
+export function AdminProjectsPageClient({ projects }: AdminProjectsPageClientProps) {
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedStatuses, setSelectedStatuses] = useState<ProjectStatus[]>(["pending"])
+  const [expandedFilters, setExpandedFilters] = useState(false)
+
+  const statusOptions: { value: ProjectStatus; label: string; icon: string }[] = [
+    { value: "pending", label: "Pending review", icon: "⏳" },
+    { value: "approved", label: "Approved", icon: "✓" },
+    { value: "rejected", label: "Rejected", icon: "✕" },
+    { value: "funding", label: "Fundraising", icon: "💰" },
+    { value: "started", label: "Active", icon: "▶" },
+    { value: "completed", label: "Completed", icon: "✔" },
   ]
 
   const filteredProjects = useMemo(() => {
@@ -29,7 +33,7 @@ export default async function Page() {
       const matchesSearch =
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.summary?.toLowerCase().includes(searchTerm.toLowerCase())
-      const matchesStatus = selectedStatuses.includes(project.status)
+      const matchesStatus = selectedStatuses.length === 0 || selectedStatuses.includes(project.status)
       return matchesSearch && matchesStatus
     })
   }, [projects, searchTerm, selectedStatuses])
@@ -126,8 +130,7 @@ export default async function Page() {
         {/* Results Summary */}
         <div className="mb-6 flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing <span className="font-semibold text-foreground">{filteredProjects.length}</span> of{" "}
-            <span className="font-semibold text-foreground">{projects.length}</span> projects
+            Showing <span className="font-semibold text-foreground">{filteredProjects.length}</span> of <span className="font-semibold text-foreground">{projects.length}</span> projects
           </p>
 
           {/* Status Badges Summary */}
@@ -168,6 +171,3 @@ export default async function Page() {
     </div>
   )
 }
-
-export default Page
-

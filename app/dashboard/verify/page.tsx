@@ -69,7 +69,7 @@ export default async function VerifierDashboard() {
               Milestones to review
             </h2>
             <div className="grid gap-4">
-              {queue.map((m) => (
+              {queue.map((m, idx) => (
                 <Card key={m.id} className="p-6 hover:shadow-md transition-shadow">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -81,7 +81,7 @@ export default async function VerifierDashboard() {
                           {m.projectTitle}
                         </a>
                         <Badge variant="outline" className="text-xs">
-                          Milestone {m.orderIndex + 1}
+                          Milestone {(m as any).orderIndex != null ? (m as any).orderIndex + 1 : idx + 1}
                         </Badge>
                       </div>
                       <p className="text-lg font-semibold text-foreground">
@@ -111,7 +111,7 @@ export default async function VerifierDashboard() {
                     <div className="rounded-lg bg-muted p-3">
                       <span className="text-xs text-muted-foreground block">Due date</span>
                       <span className="text-lg font-semibold text-foreground">
-                        {m.dueDate ? new Date(m.dueDate).toLocaleDateString() : "No date"}
+                        {typeof (m as any).dueDate === "string" ? new Date((m as any).dueDate).toLocaleDateString() : "No date"}
                       </span>
                     </div>
                     <div className="rounded-lg bg-muted p-3">
