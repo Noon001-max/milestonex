@@ -7,7 +7,7 @@ import { notify } from "@/lib/notify"
 import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
-// Project owner submits milestone completion + evidence
+// Project proposer submits milestone completion + evidence
 export async function submitMilestoneEvidence(
   milestoneId: number,
   evidenceNote: string,
@@ -57,7 +57,7 @@ export async function submitMilestoneEvidence(
     .where(eq(projects.id, m.projectId))
   if (!project) throw new Error("Project not found")
   if (project.ownerId !== u.id && u.role !== "admin") {
-    throw new Error("Only the project owner can submit evidence")
+    throw new Error("Only the project proposer can submit evidence")
   }
 
   await db

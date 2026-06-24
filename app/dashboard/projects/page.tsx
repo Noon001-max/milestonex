@@ -26,13 +26,13 @@ export default async function OwnerDashboard() {
     )
   }
 
-  // Only project owners should see this page
+  // Only project proposers should see this page
   if (user.role !== "owner") {
     return (
       <div className="flex min-h-svh flex-col bg-background">
         <main className="mx-auto w-full max-w-6xl px-4 py-16">
           <p className="text-muted-foreground">
-            This page is for project owners only. Please check your dashboard for your role.
+            This page is for project proposers only. Please check your dashboard for your role.
           </p>
         </main>
       </div>

@@ -37,7 +37,7 @@ export default async function HomePage() {
     {
       icon: FileSearch,
       title: "Projects are vetted",
-      body: "Owners submit proposals with budgets and milestones. Administrators review and approve before they go live.",
+      body: "Proposers submit projects with budgets and milestones. Administrators review and approve before they go live.",
     },
     {
       icon: Lock,
