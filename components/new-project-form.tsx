@@ -33,8 +33,10 @@ function createBlankMilestone() {
 
 export function NewProjectForm() {
   const router = useRouter()
+  const formRef = React.useRef<HTMLFormElement | null>(null)
   const [category, setCategory] = React.useState<string>("community")
   const [submitting, setSubmitting] = React.useState(false)
+  const [uploadingImage, setUploadingImage] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
   const [preview, setPreview] = React.useState({
     title: "",
@@ -71,16 +73,21 @@ export function NewProjectForm() {
     
     setSubmitting(true)
     try {
-      const formEl = e.currentTarget
+      const formEl = formRef.current
+      if (!formEl) {
+        throw new Error("Could not submit form")
+      }
 
       // If an image file was selected, upload it to /api/upload first to avoid
       // sending large file bodies to the Server Action (which has a 1MB limit).
       const fileInput = formEl.querySelector('input[name="imageUrl"]') as HTMLInputElement | null
       let uploadedUrl: string | null = null
       if (fileInput?.files?.[0]) {
+        setUploadingImage(true)
         const uploadForm = new FormData()
         uploadForm.append("file", fileInput.files[0])
         const res = await fetch("/api/upload", { method: "POST", body: uploadForm })
+        setUploadingImage(false)
         if (!res.ok) {
           const payload = await res.json().catch(() => ({}))
           throw new Error(payload?.error || "Image upload failed")
@@ -89,7 +96,7 @@ export function NewProjectForm() {
         uploadedUrl = data.url
       }
 
-      const formData = new FormData(e.currentTarget)
+      const formData = new FormData(formEl)
       // Ensure category is set
       formData.set("category", category)
       // If we uploaded the image, replace the file entry with the returned URL
@@ -130,7 +137,7 @@ export function NewProjectForm() {
   const totalGoal = preview.milestones.reduce((sum, m) => sum + Number(m.amount || 0), 0)
 
   return (
-    <form onSubmit={handleSubmit} className="w-full">
+    <form ref={formRef} onSubmit={handleSubmit} className="w-full">
       <div className="w-full max-w-2xl">
         <Card className="space-y-4 p-6">
         <div>
@@ -229,6 +236,9 @@ export function NewProjectForm() {
         </div>
 
         <div className="border-t border-border/70 pt-4">
+          {uploadingImage ? (
+            <p className="text-sm text-muted-foreground mb-3">Uploading image...</p>
+          ) : null}
           {error ? <p className="text-sm text-destructive mb-3">{error}</p> : null}
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-end sm:items-center">
             <button
