@@ -12,7 +12,7 @@ export const ROLES: {
   },
   {
     value: "owner",
-    label: "Project Owner",
+    label: "Project Proposer",
     description: "Submit projects, define milestones, and request escrow releases.",
   },
   {
@@ -39,7 +39,7 @@ export const ROLES: {
 
 export const ROLE_LABELS: Record<Role, string> = {
   donor: "Donor / Investor",
-  owner: "Project Owner",
+  owner: "Project Proposer",
   verifier: "Community Verifier",
   admin: "Administrator",
   auditor: "Auditor / Partner",

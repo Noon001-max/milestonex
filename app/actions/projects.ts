@@ -16,6 +16,15 @@ type MilestoneInput = {
 export async function createProject(formData: FormData) {
   const u = await requireRole(["owner"])
 
+  // Validate required fields
+  const title = (formData.get("title") as string)?.trim()
+  const summary = (formData.get("summary") as string)?.trim()
+  const description = (formData.get("description") as string)?.trim()
+  
+  if (!title) throw new Error("Project title is required")
+  if (!summary) throw new Error("Project summary is required")
+  if (!description) throw new Error("Project description is required")
+
   const parsedMilestones = [] as MilestoneInput[]
 
   for (let i = 0; i < 10; i++) {
@@ -31,20 +40,28 @@ export async function createProject(formData: FormData) {
     }
   }
 
+  if (parsedMilestones.length === 0) {
+    throw new Error("Please add at least one milestone")
+  }
+
   const fundingGoal = parsedMilestones.reduce(
     (sum, m) => sum + (Number(m.amount) || 0),
     0,
   )
 
+  if (fundingGoal <= 0) {
+    throw new Error("At least one milestone must have an amount greater than 0")
+  }
+
   const [project] = await db
     .insert(projects)
     .values({
       ownerId: u.id,
-      title: formData.get("title") as string,
-      summary: formData.get("summary") as string,
-      description: formData.get("description") as string,
+      title: title,
+      summary: summary,
+      description: description,
       category: (formData.get("category") as string) || "community",
-      location: formData.get("location") as string,
+      location: (formData.get("location") as string) || "",
       imageUrl: (formData.get("imageUrl") as string) || null,
       fundingGoal,
       status: "pending",
@@ -83,7 +100,7 @@ export async function createProject(formData: FormData) {
   await notify({
     userId: u.id,
     title: "Project submitted",
-    body: `Your project "${formData.get("title")}" was submitted for review.`,
+    body: `Your project "${title}" was submitted for review.`,
     type: "project",
   })
 
@@ -362,7 +379,7 @@ export async function allocateMilestonesOnStart(projectId: number) {
     .set({ amount: startup, updatedAt: new Date() })
     .where(eq(milestones.id, ms[0].id))
 
-  // Auto-release the startup portion to the owner (deduct from escrow)
+  // Auto-release the startup portion to the proposer (deduct from escrow)
   const releaseAmount = Math.min(startup, project.escrowBalance || 0)
   if (releaseAmount > 0) {
     // mark first milestone released
@@ -393,7 +410,7 @@ export async function allocateMilestonesOnStart(projectId: number) {
       note: `Initial startup release for milestone "${ms[0].title}"`,
     })
 
-    // notify owner
+    // notify proposer
     try {
       await notify({
         userId: project.ownerId,

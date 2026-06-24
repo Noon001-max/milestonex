@@ -48,16 +48,38 @@ export function NewProjectForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
+    
+    // Validate required fields
+    if (!preview.title?.trim()) {
+      setError("Please enter a project title")
+      return
+    }
+    if (!preview.summary?.trim()) {
+      setError("Please enter a project summary")
+      return
+    }
+    if (!preview.description?.trim()) {
+      setError("Please enter a project description")
+      return
+    }
+    
+    const hasMilestones = preview.milestones.some(m => m.title?.trim() && m.amount)
+    if (!hasMilestones) {
+      setError("Please add at least one milestone with a title and amount")
+      return
+    }
+    
     setSubmitting(true)
     try {
       const formData = new FormData(e.currentTarget)
-      // base-ui Select isn't a native field, so set the chosen value explicitly
+      // Ensure category is set
       formData.set("category", category)
       await createProject(formData)
       router.push("/dashboard/projects")
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong")
+      const message = err instanceof Error ? err.message : "Something went wrong"
+      setError(message)
       setSubmitting(false)
     }
   }
@@ -223,7 +245,15 @@ export function NewProjectForm() {
             <p className="text-sm text-muted-foreground mt-1">How your proposal appears to reviewers</p>
 
             <div className="mt-4">
-              <div className="h-40 w-full rounded-md bg-muted/40 flex items-center justify-center text-muted-foreground">Image</div>
+              {preview.milestones.find(m => m.amount) ? (
+                <div className="h-40 w-full rounded-md bg-muted/40 overflow-hidden flex items-center justify-center text-muted-foreground">
+                  {/* Preview would show image here if uploaded */}
+                  {/* For now showing placeholder */}
+                  <div className="text-center text-sm">Project preview</div>
+                </div>
+              ) : (
+                <div className="h-40 w-full rounded-md bg-muted/40 flex items-center justify-center text-muted-foreground">Project preview</div>
+              )}
               <h4 className="mt-3 text-lg font-medium">{preview.title || 'Project title'}</h4>
               <p className="text-sm text-muted-foreground mt-1">{preview.summary || 'Short summary goes here.'}</p>
 
@@ -241,7 +271,7 @@ export function NewProjectForm() {
               <div className="mt-4 border-t pt-3">
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <span>Funding goal</span>
-                  <span className="font-semibold">{new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(totalGoal)}</span>
+                  <span className="font-semibold">{new Intl.NumberFormat("en-KE", { style: 'currency', currency: 'KES', maximumFractionDigits: 0 }).format(totalGoal)}</span>
                 </div>
 
                 <div className="mt-2 space-y-2">
@@ -251,7 +281,7 @@ export function NewProjectForm() {
                         <div className="text-sm font-medium">{m.title || `Milestone ${i + 1}`}</div>
                         <div className="text-xs text-muted-foreground">{m.description || ''}</div>
                       </div>
-                      <div className="text-sm font-semibold">{m.amount ? new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(Number(m.amount)) : '-'}</div>
+                      <div className="text-sm font-semibold">{m.amount ? new Intl.NumberFormat("en-KE", { style: 'currency', currency: 'KES', maximumFractionDigits: 0 }).format(Number(m.amount)) : '-'}</div>
                     </div>
                   ))}
                 </div>
