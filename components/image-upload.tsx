@@ -23,31 +23,18 @@ export function ImageUpload({ name, defaultValue, className }: ImageUploadProps)
     if (!file) return
 
     setError(null)
-    setUploading(true)
+    // Create a local preview URL and keep the selected file in the native input so
+    // the form submits the file on proposal submit. We don't auto-upload here.
     try {
-      const formData = new FormData()
-      formData.append("file", file)
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      })
-      const data = await res.json()
-      if (!res.ok) {
-        throw new Error(data.error || "Upload failed")
-      }
-      setUrl(data.url)
+      const objectUrl = URL.createObjectURL(file)
+      setUrl(objectUrl)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed")
-    } finally {
-      setUploading(false)
+      setError(err instanceof Error ? err.message : "Failed to load image")
     }
   }
 
   return (
     <div className={cn("space-y-2", className)}>
-      {/* Carries the uploaded URL into the form submission */}
-      <input type="hidden" name={name} value={url} />
-
       {url ? (
         <div className="relative overflow-hidden rounded-lg border border-input">
           <Image
@@ -62,6 +49,8 @@ export function ImageUpload({ name, defaultValue, className }: ImageUploadProps)
             onClick={() => {
               setUrl("")
               if (inputRef.current) inputRef.current.value = ""
+              // revoke object URL
+              try { URL.revokeObjectURL(url) } catch (e) {}
             }}
             className="absolute right-2 top-2 inline-flex size-8 items-center justify-center rounded-full bg-background/90 text-foreground shadow-sm hover:bg-background"
             aria-label="Remove image"
@@ -93,6 +82,7 @@ export function ImageUpload({ name, defaultValue, className }: ImageUploadProps)
 
       <input
         ref={inputRef}
+        name={name}
         type="file"
         accept="image/*"
         className="sr-only"
