@@ -4,6 +4,7 @@ import { redirect } from "next/navigation"
 import { getSession } from "@/lib/session"
 import { getProjectById, getProjectMilestones } from "@/lib/queries"
 import { Card } from "@/components/ui/card"
+import { reviewProject, approveProjectStart } from "@/app/actions/projects"
 import { formatCurrency } from "@/lib/roles"
 import { StatusBadge } from "@/components/status-badge"
 
@@ -46,6 +47,42 @@ export default async function AdminProjectDetail({ params }: { params: Promise<{
           <div className="flex items-center gap-2">
             <Link href="/dashboard/admin/projects" className="text-sm text-muted-foreground hover:underline">Back to projects</Link>
           </div>
+        </div>
+
+        <div className="mb-6 flex gap-3">
+          {/* Admin actions */}
+          {project.status === "pending" && (
+            <>
+              <form action={async function approve(formData: FormData) {
+                "use server"
+                const id = Number(formData.get("projectId"))
+                await reviewProject(id, true)
+              }}>
+                <input type="hidden" name="projectId" value={project.id} />
+                <button type="submit" className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">Approve project</button>
+              </form>
+
+              <form action={async function reject(formData: FormData) {
+                "use server"
+                const id = Number(formData.get("projectId"))
+                await reviewProject(id, false)
+              }}>
+                <input type="hidden" name="projectId" value={project.id} />
+                <button type="submit" className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted">Reject project</button>
+              </form>
+            </>
+          )}
+
+          {project.status === "funding" && (
+            <form action={async function approveStartAction(formData: FormData) {
+              "use server"
+              const id = Number(formData.get("projectId"))
+              await approveProjectStart(id)
+            }}>
+              <input type="hidden" name="projectId" value={project.id} />
+              <button type="submit" className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">Approve startup</button>
+            </form>
+          )}
         </div>
 
         <div className="grid gap-6">
