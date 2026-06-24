@@ -116,7 +116,7 @@ export default async function HomePage() {
 
           <div className="relative overflow-hidden rounded-[2rem] border border-border bg-gradient-to-br from-slate-950 via-slate-950/80 to-slate-950/90 p-3 shadow-xl shadow-slate-950/10">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(59,130,246,0.16),_transparent_40%)]" />
-            <div className="relative h-full overflow-hidden rounded-[1.75rem] bg-muted">
+            <div className="relative overflow-hidden rounded-[1.75rem] bg-muted h-[24rem] sm:h-[28rem] lg:h-[32rem]">
               <Image
                 src="/hero-community.png"
                 alt="A community collaborating on a local development project"
