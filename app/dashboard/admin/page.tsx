@@ -1,4 +1,4 @@
-﻿import Link from "next/link"
+import Link from "next/link"
 import { CheckCircle2, Clock, AlertCircle, Users, TrendingUp, GitBranch } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
@@ -56,60 +56,60 @@ export default async function AdminDashboard() {
         {/* Critical Actions */}
         <div className="mb-8 grid gap-4 sm:grid-cols-4">
           <Link href="/dashboard/admin/ready-to-start">
-            <Card className="p-6 border-2 border-primary/30 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group">
+            <Card className="p-5 border border-border/80 border-l-4 border-l-primary/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Ready to start</p>
-                  <p className="mt-2 text-3xl font-bold text-foreground">{readyToStartCount}</p>
-                  <p className="mt-1 text-xs text-primary font-medium">Projects awaiting approval</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Ready to Start</p>
+                  <p className="mt-2 text-3xl font-extrabold text-foreground">{readyToStartCount}</p>
+                  <p className="mt-1.5 text-xs text-primary font-bold">Projects awaiting start</p>
                 </div>
-                <div className="rounded-lg bg-primary/10 p-2 group-hover:bg-primary/20 transition">
-                  <AlertCircle className="size-5 text-primary" />
+                <div className="rounded-xl bg-primary/10 p-2.5 group-hover:bg-primary/20 transition-colors duration-200">
+                  <AlertCircle className="size-4.5 text-primary" />
                 </div>
               </div>
             </Card>
           </Link>
 
           <Link href="/dashboard/admin/projects">
-            <Card className="p-6 hover:bg-muted/50 transition-all cursor-pointer group">
+            <Card className="p-5 border border-border/80 border-l-4 border-l-amber-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Pending approvals</p>
-                  <p className="mt-2 text-3xl font-bold text-foreground">{pendingProjects.length}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">New submissions</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Pending Approvals</p>
+                  <p className="mt-2 text-3xl font-extrabold text-foreground">{pendingProjects.length}</p>
+                  <p className="mt-1.5 text-xs text-muted-foreground font-semibold">New proposals</p>
                 </div>
-                <div className="rounded-lg bg-yellow-100 dark:bg-yellow-900/30 p-2">
-                  <Clock className="size-5 text-yellow-700 dark:text-yellow-400" />
+                <div className="rounded-xl bg-amber-500/10 p-2.5">
+                  <Clock className="size-4.5 text-amber-500" />
                 </div>
               </div>
             </Card>
           </Link>
 
           <Link href="/dashboard/admin/milestones">
-            <Card className="p-6 hover:bg-muted/50 transition-all cursor-pointer group">
+            <Card className="p-5 border border-border/80 border-l-4 border-l-indigo-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Milestone queue</p>
-                  <p className="mt-2 text-3xl font-bold text-foreground">{pendingMilestones}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">Awaiting review</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Milestone Queue</p>
+                  <p className="mt-2 text-3xl font-extrabold text-foreground">{pendingMilestones}</p>
+                  <p className="mt-1.5 text-xs text-muted-foreground font-semibold">Pending verification</p>
                 </div>
-                <div className="rounded-lg bg-blue-100 dark:bg-blue-900/30 p-2">
-                  <GitBranch className="size-5 text-blue-700 dark:text-blue-400" />
+                <div className="rounded-xl bg-indigo-500/10 p-2.5">
+                  <GitBranch className="size-4.5 text-indigo-500" />
                 </div>
               </div>
             </Card>
           </Link>
 
           <Link href="/dashboard/admin/users">
-            <Card className="p-6 hover:bg-muted/50 transition-all cursor-pointer group">
+            <Card className="p-5 border border-border/80 border-l-4 border-l-emerald-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total users</p>
-                  <p className="mt-2 text-3xl font-bold text-foreground">{allUsers.length}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">Platform members</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Total Users</p>
+                  <p className="mt-2 text-3xl font-extrabold text-foreground">{allUsers.length}</p>
+                  <p className="mt-1.5 text-xs text-muted-foreground font-semibold">Platform members</p>
                 </div>
-                <div className="rounded-lg bg-green-100 dark:bg-green-900/30 p-2">
-                  <Users className="size-5 text-green-700 dark:text-green-400" />
+                <div className="rounded-xl bg-emerald-500/10 p-2.5">
+                  <Users className="size-4.5 text-emerald-500" />
                 </div>
               </div>
             </Card>
@@ -118,29 +118,29 @@ export default async function AdminDashboard() {
 
         {/* Project Status Overview */}
         <div className="mb-8">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Project status overview</h2>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <h2 className="text-lg font-bold text-foreground mb-4">Project status overview</h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {projectStats.map((stat) => {
               const Icon = stat.icon
               const percentage = totalProjects > 0 ? Math.round((stat.value / totalProjects) * 100) : 0
               return (
-                <Card key={stat.label} className={`p-4 border ${stat.borderColor} ${stat.color}`}>
+                <Card key={stat.label} className="p-4 border border-border bg-card shadow-sm">
                   <div className="flex items-center gap-3">
-                    <div className="rounded-lg bg-white/20 dark:bg-black/20 p-2">
-                      <Icon className={`size-4 ${stat.textColor}`} />
+                    <div className="rounded-xl bg-secondary p-2.5 text-muted-foreground">
+                      <Icon className="size-4.5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className={`text-xs font-medium ${stat.textColor}`}>{stat.label}</p>
-                      <p className={`text-2xl font-bold ${stat.textColor}`}>{stat.value}</p>
+                      <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{stat.label}</p>
+                      <p className="text-xl font-bold text-foreground mt-0.5">{stat.value}</p>
                       {totalProjects > 0 && (
-                        <div className="mt-2">
-                          <div className="w-full bg-white/30 dark:bg-black/30 rounded-full h-1.5">
+                        <div className="mt-2.5">
+                          <div className="w-full bg-secondary rounded-full h-1.5 overflow-hidden">
                             <div 
-                              className={`h-full rounded-full transition-all ${stat.barColor}`}
+                              className={`h-full rounded-full transition-all duration-500 ${stat.barColor}`}
                               style={{ width: `${percentage}%` }}
                             />
                           </div>
-                          <p className={`text-xs mt-1 ${stat.textColor}`}>{percentage}% of total</p>
+                          <p className="text-[10px] mt-1 font-bold text-muted-foreground">{percentage}% of total</p>
                         </div>
                       )}
                     </div>
@@ -153,38 +153,38 @@ export default async function AdminDashboard() {
 
         {/* Quick Stats */}
         <div className="mb-8 grid gap-4 sm:grid-cols-3">
-          <Card className="p-6 border-l-4 border-l-primary/50">
+          <Card className="p-5 border border-border/80 border-l-4 border-l-primary/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="font-semibold text-foreground">Total projects</h3>
-                <p className="mt-3 text-3xl font-bold text-foreground">{totalProjects}</p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {fundingProjects.length} currently funding
+                <h3 className="font-bold text-foreground text-sm uppercase tracking-wider">Total Projects</h3>
+                <p className="mt-3 text-3xl font-extrabold text-foreground">{totalProjects}</p>
+                <p className="mt-2 text-xs font-semibold text-muted-foreground">
+                  {fundingProjects.length} currently fundraising
                 </p>
               </div>
             </div>
           </Card>
 
-          <Card className="p-6 border-l-4 border-l-blue-500/50">
+          <Card className="p-5 border border-border/80 border-l-4 border-l-indigo-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="font-semibold text-foreground">Milestones</h3>
-                <p className="mt-3 text-3xl font-bold text-foreground">{pendingMilestones}</p>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <h3 className="font-bold text-foreground text-sm uppercase tracking-wider">Milestones</h3>
+                <p className="mt-3 text-3xl font-extrabold text-foreground">{pendingMilestones}</p>
+                <p className="mt-2 text-xs font-semibold text-muted-foreground">
                   Awaiting evidence & approval
                 </p>
               </div>
             </div>
           </Card>
 
-          <Card className="p-6 border-l-4 border-l-emerald-500/50">
+          <Card className="p-5 border border-border/80 border-l-4 border-l-emerald-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="font-semibold text-foreground">Completion rate</h3>
-                <p className="mt-3 text-3xl font-bold text-foreground">
+                <h3 className="font-bold text-foreground text-sm uppercase tracking-wider">Completion Rate</h3>
+                <p className="mt-3 text-3xl font-extrabold text-foreground">
                   {totalProjects > 0 ? Math.round((completedProjects.length / totalProjects) * 100) : 0}%
                 </p>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="mt-2 text-xs font-semibold text-muted-foreground">
                   {completedProjects.length} completed projects
                 </p>
               </div>
@@ -193,53 +193,59 @@ export default async function AdminDashboard() {
         </div>
 
         {/* Action Cards */}
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-3">
           <Link href="/dashboard/admin/projects" className="group">
-            <Card className="p-6 h-full hover:shadow-md hover:border-primary/30 transition-all">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="rounded-lg bg-yellow-100 dark:bg-yellow-900/30 p-2">
-                  <Clock className="size-5 text-yellow-700 dark:text-yellow-400" />
+            <Card className="p-6 h-full border border-border/80 bg-card hover:shadow-md hover:border-primary/20 transition-all duration-250 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="rounded-xl bg-amber-500/10 p-2.5">
+                    <Clock className="size-5 text-amber-500" />
+                  </div>
+                  <h3 className="font-bold text-foreground">Project approvals</h3>
                 </div>
-                <h3 className="font-semibold text-foreground">Project approvals</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Review and approve new project submissions from creators. {pendingProjects.length} projects awaiting review.
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Review and approve new project submissions from creators. {pendingProjects.length} awaiting review.
-              </p>
-              <p className="mt-4 text-sm font-medium text-primary group-hover:underline">
+              <p className="mt-6 text-sm font-bold text-primary group-hover:underline">
                 Go to project reviews →
               </p>
             </Card>
           </Link>
 
           <Link href="/dashboard/admin/users" className="group">
-            <Card className="p-6 h-full hover:shadow-md hover:border-primary/30 transition-all">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="rounded-lg bg-green-100 dark:bg-green-900/30 p-2">
-                  <Users className="size-5 text-green-700 dark:text-green-400" />
+            <Card className="p-6 h-full border border-border/80 bg-card hover:shadow-md hover:border-primary/20 transition-all duration-250 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="rounded-xl bg-emerald-500/10 p-2.5">
+                    <Users className="size-5 text-emerald-500" />
+                  </div>
+                  <h3 className="font-bold text-foreground">User management</h3>
                 </div>
-                <h3 className="font-semibold text-foreground">User management</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Manage user accounts, roles, and platform permissions. {allUsers.length} total users registered.
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Manage user accounts, roles, and platform permissions. {allUsers.length} users on platform.
-              </p>
-              <p className="mt-4 text-sm font-medium text-primary group-hover:underline">
+              <p className="mt-6 text-sm font-bold text-primary group-hover:underline">
                 Manage users →
               </p>
             </Card>
           </Link>
 
           <Link href="/dashboard/disputes" className="group">
-            <Card className="p-6 h-full hover:shadow-md hover:border-primary/30 transition-all">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="rounded-lg bg-red-100 dark:bg-red-900/30 p-2">
-                  <AlertCircle className="size-5 text-red-700 dark:text-red-400" />
+            <Card className="p-6 h-full border border-border/80 bg-card hover:shadow-md hover:border-primary/20 transition-all duration-250 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="rounded-xl bg-rose-500/10 p-2.5">
+                    <AlertCircle className="size-5 text-rose-500" />
+                  </div>
+                  <h3 className="font-bold text-foreground">Dispute review</h3>
                 </div>
-                <h3 className="font-semibold text-foreground">Dispute review</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Monitor and resolve disputes raised by donors, auditors, or project owners regarding milestone outcomes.
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Monitor and resolve disputes raised by donors, auditors, or project owners on the platform.
-              </p>
-              <p className="mt-4 text-sm font-medium text-primary group-hover:underline">
+              <p className="mt-6 text-sm font-bold text-primary group-hover:underline">
                 View disputes →
               </p>
             </Card>

@@ -74,56 +74,57 @@ export default function OwnerProjectsClient({ projects }: OwnerProjectsClientPro
 
         {projects.length > 0 ? (
           <>
-            <div className="mb-6 flex flex-col gap-4">
+            <div className="mb-8 flex flex-col gap-5">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
+                <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
                 <input
                   type="text"
                   placeholder="Search your projects by name or description..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full rounded-lg border border-border bg-background pl-10 pr-4 py-2.5 text-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full rounded-xl border border-border bg-card pl-12 pr-4 py-3 text-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 shadow-sm"
                 />
               </div>
 
               <div className="flex items-center justify-between">
                 <button
                   onClick={() => setExpandedFilters(!expandedFilters)}
-                  className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium hover:bg-muted transition"
+                  className="flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-2.5 text-sm font-semibold hover:bg-secondary transition shadow-sm hover:scale-102 active:scale-98 duration-200"
                 >
-                  <Filter className="size-4" />
-                  Filters {selectedStatuses.length > 0 && <Badge variant="secondary">{selectedStatuses.length}</Badge>}
+                  <Filter className="size-4 text-muted-foreground" />
+                  <span>Filters</span>
+                  {selectedStatuses.length > 0 && <Badge variant="secondary" className="ml-1">{selectedStatuses.length}</Badge>}
                 </button>
 
                 {(searchTerm || selectedStatuses.length > 0) && (
                   <button
                     onClick={handleClearFilters}
-                    className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
+                    className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition duration-200"
                   >
                     <X className="size-4" />
-                    Clear filters
+                    <span>Clear filters</span>
                   </button>
                 )}
               </div>
 
               {expandedFilters && (
-                <Card className="p-4">
-                  <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                <Card className="p-5 border border-border/80 bg-card shadow-sm animate-fade-in">
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {statusOptions.map((status) => {
                       const count = projectStats.find((s) => s.value === status.value)?.count || 0
                       return count > 0 ? (
                         <button
                           key={status.value}
                           onClick={() => toggleStatus(status.value)}
-                          className={`rounded-lg border-2 p-3 text-left transition ${
+                          className={`rounded-xl border p-4 text-left transition-all duration-200 hover:scale-102 hover:shadow-sm ${
                             selectedStatuses.includes(status.value)
-                              ? "border-primary bg-primary/10"
-                              : "border-border bg-background hover:border-muted-foreground/50"
+                              ? "border-primary bg-primary/5 text-primary ring-1 ring-primary/25"
+                              : "border-border/80 bg-card hover:border-primary/20 hover:bg-secondary/40"
                           }`}
                         >
-                          <p className="text-xl mb-1">{status.icon}</p>
-                          <p className="text-sm font-medium text-foreground">{status.label}</p>
-                          <p className="text-xs text-muted-foreground mt-1">{count} projects</p>
+                          <p className="text-xl mb-1.5">{status.icon}</p>
+                          <p className="text-sm font-bold text-foreground">{status.label}</p>
+                          <p className="text-xs text-muted-foreground mt-1.5">{count} projects</p>
                         </button>
                       ) : null
                     })}
@@ -131,18 +132,18 @@ export default function OwnerProjectsClient({ projects }: OwnerProjectsClientPro
                 </Card>
               )}
 
-              <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center justify-between text-sm pt-2">
                 <p className="text-muted-foreground">
                   Showing <span className="font-semibold text-foreground">{filteredProjects.length}</span> of{' '}
                   <span className="font-semibold text-foreground">{projects.length}</span> projects
                 </p>
 
                 {selectedStatuses.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5">
                     {selectedStatuses.map((status) => {
                       const statusInfo = statusOptions.find((s) => s.value === status)
                       return (
-                        <Badge key={status} variant="outline" className="text-xs">
+                        <Badge key={status} variant="outline" className="text-xs bg-secondary/40 border-border/60">
                           {statusInfo?.label || status}
                         </Badge>
                       )
@@ -160,53 +161,53 @@ export default function OwnerProjectsClient({ projects }: OwnerProjectsClientPro
                 ).length
                 const total = milestones.length
                 return (
-                  <Card key={project.id} className="p-6 hover:shadow-md transition-shadow">
+                  <Card key={project.id} className="p-6 border border-border/80 bg-card hover:shadow-md transition-shadow">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <a
                           href={`/projects/${project.id}`}
-                          className="text-lg font-semibold text-foreground hover:text-primary transition"
+                          className="text-lg font-bold text-foreground hover:text-primary transition-colors duration-200"
                         >
                           {project.title}
                         </a>
-                        <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+                        <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
                           {project.summary}
                         </p>
                       </div>
                       <StatusBadge status={project.status} />
                     </div>
-                    <div className="mt-4 grid gap-3 sm:grid-cols-4 text-sm">
-                      <div className="rounded-lg bg-muted p-3">
-                        <span className="text-xs text-muted-foreground block">Raised</span>
-                        <span className="text-lg font-semibold text-foreground">
+                    <div className="mt-6 grid gap-3 sm:grid-cols-4 text-sm">
+                      <div className="rounded-xl bg-secondary/50 p-4 border border-border/40">
+                        <span className="text-xs text-muted-foreground font-semibold block uppercase tracking-wider">Raised</span>
+                        <span className="text-lg font-extrabold text-foreground mt-1 block">
                           {formatCurrency(project.fundedAmount)}
                         </span>
                       </div>
-                      <div className="rounded-lg bg-primary/5 p-3">
-                        <span className="text-xs text-muted-foreground block">In Escrow</span>
-                        <span className="text-lg font-semibold text-primary">
+                      <div className="rounded-xl bg-primary/5 p-4 border border-primary/20">
+                        <span className="text-xs text-muted-foreground font-semibold block uppercase tracking-wider">In Escrow</span>
+                        <span className="text-lg font-extrabold text-primary mt-1 block">
                           {formatCurrency(project.escrowBalance)}
                         </span>
                       </div>
-                      <div className="rounded-lg bg-muted p-3">
-                        <span className="text-xs text-muted-foreground block">Goal</span>
-                        <span className="text-lg font-semibold text-foreground">
+                      <div className="rounded-xl bg-secondary/50 p-4 border border-border/40">
+                        <span className="text-xs text-muted-foreground font-semibold block uppercase tracking-wider">Goal</span>
+                        <span className="text-lg font-extrabold text-foreground mt-1 block">
                           {formatCurrency(project.fundingGoal)}
                         </span>
                       </div>
-                      <div className="rounded-lg bg-muted p-3">
-                        <span className="text-xs text-muted-foreground block">Milestones</span>
-                        <span className="text-lg font-semibold text-foreground">
-                          {completed}/{total} verified
+                      <div className="rounded-xl bg-secondary/50 p-4 border border-border/40">
+                        <span className="text-xs text-muted-foreground font-semibold block uppercase tracking-wider">Milestones</span>
+                        <span className="text-lg font-extrabold text-foreground mt-1 block">
+                          {completed} / {total} verified
                         </span>
                       </div>
                     </div>
-                    <div className="mt-4 flex gap-2">
+                    <div className="mt-5 pt-5 border-t border-border/60 flex gap-2">
                       <a
                         href={`/dashboard/projects/${project.id}`}
-                        className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium hover:bg-muted transition"
+                        className="inline-flex items-center justify-center rounded-xl border border-border bg-card px-5 py-2.5 text-sm font-bold hover:bg-secondary hover:scale-[1.01] transition duration-200"
                       >
-                        Manage milestones
+                        Manage Milestones
                       </a>
                     </div>
                   </Card>

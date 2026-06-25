@@ -32,7 +32,7 @@ export function SiteHeader({
   )
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/80 backdrop-blur-md shadow-sm">
       <div className="mx-auto grid h-16 max-w-6xl grid-cols-[auto_1fr_auto] items-center px-4">
         <div className="flex items-center min-w-[3rem]">
           {user ? (
@@ -40,7 +40,7 @@ export function SiteHeader({
               <button
                 type="button"
                 onClick={onMenuClick}
-                className="inline-flex items-center justify-center rounded-md p-2 text-foreground hover:bg-accent/50 md:hidden"
+                className="inline-flex items-center justify-center rounded-xl p-2 text-foreground hover:bg-secondary transition md:hidden"
                 aria-label="Open menu"
               >
                 <Menu className="size-5" />
@@ -56,22 +56,22 @@ export function SiteHeader({
             renderLogo()
           ) : (
             !hideNavigation && (
-              <nav className="hidden items-center gap-6 text-sm md:flex">
+              <nav className="hidden items-center gap-8 text-sm md:flex">
                 <a
                   href="/projects"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  className="font-bold text-muted-foreground transition-all hover:text-primary hover:-translate-y-0.5"
                 >
                   Projects
                 </a>
                 <a
                   href="/transparency"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  className="font-bold text-muted-foreground transition-all hover:text-primary hover:-translate-y-0.5"
                 >
                   Transparency
                 </a>
                 <a
                   href="/#how-it-works"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  className="font-bold text-muted-foreground transition-all hover:text-primary hover:-translate-y-0.5"
                 >
                   How it works
                 </a>
@@ -90,15 +90,15 @@ export function SiteHeader({
                 .toUpperCase()
 
               return (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <Link
                     href="/dashboard/notifications"
-                    className="relative p-2 rounded-lg hover:bg-muted transition-colors"
+                    className="relative p-2.5 rounded-xl hover:bg-secondary text-muted-foreground hover:text-foreground transition-all hover:scale-105"
                     title="Notifications"
                   >
-                    <Bell className="size-5 text-muted-foreground" />
+                    <Bell className="size-5" />
                     {unreadCount > 0 && (
-                      <span className="absolute top-1 right-1 flex size-4 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-xs font-bold">
+                      <span className="absolute top-1.5 right-1.5 flex size-4 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold ring-2 ring-background">
                         {unreadCount > 99 ? "99+" : unreadCount}
                       </span>
                     )}
@@ -106,11 +106,11 @@ export function SiteHeader({
 
                   <Link
                     href="/dashboard/profile"
-                    className="flex items-center gap-2 rounded-full p-1 hover:bg-muted transition-colors"
+                    className="flex items-center gap-2 rounded-full p-0.5 hover:bg-secondary transition-all hover:scale-102"
                     aria-label="Profile"
                   >
                     {user.image ? (
-                      <div className="h-8 w-8 overflow-hidden rounded-full">
+                      <div className="h-8 w-8 overflow-hidden rounded-full border border-border">
                         <Image
                           src={user.image}
                           alt={`${user.name}'s avatar`}
@@ -120,7 +120,7 @@ export function SiteHeader({
                         />
                       </div>
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 text-primary border border-primary/20 flex items-center justify-center text-xs font-bold shadow-sm">
                         {initials}
                       </div>
                     )}
@@ -129,18 +129,18 @@ export function SiteHeader({
               )
             })()
           ) : (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-5">
               <a
                 href="/sign-in"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="text-sm font-bold text-muted-foreground hover:text-foreground transition-colors"
               >
                 Sign in
               </a>
               <a
                 href="/sign-up"
-                className="inline-flex items-center justify-center rounded-lg bg-primary px-3 py-1 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2 text-sm font-bold text-primary-foreground shadow-md shadow-primary/10 hover:shadow-primary/20 hover:scale-[1.03] active:scale-95 transition-all"
               >
-                Get started
+                Get Started
               </a>
             </div>
           )}

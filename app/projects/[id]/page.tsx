@@ -95,62 +95,65 @@ export default async function ProjectDetailPage({
               </p>
             </div>
 
-            <Card className="p-6">
-              <h2 className="mb-3 text-lg font-semibold text-foreground">
+            <Card className="p-6 border border-border/80 bg-card shadow-sm">
+              <h2 className="mb-3 text-lg font-bold text-foreground">
                 About this project
               </h2>
-              <p className="whitespace-pre-line leading-relaxed text-muted-foreground">
+              <p className="whitespace-pre-line leading-relaxed text-muted-foreground text-sm sm:text-base">
                 {project.description}
               </p>
             </Card>
 
-            <Card className="p-6">
-              <h2 className="mb-4 text-lg font-semibold text-foreground">
+            <Card className="p-6 border border-border/80 bg-card shadow-sm">
+              <h2 className="mb-5 text-lg font-bold text-foreground">
                 Milestones
               </h2>
               <MilestoneTimeline milestones={milestones} />
             </Card>
 
             {/* Transparency / audit trail */}
-            <Card className="p-6">
-              <div className="mb-4 flex items-center gap-2">
+            <Card className="p-6 border border-border/80 bg-card shadow-sm">
+              <div className="mb-5 flex items-center gap-2 pb-3 border-b border-border/60">
                 <Receipt className="size-5 text-primary" />
-                <h2 className="text-lg font-semibold text-foreground">
-                  Audit trail
+                <h2 className="text-lg font-bold text-foreground">
+                  Audit Trail
                 </h2>
               </div>
               {transactions.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground py-2">
                   No transactions recorded yet.
                 </p>
               ) : (
-                <ul className="flex flex-col divide-y divide-border">
-                  {transactions.map((t) => (
-                    <li
-                      key={t.id}
-                      className="flex items-center justify-between gap-3 py-3"
-                    >
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-medium text-foreground">
-                          {t.note ?? t.type}
-                        </p>
-                        <p className="text-xs capitalize text-muted-foreground">
-                          {t.type.replace("_", " ")} •{" "}
-                          {new Date(t.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <span
-                        className={`text-sm font-semibold ${
-                          t.type === "release"
-                            ? "text-primary"
-                            : "text-foreground"
-                        }`}
+                <ul className="flex flex-col divide-y divide-border/60">
+                  {transactions.map((t) => {
+                    const isRelease = t.type === "release"
+                    return (
+                      <li
+                        key={t.id}
+                        className="flex items-center justify-between gap-3 py-3.5"
                       >
-                        {t.type === "release" ? "-" : "+"}
-                        {formatCurrency(t.amount)}
-                      </span>
-                    </li>
-                  ))}
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-foreground">
+                            {t.note ?? t.type}
+                          </p>
+                          <p className="text-xs capitalize text-muted-foreground mt-0.5">
+                            {t.type.replace("_", " ")} •{" "}
+                            {new Date(t.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <span
+                          className={`text-sm font-bold ${
+                            isRelease
+                              ? "text-amber-600 dark:text-amber-400"
+                              : "text-emerald-600 dark:text-emerald-400"
+                          }`}
+                        >
+                          {isRelease ? "-" : "+"}
+                          {formatCurrency(t.amount)}
+                        </span>
+                      </li>
+                    )
+                  })}
                 </ul>
               )}
             </Card>
@@ -158,38 +161,38 @@ export default async function ProjectDetailPage({
 
           {/* Sidebar */}
           <div className="flex flex-col gap-6">
-            <Card className="p-6">
+            <Card className="p-6 border border-border/80 bg-card shadow-sm">
               <FundingProgress
                 funded={project.fundedAmount}
                 goal={project.fundingGoal}
                 released={project.releasedAmount}
               />
-              <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-border pt-5 text-sm">
+              <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-border/60 pt-5 text-sm">
                 <div className="flex flex-col gap-1">
-                  <dt className="flex items-center gap-1 text-muted-foreground">
-                    <Lock className="size-3.5" /> In escrow
+                  <dt className="flex items-center gap-1 text-muted-foreground font-semibold text-xs uppercase tracking-wider">
+                    <Lock className="size-3.5 text-primary/70" /> Escrow
                   </dt>
-                  <dd className="font-semibold text-foreground">
+                  <dd className="font-bold text-foreground text-base mt-0.5">
                     {formatCurrency(project.escrowBalance)}
                   </dd>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <dt className="flex items-center gap-1 text-muted-foreground">
-                    <Banknote className="size-3.5" /> Released
+                  <dt className="flex items-center gap-1 text-muted-foreground font-semibold text-xs uppercase tracking-wider">
+                    <Banknote className="size-3.5 text-primary/70" /> Released
                   </dt>
-                  <dd className="font-semibold text-foreground">
+                  <dd className="font-bold text-foreground text-base mt-0.5">
                     {formatCurrency(project.releasedAmount)}
                   </dd>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <dt className="text-muted-foreground">Contributors</dt>
-                  <dd className="font-semibold text-foreground">
+                  <dt className="text-muted-foreground font-semibold text-xs uppercase tracking-wider">Contributors</dt>
+                  <dd className="font-bold text-foreground text-base mt-0.5">
                     {donations.length}
                   </dd>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <dt className="text-muted-foreground">Milestones</dt>
-                  <dd className="font-semibold text-foreground">
+                  <dt className="text-muted-foreground font-semibold text-xs uppercase tracking-wider">Milestones</dt>
+                  <dd className="font-bold text-foreground text-base mt-0.5">
                     {milestones.length}
                   </dd>
                 </div>

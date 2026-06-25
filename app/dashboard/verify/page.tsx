@@ -32,30 +32,30 @@ export default async function VerifierDashboard() {
         {/* Stats */}
         {queue.length > 0 && (
           <div className="mb-8 grid gap-4 sm:grid-cols-2">
-            <Card className="p-6 border-l-4 border-l-primary/50">
+            <Card className="p-5 border border-border/80 border-l-4 border-l-primary/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Pending verification</p>
-                  <p className="mt-2 text-3xl font-bold text-foreground">{queue.length}</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Pending Verification</p>
+                  <p className="mt-2 text-2xl font-extrabold text-foreground">{queue.length}</p>
                   <p className="mt-1 text-xs text-muted-foreground">Milestones awaiting review</p>
                 </div>
-                <div className="rounded-lg bg-primary/10 p-2">
-                  <Clock className="size-5 text-primary" />
+                <div className="rounded-xl bg-primary/10 p-2.5">
+                  <Clock className="size-4.5 text-primary" />
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6 border-l-4 border-l-blue-500/50">
+            <Card className="p-5 border border-border/80 border-l-4 border-l-indigo-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Projects involved</p>
-                  <p className="mt-2 text-3xl font-bold text-foreground">
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Projects Involved</p>
+                  <p className="mt-2 text-2xl font-extrabold text-foreground font-mono">
                     {new Set(queue.map((m) => m.projectId)).size}
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">With pending milestones</p>
                 </div>
-                <div className="rounded-lg bg-blue-100 dark:bg-blue-900/30 p-2">
-                  <FileText className="size-5 text-blue-700 dark:text-blue-400" />
+                <div className="rounded-xl bg-indigo-500/10 p-2.5">
+                  <FileText className="size-4.5 text-indigo-500" />
                 </div>
               </div>
             </Card>
@@ -65,69 +65,69 @@ export default async function VerifierDashboard() {
         {/* Verification Queue */}
         {queue.length > 0 ? (
           <div>
-            <h2 className="text-lg font-semibold text-foreground mb-4">
+            <h2 className="text-lg font-bold text-foreground mb-4">
               Milestones to review
             </h2>
             <div className="grid gap-4">
               {queue.map((m, idx) => (
-                <Card key={m.id} className="p-6 hover:shadow-md transition-shadow">
-                  <div className="flex items-start justify-between">
+                <Card key={m.id} className="p-6 border border-border/80 bg-card hover:shadow-md transition-shadow">
+                  <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
                         <a
                           href={`/projects/${m.projectId}`}
-                          className="text-sm font-medium text-muted-foreground hover:text-primary transition"
+                          className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider"
                         >
                           {m.projectTitle}
                         </a>
-                        <Badge variant="outline" className="text-xs">
+                        <Badge variant="outline" className="text-[10px] font-bold px-2 py-0.5 bg-secondary/50 border-border/50">
                           Milestone {(m as any).orderIndex != null ? (m as any).orderIndex + 1 : idx + 1}
                         </Badge>
                       </div>
-                      <p className="text-lg font-semibold text-foreground">
+                      <p className="text-lg font-bold text-foreground">
                         {m.title}
                       </p>
-                      <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
+                      <p className="mt-2 text-sm text-muted-foreground max-w-2xl leading-relaxed">
                         {m.evidenceNote || m.description}
                       </p>
                       {m.evidenceUrls && m.evidenceUrls.length > 0 && (
-                        <div className="mt-3">
-                          <p className="text-xs text-muted-foreground mb-2">
+                        <div className="mt-3.5">
+                          <span className="inline-flex items-center gap-1 text-xs font-bold text-primary bg-primary/5 px-2.5 py-1 rounded-md border border-primary/20">
                             📎 {m.evidenceUrls.length} file(s) attached
-                          </p>
+                          </span>
                         </div>
                       )}
                     </div>
                     <StatusBadge status={m.status} />
                   </div>
 
-                  <div className="mt-4 grid gap-3 sm:grid-cols-3 text-sm">
-                    <div className="rounded-lg bg-muted p-3">
-                      <span className="text-xs text-muted-foreground block">Milestone amount</span>
-                      <span className="text-lg font-semibold text-foreground">
+                  <div className="mt-6 grid gap-3 sm:grid-cols-3 text-sm">
+                    <div className="rounded-xl bg-secondary/50 p-4 border border-border/40">
+                      <span className="text-xs text-muted-foreground font-semibold block uppercase tracking-wider">Milestone Amount</span>
+                      <span className="text-base font-extrabold text-foreground mt-1 block">
                         {formatCurrency(m.amount)}
                       </span>
                     </div>
-                    <div className="rounded-lg bg-muted p-3">
-                      <span className="text-xs text-muted-foreground block">Due date</span>
-                      <span className="text-lg font-semibold text-foreground">
+                    <div className="rounded-xl bg-secondary/50 p-4 border border-border/40">
+                      <span className="text-xs text-muted-foreground font-semibold block uppercase tracking-wider">Due Date</span>
+                      <span className="text-base font-extrabold text-foreground mt-1 block">
                         {typeof (m as any).dueDate === "string" ? new Date((m as any).dueDate).toLocaleDateString() : "No date"}
                       </span>
                     </div>
-                    <div className="rounded-lg bg-muted p-3">
-                      <span className="text-xs text-muted-foreground block">Submitted</span>
-                      <span className="text-lg font-semibold text-foreground">
+                    <div className="rounded-xl bg-secondary/50 p-4 border border-border/40">
+                      <span className="text-xs text-muted-foreground font-semibold block uppercase tracking-wider">Submitted</span>
+                      <span className="text-base font-extrabold text-foreground mt-1 block">
                         {m.submittedAt ? new Date(m.submittedAt).toLocaleDateString() : "Pending"}
                       </span>
                     </div>
                   </div>
 
-                  <div className="mt-4">
+                  <div className="mt-5 pt-5 border-t border-border/60 flex justify-end">
                     <a
                       href={`/dashboard/verify/${m.id}`}
-                      className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition"
+                      className="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm hover:scale-[1.01] transition duration-200"
                     >
-                      Review milestone
+                      Review Milestone
                     </a>
                   </div>
                 </Card>
