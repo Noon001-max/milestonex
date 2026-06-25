@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { CheckCircle2, Clock, AlertCircle, Users, TrendingUp, GitBranch } from "lucide-react"
+import { CheckCircle2, Clock, AlertCircle, Users, TrendingUp, GitBranch, Banknote, Landmark, ArrowRight, Activity } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { getAllProjects } from "@/lib/queries"
@@ -9,6 +9,14 @@ import { getReadyToStartProjects } from "@/app/actions/projects"
 import { Card } from "@/components/ui/card"
 
 export const dynamic = "force-dynamic"
+
+const formatCurrency = (val: number) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(val)
+}
 
 export default async function AdminDashboard() {
   const user = await getSession()
@@ -27,231 +35,214 @@ export default async function AdminDashboard() {
   const fundingProjects = projects.filter((project) => project.status === "funding")
   const startedProjects = projects.filter((project) => project.status === "started")
   const completedProjects = projects.filter((project) => project.status === "completed")
-  
+
+  const totalProjects = projects.length
   const readyToStartCount = readyToStart.length
   const pendingMilestones = milestones.length
-  const totalProjects = projects.length
+  
+  const totalRaised = projects.reduce((acc, p) => acc + Number(p.fundedAmount || 0), 0)
+  const totalEscrow = projects.reduce((acc, p) => acc + Number(p.escrowBalance || 0), 0)
+  const completionRate = totalProjects > 0 ? Math.round((completedProjects.length / totalProjects) * 100) : 0
 
-  const projectStats = [
-    { label: "Pending Review", value: pendingProjects.length, icon: Clock, color: "bg-yellow-50 dark:bg-yellow-950", textColor: "text-yellow-700 dark:text-yellow-300", borderColor: "border-yellow-200 dark:border-yellow-800", barColor: "bg-yellow-500 dark:bg-yellow-600" },
-    { label: "Approved", value: approvedProjects.length, icon: CheckCircle2, color: "bg-blue-50 dark:bg-blue-950", textColor: "text-blue-700 dark:text-blue-300", borderColor: "border-blue-200 dark:border-blue-800", barColor: "bg-blue-500 dark:bg-blue-600" },
-    { label: "Funding", value: fundingProjects.length, icon: TrendingUp, color: "bg-green-50 dark:bg-green-950", textColor: "text-green-700 dark:text-green-300", borderColor: "border-green-200 dark:border-green-800", barColor: "bg-green-500 dark:bg-green-600" },
-    { label: "Active", value: startedProjects.length, icon: GitBranch, color: "bg-purple-50 dark:bg-purple-950", textColor: "text-purple-700 dark:text-purple-300", borderColor: "border-purple-200 dark:border-purple-800", barColor: "bg-purple-500 dark:bg-purple-600" },
-    { label: "Completed", value: completedProjects.length, icon: CheckCircle2, color: "bg-emerald-50 dark:bg-emerald-950", textColor: "text-emerald-700 dark:text-emerald-300", borderColor: "border-emerald-200 dark:border-emerald-800", barColor: "bg-emerald-500 dark:bg-emerald-600" },
+  const keyMetrics = [
+    { label: "Platform Members", value: allUsers.length, icon: Users, subtext: "Total registered users", color: "text-blue-500 bg-blue-500/10" },
+    { label: "Total Funds Raised", value: formatCurrency(totalRaised), icon: TrendingUp, subtext: `${fundingProjects.length} active fundraisers`, color: "text-emerald-500 bg-emerald-500/10" },
+    { label: "Secured in Escrow", value: formatCurrency(totalEscrow), icon: Landmark, subtext: "Awaiting milestone releases", color: "text-indigo-500 bg-indigo-500/10" },
+    { label: "Completion Rate", value: `${completionRate}%`, icon: CheckCircle2, subtext: `${completedProjects.length} completed projects`, color: "text-purple-500 bg-purple-500/10" },
+  ]
+
+  const actionItems = [
+    {
+      title: "Project Approvals",
+      href: "/dashboard/admin/projects",
+      count: pendingProjects.length,
+      description: "Evaluate and approve new project proposals submitted by creators.",
+      icon: Clock,
+      color: "border-l-amber-500/70 text-amber-500 bg-amber-500/5 hover:bg-amber-500/10",
+      badgeColor: "bg-amber-500/20 text-amber-600 dark:text-amber-400"
+    },
+    {
+      title: "Milestone Queue",
+      href: "/dashboard/admin/milestones",
+      count: pendingMilestones,
+      description: "Review submitted evidence from project owners and unlock payments.",
+      icon: GitBranch,
+      color: "border-l-indigo-500/70 text-indigo-500 bg-indigo-500/5 hover:bg-indigo-500/10",
+      badgeColor: "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400"
+    },
+    {
+      title: "Launch Approvals",
+      href: "/dashboard/admin/ready-to-start",
+      count: readyToStartCount,
+      description: "Authorize the activation of fully-funded projects to begin work.",
+      icon: PlayCircleIcon,
+      color: "border-l-primary/70 text-primary bg-primary/5 hover:bg-primary/10",
+      badgeColor: "bg-primary/20 text-primary-foreground font-bold bg-primary/20 text-primary"
+    },
+    {
+      title: "User Management",
+      href: "/dashboard/admin/users",
+      count: null,
+      description: "Manage accounts, update user permissions, and suspend accounts.",
+      icon: Users,
+      color: "border-l-emerald-500/70 text-emerald-500 bg-emerald-500/5 hover:bg-emerald-500/10",
+      badgeColor: ""
+    },
+    {
+      title: "Dispute Review",
+      href: "/dashboard/disputes",
+      count: null,
+      description: "Moderate and resolve claims raised regarding milestone completions.",
+      icon: AlertCircle,
+      color: "border-l-rose-500/70 text-rose-500 bg-rose-500/5 hover:bg-rose-500/10",
+      badgeColor: ""
+    }
+  ]
+
+  const pipelineStats = [
+    { label: "Pending Review", value: pendingProjects.length, percentage: totalProjects > 0 ? Math.round((pendingProjects.length / totalProjects) * 100) : 0, barColor: "bg-amber-500" },
+    { label: "Approved (Not Live)", value: approvedProjects.length, percentage: totalProjects > 0 ? Math.round((approvedProjects.length / totalProjects) * 100) : 0, barColor: "bg-blue-500" },
+    { label: "Fundraising", value: fundingProjects.length, percentage: totalProjects > 0 ? Math.round((fundingProjects.length / totalProjects) * 100) : 0, barColor: "bg-emerald-500" },
+    { label: "Active Implementation", value: startedProjects.length, percentage: totalProjects > 0 ? Math.round((startedProjects.length / totalProjects) * 100) : 0, barColor: "bg-purple-500" },
+    { label: "Completed", value: completedProjects.length, percentage: totalProjects > 0 ? Math.round((completedProjects.length / totalProjects) * 100) : 0, barColor: "bg-slate-500 dark:bg-slate-400" },
   ]
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:py-12">
+        
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">
-            Admin dashboard
+        <div className="mb-10">
+          <div className="flex items-center gap-2.5 text-xs font-bold text-primary uppercase tracking-widest mb-1.5">
+            <Activity className="size-4" />
+            <span>Operational Console</span>
+          </div>
+          <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+            Admin Dashboard
           </h1>
-          <p className="mt-2 text-muted-foreground">
-            Monitor platform activity, approve projects, and manage milestones
+          <p className="mt-2 text-base text-muted-foreground max-w-3xl">
+            Monitor platform fundraising activity, evaluate project submissions, verify milestones, and moderate user dynamics.
           </p>
         </div>
 
-        {/* Critical Actions */}
-        <div className="mb-8 grid gap-4 sm:grid-cols-4">
-          <Link href="/dashboard/admin/ready-to-start">
-            <Card className="p-5 border border-border/80 border-l-4 border-l-primary/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Ready to Start</p>
-                  <p className="mt-2 text-3xl font-extrabold text-foreground">{readyToStartCount}</p>
-                  <p className="mt-1.5 text-xs text-primary font-bold">Projects awaiting start</p>
+        {/* Key Metrics Grid */}
+        <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {keyMetrics.map((metric) => {
+            const Icon = metric.icon
+            return (
+              <Card key={metric.label} className="p-6 border border-border/80 bg-card shadow-sm flex flex-col justify-between">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{metric.label}</span>
+                  <div className={`p-2 rounded-xl ${metric.color}`}>
+                    <Icon className="size-4.5" />
+                  </div>
                 </div>
-                <div className="rounded-xl bg-primary/10 p-2.5 group-hover:bg-primary/20 transition-colors duration-200">
-                  <AlertCircle className="size-4.5 text-primary" />
+                <div className="mt-4">
+                  <p className="text-2xl font-extrabold text-foreground tracking-tight">{metric.value}</p>
+                  <p className="text-[11px] text-muted-foreground font-medium mt-1">{metric.subtext}</p>
                 </div>
-              </div>
-            </Card>
-          </Link>
-
-          <Link href="/dashboard/admin/projects">
-            <Card className="p-5 border border-border/80 border-l-4 border-l-amber-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Pending Approvals</p>
-                  <p className="mt-2 text-3xl font-extrabold text-foreground">{pendingProjects.length}</p>
-                  <p className="mt-1.5 text-xs text-muted-foreground font-semibold">New proposals</p>
-                </div>
-                <div className="rounded-xl bg-amber-500/10 p-2.5">
-                  <Clock className="size-4.5 text-amber-500" />
-                </div>
-              </div>
-            </Card>
-          </Link>
-
-          <Link href="/dashboard/admin/milestones">
-            <Card className="p-5 border border-border/80 border-l-4 border-l-indigo-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Milestone Queue</p>
-                  <p className="mt-2 text-3xl font-extrabold text-foreground">{pendingMilestones}</p>
-                  <p className="mt-1.5 text-xs text-muted-foreground font-semibold">Pending verification</p>
-                </div>
-                <div className="rounded-xl bg-indigo-500/10 p-2.5">
-                  <GitBranch className="size-4.5 text-indigo-500" />
-                </div>
-              </div>
-            </Card>
-          </Link>
-
-          <Link href="/dashboard/admin/users">
-            <Card className="p-5 border border-border/80 border-l-4 border-l-emerald-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Total Users</p>
-                  <p className="mt-2 text-3xl font-extrabold text-foreground">{allUsers.length}</p>
-                  <p className="mt-1.5 text-xs text-muted-foreground font-semibold">Platform members</p>
-                </div>
-                <div className="rounded-xl bg-emerald-500/10 p-2.5">
-                  <Users className="size-4.5 text-emerald-500" />
-                </div>
-              </div>
-            </Card>
-          </Link>
+              </Card>
+            )
+          })}
         </div>
 
-        {/* Project Status Overview */}
-        <div className="mb-8">
-          <h2 className="text-lg font-bold text-foreground mb-4">Project status overview</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {projectStats.map((stat) => {
-              const Icon = stat.icon
-              const percentage = totalProjects > 0 ? Math.round((stat.value / totalProjects) * 100) : 0
-              return (
-                <Card key={stat.label} className="p-4 border border-border bg-card shadow-sm">
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-xl bg-secondary p-2.5 text-muted-foreground">
-                      <Icon className="size-4.5" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{stat.label}</p>
-                      <p className="text-xl font-bold text-foreground mt-0.5">{stat.value}</p>
-                      {totalProjects > 0 && (
-                        <div className="mt-2.5">
-                          <div className="w-full bg-secondary rounded-full h-1.5 overflow-hidden">
-                            <div 
-                              className={`h-full rounded-full transition-all duration-500 ${stat.barColor}`}
-                              style={{ width: `${percentage}%` }}
-                            />
-                          </div>
-                          <p className="text-[10px] mt-1 font-bold text-muted-foreground">{percentage}% of total</p>
+        <div className="grid gap-8 lg:grid-cols-3">
+          {/* Action Center - Occupies 2 columns */}
+          <div className="lg:col-span-2 space-y-6">
+            <div>
+              <h2 className="text-xl font-bold tracking-tight text-foreground mb-1">Administrative Actions</h2>
+              <p className="text-sm text-muted-foreground">Operational tasks awaiting attention or access channels.</p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-1">
+              {actionItems.map((item) => {
+                const Icon = item.icon
+                return (
+                  <Link key={item.title} href={item.href} className="group block">
+                    <Card className={`p-5 border border-border/80 border-l-4 ${item.color} shadow-sm transition-all duration-200 group-hover:translate-x-1 cursor-pointer flex items-center justify-between gap-4`}>
+                      <div className="flex items-start gap-4 min-w-0">
+                        <div className="p-2.5 rounded-xl bg-card border border-border shadow-sm text-foreground mt-0.5">
+                          <Icon className="size-5" />
                         </div>
-                      )}
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2.5 flex-wrap">
+                            <h3 className="font-bold text-foreground text-sm group-hover:text-primary transition-colors">{item.title}</h3>
+                            {item.count !== null && item.count > 0 && (
+                              <span className={`inline-flex items-center justify-center text-[10px] font-bold px-2 py-0.5 rounded-full ${item.badgeColor}`}>
+                                {item.count} awaiting
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{item.description}</p>
+                        </div>
+                      </div>
+                      <ArrowRight className="size-4.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+                    </Card>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Pipeline & Distribution Panel - Occupies 1 column */}
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-xl font-bold tracking-tight text-foreground mb-1">Platform Pipeline</h2>
+              <p className="text-sm text-muted-foreground">Distribution of projects across stages.</p>
+            </div>
+
+            <Card className="p-6 border border-border/80 bg-card shadow-sm space-y-6">
+              <div className="space-y-4">
+                {pipelineStats.map((stat) => (
+                  <div key={stat.label} className="space-y-1.5">
+                    <div className="flex items-center justify-between text-xs font-semibold">
+                      <span className="text-foreground">{stat.label}</span>
+                      <span className="text-muted-foreground">{stat.value} ({stat.percentage}%)</span>
+                    </div>
+                    <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full transition-all duration-500 ${stat.barColor}`}
+                        style={{ width: `${stat.percentage}%` }}
+                      />
                     </div>
                   </div>
-                </Card>
-              )
-            })}
+                ))}
+              </div>
+
+              <div className="border-t border-border pt-4 text-center">
+                <div className="inline-flex items-center gap-2.5 text-xs font-bold text-foreground">
+                  <span>Total System Scope:</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-secondary text-foreground text-sm font-black border border-border">
+                    {totalProjects}
+                  </span>
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
 
-        {/* Quick Stats */}
-        <div className="mb-8 grid gap-4 sm:grid-cols-3">
-          <Card className="p-5 border border-border/80 border-l-4 border-l-primary/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="font-bold text-foreground text-sm uppercase tracking-wider">Total Projects</h3>
-                <p className="mt-3 text-3xl font-extrabold text-foreground">{totalProjects}</p>
-                <p className="mt-2 text-xs font-semibold text-muted-foreground">
-                  {fundingProjects.length} currently fundraising
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-5 border border-border/80 border-l-4 border-l-indigo-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="font-bold text-foreground text-sm uppercase tracking-wider">Milestones</h3>
-                <p className="mt-3 text-3xl font-extrabold text-foreground">{pendingMilestones}</p>
-                <p className="mt-2 text-xs font-semibold text-muted-foreground">
-                  Awaiting evidence & approval
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-5 border border-border/80 border-l-4 border-l-emerald-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="font-bold text-foreground text-sm uppercase tracking-wider">Completion Rate</h3>
-                <p className="mt-3 text-3xl font-extrabold text-foreground">
-                  {totalProjects > 0 ? Math.round((completedProjects.length / totalProjects) * 100) : 0}%
-                </p>
-                <p className="mt-2 text-xs font-semibold text-muted-foreground">
-                  {completedProjects.length} completed projects
-                </p>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Action Cards */}
-        <div className="grid gap-6 sm:grid-cols-3">
-          <Link href="/dashboard/admin/projects" className="group">
-            <Card className="p-6 h-full border border-border/80 bg-card hover:shadow-md hover:border-primary/20 transition-all duration-250 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="rounded-xl bg-amber-500/10 p-2.5">
-                    <Clock className="size-5 text-amber-500" />
-                  </div>
-                  <h3 className="font-bold text-foreground">Project approvals</h3>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Review and approve new project submissions from creators. {pendingProjects.length} projects awaiting review.
-                </p>
-              </div>
-              <p className="mt-6 text-sm font-bold text-primary group-hover:underline">
-                Go to project reviews →
-              </p>
-            </Card>
-          </Link>
-
-          <Link href="/dashboard/admin/users" className="group">
-            <Card className="p-6 h-full border border-border/80 bg-card hover:shadow-md hover:border-primary/20 transition-all duration-250 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="rounded-xl bg-emerald-500/10 p-2.5">
-                    <Users className="size-5 text-emerald-500" />
-                  </div>
-                  <h3 className="font-bold text-foreground">User management</h3>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Manage user accounts, roles, and platform permissions. {allUsers.length} total users registered.
-                </p>
-              </div>
-              <p className="mt-6 text-sm font-bold text-primary group-hover:underline">
-                Manage users →
-              </p>
-            </Card>
-          </Link>
-
-          <Link href="/dashboard/disputes" className="group">
-            <Card className="p-6 h-full border border-border/80 bg-card hover:shadow-md hover:border-primary/20 transition-all duration-250 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="rounded-xl bg-rose-500/10 p-2.5">
-                    <AlertCircle className="size-5 text-rose-500" />
-                  </div>
-                  <h3 className="font-bold text-foreground">Dispute review</h3>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Monitor and resolve disputes raised by donors, auditors, or project owners regarding milestone outcomes.
-                </p>
-              </div>
-              <p className="mt-6 text-sm font-bold text-primary group-hover:underline">
-                View disputes →
-              </p>
-            </Card>
-          </Link>
-        </div>
       </main>
     </div>
   )
 }
+
+function PlayCircleIcon(props: React.ComponentProps<"svg">) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <polygon points="10 8 16 12 10 16 10 8" />
+    </svg>
+  )
+}
+

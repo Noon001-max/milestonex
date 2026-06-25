@@ -90,7 +90,7 @@ export default function RoleSidebar({
       { id: "approve-projects", label: "Approve projects", href: "/dashboard/admin/projects", icon: FileCheck },
       { id: "ready-to-start", label: "Ready to start", href: "/dashboard/admin/ready-to-start", icon: PlayCircle },
       { id: "approve-milestones", label: "Approve milestones", href: "/dashboard/admin/milestones", icon: CheckSquare },
-      { id: "users", label: "Manage users", href: "/dashboard/manage-users", icon: Users },
+      { id: "users", label: "Manage users", href: "/dashboard/admin/users", icon: Users },
     ],
     auditor: [
       { id: "auditor", label: "Audit dashboard", href: "/dashboard/auditor", icon: Briefcase },
@@ -124,10 +124,13 @@ export default function RoleSidebar({
   }
 
   const initials = user.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
+    ? user.name
+        .split(/\s+/)
+        .map((n) => n[0] || "")
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "MX"
 
   const sidebarContent = () => (
     <div className="flex flex-col h-full">

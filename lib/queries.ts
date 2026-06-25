@@ -42,6 +42,12 @@ export async function getAllProjects() {
       fundingGoal: projects.fundingGoal,
       status: projects.status,
       ownerId: projects.ownerId,
+      fundedAmount: projects.fundedAmount,
+      escrowBalance: projects.escrowBalance,
+      category: projects.category,
+      imageUrl: projects.imageUrl,
+      location: projects.location,
+      createdAt: projects.createdAt,
     })
     .from(projects)
     .orderBy(desc(projects.createdAt))
