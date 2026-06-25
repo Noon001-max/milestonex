@@ -18,11 +18,12 @@ type ProjectCardProps = {
     releasedAmount: number
     status: string
   }
+  hrefPrefix?: string
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ project, hrefPrefix = "/projects" }: ProjectCardProps) {
   return (
-    <Link href={`/projects/${project.id}`} className="group block">
+    <Link href={`${hrefPrefix}/${project.id}`} className="group block">
       <Card className="overflow-hidden p-0 h-full transition-shadow hover:shadow-md">
         <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
           <Image
