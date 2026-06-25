@@ -74,7 +74,7 @@ export default function RoleSidebar({
 
   const baseItems: Record<string, Item[]> = {
     donor: [
-      { id: "explore", label: "Explore projects", href: "/projects", icon: Compass },
+      { id: "explore", label: "Explore projects", href: "/dashboard/explore", icon: Compass },
       { id: "donations", label: "My donations", href: "/dashboard/donations", icon: Heart },
     ],
     owner: [

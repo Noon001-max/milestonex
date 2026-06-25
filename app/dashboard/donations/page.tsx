@@ -160,7 +160,7 @@ export default async function DonorDashboard() {
               Explore live community proposals and support projects with escrow protection.
             </p>
             <a
-              href="/projects"
+              href="/dashboard/explore"
               className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground hover:bg-primary/90 hover:scale-[1.02] active:scale-98 transition shadow-md"
             >
               Browse Projects
