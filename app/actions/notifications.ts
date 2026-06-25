@@ -19,14 +19,10 @@ export async function getMyNotifications() {
 export async function getUnreadNotificationsCount() {
   const u = await requireUser()
   const result = await db
-    .select({ count: notifications.id })
+    .select({ id: notifications.id })
     .from(notifications)
     .where(and(eq(notifications.userId, u.id), eq(notifications.read, false)))
-  // result is an array with a single row containing the count
-  const row = result[0]
-  // support BigInt or numeric count types
-  const count = row?.count ?? 0
-  return Number(count)
+  return result.length
 }
 
 export async function markNotificationRead(id: number) {
