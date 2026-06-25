@@ -1,11 +1,14 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Mail, User, Shield, Edit, Settings, ArrowRight, CheckCircle2, AlertTriangle, Key } from "lucide-react"
+import { Mail, User, Shield, Edit, Settings, ArrowRight, CheckCircle2, AlertTriangle, Key, Calendar } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ROLE_LABELS } from "@/lib/roles"
 import { LogoutButton } from "@/components/logout-button"
+import { db } from "@/lib/db"
+import { user as userTable } from "@/lib/db/schema"
+import { eq } from "drizzle-orm"
 
 export const dynamic = "force-dynamic"
 
@@ -35,6 +38,19 @@ export default async function ProfilePage() {
         .toUpperCase()
         .slice(0, 2)
     : "MX"
+
+  const dbUser = await db
+    .select({ createdAt: userTable.createdAt })
+    .from(userTable)
+    .where(eq(userTable.id, user.id))
+    .then((res) => res[0])
+
+  const memberSince = dbUser?.createdAt
+    ? new Date(dbUser.createdAt).toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      })
+    : "June 2026"
 
   const getRoleBadgeColor = (role: string) => {
     const colors: Record<string, string> = {
@@ -150,19 +166,12 @@ export default async function ProfilePage() {
                 </div>
 
                 <div className="space-y-3">
-                  <div>
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Verified Identifier</span>
-                    <span className="text-xs text-foreground font-mono bg-secondary/50 border border-border/60 rounded px-2 py-1 block mt-1 select-all truncate">
-                      {user.id}
-                    </span>
-                  </div>
-
-                  <div>
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Security Credentials</span>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/10">
-                        <CheckCircle2 className="size-3.5" />
-                        <span>Email Authenticated</span>
+                  <div className="flex items-center gap-2.5 p-3 border border-border/50 bg-secondary/20 rounded-xl">
+                    <Calendar className="size-4 text-primary" />
+                    <div>
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Member Since</span>
+                      <span className="text-xs font-bold text-foreground mt-0.5 block">
+                        {memberSince}
                       </span>
                     </div>
                   </div>
