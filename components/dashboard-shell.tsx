@@ -34,7 +34,15 @@ export default function DashboardShell({
           hideToggleButton={true}
         />
 
-        <main className="flex-1 md:pl-72">{children}</main>
+        <main className="flex-1 md:pl-72">
+          {/* Subtle accent gradient line at top of content area */}
+          <div className="h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+          
+          {/* Animated page content wrapper */}
+          <div className="animate-fade-in">
+            {children}
+          </div>
+        </main>
       </div>
     </div>
   )

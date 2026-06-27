@@ -66,14 +66,14 @@ export default async function HomePage() {
         <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
         
         <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 px-4 md:grid-cols-2">
-          <div className="flex flex-col gap-6 text-left">
+          <div className="flex flex-col gap-6 text-left animate-fade-in-up">
             <span className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary backdrop-blur-sm animate-pulse-subtle">
               <ShieldCheck className="size-4 text-primary" />
               Escrow-Backed, Milestone-Verified Funding
             </span>
             <div className="space-y-5">
               <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-[1.1]">
-                Empowering Communities with <span className="bg-gradient-to-r from-primary via-indigo-500 to-violet-500 bg-clip-text text-transparent">Absolute Trust</span>
+                Empowering Communities with <span className="gradient-text">Absolute Trust</span>
               </h1>
               <p className="max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
                 Every contribution is secured in a smart escrow system. Funds are only unlocked when milestone progress is independently verified by the community.
@@ -82,10 +82,10 @@ export default async function HomePage() {
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <a
                 href="/projects"
-                className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 hover:shadow-primary/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
+                className="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 hover:shadow-primary/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
               >
                 Browse Projects
-                <ArrowRight className="size-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="size-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
               </a>
               <a
                 href="/sign-up"
@@ -96,7 +96,7 @@ export default async function HomePage() {
             </div>
             <div className="flex flex-wrap items-center gap-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 pt-4">
               <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 shadow-sm">
-                <span className="size-2 rounded-full bg-emerald-500 animate-ping" /> Secure Escrow
+                <span className="size-2 rounded-full bg-emerald-500 animate-pulse-subtle" /> Secure Escrow
               </span>
               <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 shadow-sm">
                 Verified Progress
@@ -104,10 +104,10 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="relative lg:ml-4">
+          <div className="relative lg:ml-4 animate-fade-in" style={{ animationDelay: "200ms" }}>
             {/* Glowing accent border ring */}
-            <div className="absolute -inset-1 rounded-[2rem] bg-gradient-to-r from-primary to-indigo-500 opacity-20 blur-xl group-hover:opacity-30 transition duration-1000" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-border bg-gradient-to-br from-slate-900 via-slate-900/80 to-slate-950 p-2.5 shadow-2xl">
+            <div className="absolute -inset-1 rounded-[2rem] bg-gradient-to-r from-primary to-indigo-500 opacity-20 blur-xl animate-gradient-shift" />
+            <div className="relative overflow-hidden rounded-[2rem] border border-border bg-gradient-to-br from-slate-900 via-slate-900/80 to-slate-950 p-2.5 shadow-2xl noise-overlay">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(99,102,241,0.15),_transparent_50%)] pointer-events-none" />
               <div className="relative overflow-hidden rounded-[1.75rem] bg-muted h-[24rem] sm:h-[28rem] lg:h-[32rem]">
                 <Image
@@ -128,52 +128,52 @@ export default async function HomePage() {
       {/* Stats */}
       <section className="relative border-y border-border bg-card/60 backdrop-blur-md py-12 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,_rgba(79,70,229,0.03),_transparent_50%)]" />
-        <div className="relative z-10 mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+        <div className="relative z-10 mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4 stagger-children">
+          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
               Active Projects
             </p>
             <p className="mt-4 text-4xl font-extrabold text-foreground tracking-tight">
               {stats.totalProjects}
             </p>
-            <div className="absolute right-4 bottom-4 size-12 rounded-full bg-primary/5 flex items-center justify-center text-primary/40 font-mono text-xs">ACT</div>
+            <div className="absolute right-4 bottom-4 size-12 rounded-full bg-primary/5 flex items-center justify-center text-primary/30 font-mono text-xs">ACT</div>
           </Card>
           
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
               Total Raised
             </p>
             <p className="mt-4 text-4xl font-extrabold text-foreground tracking-tight">
               {formatCurrency(stats.totalRaised)}
             </p>
-            <div className="absolute right-4 bottom-4 size-12 rounded-full bg-emerald-500/5 flex items-center justify-center text-emerald-500/40 font-mono text-xs">VAL</div>
+            <div className="absolute right-4 bottom-4 size-12 rounded-full bg-emerald-500/5 flex items-center justify-center text-emerald-500/30 font-mono text-xs">VAL</div>
           </Card>
 
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
               Secured in Escrow
             </p>
             <p className="mt-4 text-4xl font-extrabold text-primary tracking-tight">
               {formatCurrency(stats.totalEscrow)}
             </p>
-            <div className="absolute right-4 bottom-4 size-12 rounded-full bg-indigo-500/5 flex items-center justify-center text-indigo-500/40 font-mono text-xs">ESC</div>
+            <div className="absolute right-4 bottom-4 size-12 rounded-full bg-indigo-500/5 flex items-center justify-center text-indigo-500/30 font-mono text-xs">ESC</div>
           </Card>
 
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
               Verified Milestones
             </p>
             <p className="mt-4 text-4xl font-extrabold text-foreground tracking-tight">
               {stats.verifiedMilestones} <span className="text-lg font-medium text-muted-foreground">/ {stats.totalMilestones}</span>
             </p>
-            <div className="absolute right-4 bottom-4 size-12 rounded-full bg-violet-500/5 flex items-center justify-center text-violet-500/40 font-mono text-xs">VER</div>
+            <div className="absolute right-4 bottom-4 size-12 rounded-full bg-violet-500/5 flex items-center justify-center text-violet-500/30 font-mono text-xs">VER</div>
           </Card>
         </div>
       </section>
 
       {/* Featured Projects */}
       <section className="mx-auto w-full max-w-6xl px-4 py-20 lg:py-28 relative">
-        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4 animate-fade-in-up">
           <div>
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Featured Projects
@@ -184,22 +184,24 @@ export default async function HomePage() {
           </div>
           <a
             href="/projects"
-            className="inline-flex items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold hover:bg-muted shadow-sm hover:-translate-y-0.5 transition-all duration-300 self-start md:self-auto"
+            className="group inline-flex items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold hover:bg-muted shadow-sm hover:-translate-y-0.5 transition-all duration-300 self-start md:self-auto"
           >
             Explore All Projects
-            <ArrowRight className="size-4 ml-2" />
+            <ArrowRight className="size-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
           </a>
         </div>
 
         {featured.length > 0 ? (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 stagger-children">
             {featured.map((p) => (
-              <ProjectCard key={p.id} project={p} />
+              <div key={p.id} className="animate-fade-in-up">
+                <ProjectCard project={p} />
+              </div>
             ))}
           </div>
         ) : (
-          <Card className="flex flex-col items-center gap-4 p-16 text-center border-dashed">
-            <div className="rounded-full bg-primary/10 p-4 text-primary">
+          <Card className="flex flex-col items-center gap-4 p-16 text-center border-dashed animate-fade-in">
+            <div className="rounded-full bg-primary/10 p-4 text-primary animate-float">
               <ShieldCheck className="size-8" />
             </div>
             <div>
@@ -225,7 +227,7 @@ export default async function HomePage() {
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(79,70,229,0.03),_transparent_50%)]" />
         <div className="relative z-10 mx-auto max-w-6xl px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               How accountability works
             </h2>
@@ -234,14 +236,14 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 stagger-children">
             {steps.map((s, i) => (
-              <Card key={s.title} className="group relative flex flex-col gap-4 p-6 border border-border/80 bg-card hover:border-primary/30 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+              <Card key={s.title} className="group relative flex flex-col gap-4 p-6 border border-border/80 bg-card hover:border-primary/30 hover-glow transition-all duration-300 hover:-translate-y-1 animate-fade-in-up">
                 <div className="flex items-center justify-between">
                   <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
                     <s.icon className="size-6" />
                   </span>
-                  <span className="text-3xl font-extrabold text-muted-foreground/30 font-mono group-hover:text-primary/20 transition-all duration-300">
+                  <span className="text-3xl font-extrabold text-muted-foreground/20 font-mono group-hover:text-primary/20 transition-all duration-300">
                     0{i + 1}
                   </span>
                 </div>
@@ -259,10 +261,12 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section className="mx-auto w-full max-w-6xl px-4 py-20">
-        <div className="relative overflow-hidden rounded-[2.5rem] border border-border bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 p-8 sm:p-16 text-center text-primary-foreground shadow-2xl">
+        <div className="relative overflow-hidden rounded-[2.5rem] border border-border bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 p-8 sm:p-16 text-center text-primary-foreground shadow-2xl noise-overlay">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(99,102,241,0.15),_transparent_60%)] pointer-events-none" />
-          <div className="relative z-10 flex flex-col items-center gap-6">
-            <span className="rounded-full bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider backdrop-blur-md">
+          {/* Animated gradient border accent */}
+          <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-r from-primary via-indigo-500 to-violet-500 opacity-[0.07] animate-gradient-shift pointer-events-none" />
+          <div className="relative z-10 flex flex-col items-center gap-6 animate-fade-in-up">
+            <span className="rounded-full bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider backdrop-blur-md border border-white/10">
               Secure & Transparent
             </span>
             <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl max-w-2xl leading-none">
