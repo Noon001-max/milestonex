@@ -60,58 +60,63 @@ export default async function HomePage() {
       <SiteHeader user={user} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-background py-20 lg:py-32">
-        <div className="absolute inset-0 z-0 bg-background" />
-        <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 px-4 md:grid-cols-2">
-          <div className="flex flex-col gap-6 text-left animate-fade-in-up">
-            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-background px-4 py-2 text-sm font-semibold text-primary">
-              <ShieldCheck className="size-4 text-primary" />
-              Escrow-Backed, Milestone-Verified Funding
-            </span>
-            <div className="space-y-5">
-              <h1 className="text-4xl font-heading font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-[1.1]">
-                Empowering Communities with <span className="text-primary">Absolute Trust</span>
-              </h1>
-              <p className="max-w-xl text-lg leading-relaxed font-subheading text-muted-foreground sm:text-xl">
-                Every contribution is secured in a smart escrow system. Funds are only unlocked when milestone progress is independently verified by the community.
-              </p>
+      <section className="relative overflow-hidden bg-background py-24 lg:py-32">
+        <div className="absolute inset-x-0 top-0 h-32 bg-primary/5" />
+        <div className="relative z-10 mx-auto max-w-6xl px-4">
+          <div className="grid gap-12 items-center md:grid-cols-[1.15fr_0.85fr]">
+            <div className="space-y-6 animate-fade-in-up">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+                <ShieldCheck className="size-4 text-primary" />
+                Escrow-backed milestone funding
+              </div>
+              <div className="space-y-5">
+                <h1 className="text-5xl font-heading font-extrabold tracking-tight text-foreground sm:text-6xl lg:text-7xl leading-[1.02]">
+                  A premium funding platform for <span className="text-primary">trusted community projects</span>
+                </h1>
+                <p className="max-w-2xl text-lg leading-relaxed font-subheading text-muted-foreground sm:text-xl">
+                  Build trust with escrow-secured donations, milestone verification, and transparent fund release for every local initiative.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <a
+                  href="/projects"
+                  className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
+                >
+                  Browse Projects
+                  <ArrowRight className="size-4 ml-2 transition-transform duration-200" />
+                </a>
+                <a
+                  href="/sign-up"
+                  className="inline-flex items-center justify-center rounded-full border border-primary/20 bg-background px-8 py-4 text-sm font-semibold text-primary transition-colors duration-200 hover:border-primary/40 hover:bg-primary/10"
+                >
+                  Start a Project
+                </a>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                <div className="inline-flex items-center gap-2 rounded-2xl border border-border/70 bg-card/80 px-4 py-3">
+                  <span className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                  Verified Escrow releases
+                </div>
+                <div className="inline-flex items-center gap-2 rounded-2xl border border-border/70 bg-card/80 px-4 py-3">
+                  <span className="inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+                  Secure project vetting
+                </div>
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <a
-                href="/projects"
-                className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
-              >
-                Browse Projects
-                <ArrowRight className="size-4 ml-2 transition-transform duration-200" />
-              </a>
-              <a
-                href="/sign-up"
-                className="inline-flex items-center justify-center rounded-full border border-primary/20 bg-primary/10 px-8 py-4 text-sm font-semibold text-primary transition-colors duration-200 hover:bg-primary/20"
-              >
-                Start a Project
-              </a>
-            </div>
-            <div className="flex flex-wrap items-center gap-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 pt-4">
-              <span className="flex items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-1.5">
-                <span className="size-2 rounded-full bg-emerald-500 animate-pulse-subtle" /> Secure Escrow
-              </span>
-              <span className="flex items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-1.5">
-                Verified Progress
-              </span>
-            </div>
-          </div>
 
-          <div className="relative lg:ml-4 animate-fade-in" style={{ animationDelay: "200ms" }}>
-            <div className="relative overflow-hidden rounded-[2rem] border border-border bg-card p-2.5">
-              <div className="relative overflow-hidden rounded-[1.75rem] bg-muted h-[24rem] sm:h-[28rem] lg:h-[32rem]">
-                <Image
-                  src="/hero-community.png"
-                  alt="A community collaborating on a local development project"
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
+            <div className="relative animate-fade-in" style={{ animationDelay: "200ms" }}>
+              <div className="absolute -right-8 -top-8 hidden h-[calc(100%-1rem)] w-24 rounded-[2rem] bg-primary/5 md:block" />
+              <div className="relative overflow-hidden rounded-[2rem] border border-border bg-card p-1 shadow-sm">
+                <div className="relative overflow-hidden rounded-[1.75rem] bg-muted h-[26rem] sm:h-[30rem] lg:h-[34rem]">
+                  <Image
+                    src="/hero-community.png"
+                    alt="A community collaborating on a local development project"
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-700 hover:scale-105"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -119,43 +124,57 @@ export default async function HomePage() {
       </section>
 
       {/* Stats */}
-      <section className="border-y border-border bg-background py-12">
-        <div className="mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 transition-all duration-200 hover:border-primary/40 animate-fade-in-up">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              Active Projects
-            </p>
-            <p className="mt-4 text-4xl font-extrabold text-foreground tracking-tight">
-              {stats.totalProjects}
-            </p>
-          </Card>
-          
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 transition-all duration-200 hover:border-primary/40 animate-fade-in-up">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              Total Raised
-            </p>
-            <p className="mt-4 text-4xl font-extrabold text-foreground tracking-tight">
-              {formatCurrency(stats.totalRaised)}
-            </p>
-          </Card>
+      <section className="bg-background py-16">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <Card className="rounded-[2rem] border border-primary/10 bg-primary/5 p-8 shadow-sm animate-fade-in-up">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">
+                Active Projects
+              </p>
+              <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
+                {stats.totalProjects}
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Active initiatives currently being supported by the community.
+              </p>
+            </Card>
 
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 transition-all duration-200 hover:border-primary/40 animate-fade-in-up">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              Secured in Escrow
-            </p>
-            <p className="mt-4 text-4xl font-extrabold text-primary tracking-tight">
-              {formatCurrency(stats.totalEscrow)}
-            </p>
-          </Card>
+            <Card className="rounded-[2rem] border border-emerald-200 bg-emerald-50 p-8 shadow-sm animate-fade-in-up">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
+                Total Raised
+              </p>
+              <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
+                {formatCurrency(stats.totalRaised)}
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Donations and investments secured for verified community work.
+              </p>
+            </Card>
 
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 transition-all duration-200 hover:border-primary/40 animate-fade-in-up">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              Verified Milestones
-            </p>
-            <p className="mt-4 text-4xl font-extrabold text-foreground tracking-tight">
-              {stats.verifiedMilestones} <span className="text-lg font-medium text-muted-foreground">/ {stats.totalMilestones}</span>
-            </p>
-          </Card>
+            <Card className="rounded-[2rem] border border-slate-200 bg-slate-50 p-8 shadow-sm animate-fade-in-up">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-700">
+                Secured in Escrow
+              </p>
+              <p className="mt-4 text-4xl font-extrabold tracking-tight text-primary">
+                {formatCurrency(stats.totalEscrow)}
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Funds currently held safely until milestone approval.
+              </p>
+            </Card>
+
+            <Card className="rounded-[2rem] border border-violet-200 bg-violet-50 p-8 shadow-sm animate-fade-in-up">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-violet-700">
+                Verified Milestones
+              </p>
+              <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
+                {stats.verifiedMilestones} <span className="text-lg font-medium text-muted-foreground">/ {stats.totalMilestones}</span>
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Completed milestones passed through independent review.
+              </p>
+            </Card>
+          </div>
         </div>
       </section>
 
@@ -216,26 +235,26 @@ export default async function HomePage() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
             <h2 className="text-3xl font-heading font-bold tracking-tight text-foreground sm:text-4xl">
-              How accountability works
+              Built for accountability at every milestone
             </h2>
             <p className="mt-3 text-lg font-subheading text-muted-foreground">
-              Milestone X aligns incentives by releasing funds only as tasks are completed and verified by the people who benefit from them.
+              Milestone X combines escrow security, community review, and milestone-based release so every project earns trust before funds move.
             </p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => (
-              <Card key={s.title} className="relative flex flex-col gap-4 p-6 border border-border/80 bg-card transition-all duration-200 hover:border-primary/40 hover:-translate-y-1 animate-fade-in-up">
-                <div className="flex items-center justify-between">
-                  <span className="flex size-12 items-center justify-center rounded-2xl border border-border bg-background text-primary">
+              <Card key={s.title} className="group relative flex flex-col gap-5 rounded-[1.75rem] border border-border/80 bg-card p-8 transition-all duration-200 hover:-translate-y-1 animate-fade-in-up">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-primary/10 text-primary">
                     <s.icon className="size-6" />
-                  </span>
-                  <span className="text-3xl font-extrabold text-muted-foreground font-mono">
-                    0{i + 1}
-                  </span>
+                  </div>
+                  <div className="rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-sm font-semibold text-primary">
+                    Step {i + 1}
+                  </div>
                 </div>
-                <div className="space-y-2 mt-2">
-                  <h3 className="text-lg font-bold text-foreground">{s.title}</h3>
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {s.body}
                   </p>

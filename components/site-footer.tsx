@@ -38,21 +38,25 @@ export function SiteFooter() {
   }, [isPaused])
 
   return (
-    <footer className="border-t border-border/60 bg-background">
-      <div className="mx-auto max-w-6xl px-4 py-12">
-        <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr]">
+    <footer className="border-t border-border/60 bg-card/95 px-4 py-14">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr_1fr]">
           <div>
-            <div className="inline-flex items-center gap-3 rounded-2xl border border-border/80 bg-card px-3 py-2 text-sm font-semibold text-primary">
+            <div className="inline-flex items-center gap-3 rounded-2xl border border-border/80 bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">
               <ShieldCheck className="size-5" />
               Milestone X
             </div>
-            <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">
-              Transparent escrow-backed funding for community projects, with milestone verification and open accountability.
+            <p className="mt-5 max-w-md text-sm leading-7 text-muted-foreground">
+              Trusted escrow funding, transparent milestone accountability, and a platform built to turn community trust into measurable impact.
             </p>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-primary">
+              <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+              Premium funding clarity
+            </div>
           </div>
 
           <div>
-            <p className="text-sm font-semibold text-foreground mb-4">Explore</p>
+            <p className="text-sm font-semibold text-foreground mb-4">Navigate</p>
             <div className="flex flex-col gap-3 text-sm text-muted-foreground">
               <a href="/projects" className="transition-colors duration-200 hover:text-foreground">
                 Projects
@@ -73,7 +77,7 @@ export function SiteFooter() {
             <p className="text-sm font-semibold text-foreground mb-4">Team</p>
             <div className="grid gap-3 text-sm text-muted-foreground">
               {teamMembers.map((member) => (
-                <div key={member.id} className="rounded-2xl border border-border/80 bg-card px-4 py-3">
+                <div key={member.id} className="rounded-[1.5rem] border border-border/80 bg-background/80 px-4 py-4 shadow-sm shadow-slate-900/5">
                   <div className="font-semibold text-foreground tracking-tight">{member.name}</div>
                   <div className="text-xs font-mono text-muted-foreground">{member.id}</div>
                 </div>
@@ -82,8 +86,9 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-border/50 pt-6 text-center text-xs font-semibold text-muted-foreground/80">
-          © {new Date().getFullYear()} Milestone X. All rights reserved.
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-6 text-center text-sm text-muted-foreground sm:flex-row sm:text-left">
+          <p>© {new Date().getFullYear()} Milestone X. All rights reserved.</p>
+          <p className="max-w-md">Designed for communities that need stronger accountability, safer funding, and more meaningful impact.</p>
         </div>
       </div>
     </footer>
