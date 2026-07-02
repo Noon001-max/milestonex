@@ -53,82 +53,53 @@
   --animate-duration-slow: 600ms;
 }
 
-/* Map the premium theme into the app's expected `--app-*` variables
-   This forces components that depend on the old app variables to use
-   the premium theme you provided so the theme is the single source.
-*/
+/* YouTube-like flat palette (white canvas, bold dark accents). Primary = dark green */
 :root {
-  /* Theme -> App mappings (light by default) */
-  --app-background: var(--bg-main);
-  --app-surface: var(--bg-surface);
-  --app-home-background: var(--bg-subtle);
-  --app-zone-hairline: var(--border-color);
-  --app-secondary-surface: var(--bg-subtle);
-  --app-text: var(--text-main);
-  --app-text-secondary: var(--text-muted);
-  --app-border: var(--border-color);
-  --app-accent: var(--primary-accent);
-  --app-accent-hover: var(--primary-hover);
-  --app-success: #10B981;
-  --app-error: #EF4444;
-
-  /* Core compatibility aliases used elsewhere */
+  --color-bg: #ffffff;            /* YouTube-style white background */
+  --color-surface: #ffffff;
+  --color-muted: #f3f3f3;         /* subtle light gray for containers */
+  --color-text: #0f0f0f;          /* near-black text */
+  --color-muted-text: #606060;    /* YouTube-like muted copy */
+  --color-border: #e5e5e5;        /* faint dividers */
+  --color-primary: #0f5132;       /* dark green replacing YouTube red */
+  --color-primary-hover: #0b442b; /* slightly darker for hover */
   color-scheme: light;
-  --background: var(--app-background);
-  --foreground: var(--app-text);
-  --card: var(--app-surface);
-  --card-foreground: var(--app-text);
-  --popover: var(--app-surface);
-  --popover-foreground: var(--app-text);
-  --primary: var(--app-accent);
-  --primary-foreground: #FFFFFF;
-  --secondary: var(--app-secondary-surface);
-  --secondary-foreground: var(--app-text-secondary);
-  --muted: var(--app-secondary-surface);
-  --muted-foreground: var(--app-text-secondary);
-  --accent: var(--app-accent);
-  --accent-foreground: #FFFFFF;
-  --destructive: var(--app-error);
-  --border: var(--app-border);
-  --input: var(--app-border);
-  --ring: var(--app-accent);
-  --chart-1: oklch(0.5 0.2 250);
-  --chart-2: oklch(0.8 0.12 85);
-  --chart-3: oklch(0.6 0.07 200);
-  --chart-4: oklch(0.55 0.06 140);
-  --chart-5: oklch(0.35 0.05 160);
-  --radius: 0.75rem;
-}
 
-.dark {
-  /* When `.dark` class is present, map to the dark theme variables */
-  --app-background: var(--bg-main);
-  --app-surface: var(--bg-surface);
-  --app-secondary-surface: var(--bg-subtle);
-  --app-text: var(--text-main);
-  --app-text-secondary: var(--text-muted);
-  --app-border: var(--border-color);
-  --app-accent: var(--primary-accent);
-  --app-accent-hover: var(--primary-hover);
-  color-scheme: dark;
-  --background: var(--app-background);
-  --foreground: var(--app-text);
+  /* Backwards-compatible aliases used across the app */
+  --app-background: var(--color-bg);
+  --app-surface: var(--color-surface);
+  --app-home-background: var(--color-muted);
+  --app-zone-hairline: var(--color-border);
+  --app-secondary-surface: var(--color-muted);
+  --app-text: var(--color-text);
+  --app-text-secondary: var(--color-muted-text);
+  --app-border: var(--color-border);
+  --app-accent: var(--color-primary);
+  --app-accent-hover: var(--color-primary-hover);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    /* System dark preference maps to the premium theme's dark variables */
-    --app-background: var(--bg-main);
-    --app-surface: var(--bg-surface);
-    --app-secondary-surface: var(--bg-subtle);
-    --app-text: var(--text-main);
-    --app-text-secondary: var(--text-muted);
-    --app-border: var(--border-color);
-    --app-accent: var(--primary-accent);
-    --app-accent-hover: var(--primary-hover);
+  :root {
+    --color-bg: #0f0f0f;          /* dark canvas */
+    --color-surface: #181818;
+    --color-muted: #202020;
+    --color-text: #ffffff;
+    --color-muted-text: #b3b3b3;
+    --color-border: #303030;
+    --color-primary: #198754;     /* brighter green on dark */
+    --color-primary-hover: #12b886;
     color-scheme: dark;
-    --background: var(--app-background);
-    --foreground: var(--app-text);
+
+    --app-background: var(--color-bg);
+    --app-surface: var(--color-surface);
+    --app-home-background: var(--color-muted);
+    --app-zone-hairline: var(--color-border);
+    --app-secondary-surface: var(--color-muted);
+    --app-text: var(--color-text);
+    --app-text-secondary: var(--color-muted-text);
+    --app-border: var(--color-border);
+    --app-accent: var(--color-primary);
+    --app-accent-hover: var(--color-primary-hover);
   }
 }
 
@@ -161,10 +132,7 @@
   to { opacity: 0; transform: translateX(-100%); }
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
+/* removed shimmer gradient for minimalist flat look */
 
 @keyframes pulse-subtle {
   0%, 100% { opacity: 1; }
@@ -189,11 +157,7 @@
   50% { transform: translateY(-6px); }
 }
 
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+/* removed gradient-shift for minimalist flat look */
 
 @keyframes scale-in {
   from { opacity: 0; transform: scale(0.95); }
@@ -226,10 +190,8 @@
   animation: slide-out-left 0.2s ease-in both;
 }
 
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 1.8s ease-in-out infinite;
+.animate-shimmer { /* simplified: solid subtle shimmer placeholder removed */
+  background: transparent;
 }
 
 .animate-pulse-subtle {
@@ -248,9 +210,8 @@
   animation: float 3s ease-in-out infinite;
 }
 
-.animate-gradient-shift {
-  background-size: 200% 200%;
-  animation: gradient-shift 4s ease infinite;
+.animate-gradient-shift { /* removed gradient animation for flat style */
+  background: transparent;
 }
 
 .animate-scale-in {
@@ -303,12 +264,7 @@
    Gradient Text Utility
    ═══════════════════════════════════════════════════════════ */
 
-.gradient-text {
-  background: linear-gradient(135deg, var(--app-accent), #818CF8, #A78BFA);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+/* gradient-text removed for flat/minimal theme */
 
 /* ═══════════════════════════════════════════════════════════
    Premium Scrollbar Styling
@@ -340,89 +296,49 @@
   background: rgba(148, 163, 184, 0.25);
 }
 
-/* ==========================================================================
-   Premium Light/Dark Theme - Appended
-   ========================================================================== */
-:root {
-  /* Brand Accents */
-  --primary-brand: #0f5132;        /* Deep, rich forest green */
-  --primary-accent: #198754;       /* Vibrant emerald for links and toggles */
-  --primary-hover: #146c43;        /* Slightly darker emerald for active states */
-  --accent-glow: rgba(25, 135, 84, 0.15); /* Soft premium ambient shadow */
-
-  /* Backgrounds & Canvas */
-  --bg-main: #f8fafc;              /* Soft, clean off-white canvas */
-  --bg-surface: #ffffff;           /* Pure white for cards, headers, and dialogs */
-  --bg-subtle: #f1f5f9;            /* Light gray-green for tables/inputs */
-
-  /* Typography & Borders */
-  --text-main: #0f172a;            /* Dark charcoal for high readability */
-  --text-muted: #475569;           /* Soft gray for secondary information */
-  --border-color: #e2e8f0;         /* Minimalist hair-line dividers */
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Brand Accents */
-    --primary-brand: #198754;      /* Brighter premium green to pop off dark backgrounds */
-    --primary-accent: #2ec4b6;     /* High-end mint accent for call-to-actions */
-    --primary-hover: #12b886;      /* Vibrant green-teal for interactive hovering */
-    --accent-glow: rgba(46, 196, 182, 0.25);
-
-    /* Backgrounds & Canvas */
-    --bg-main: #0b130e;            /* Ultra-dark canvas mixed with a drop of green */
-    --bg-surface: #121e17;         /* Deep obsidian green for containers and panels */
-    --bg-subtle: #1a2a21;          /* Slightly lighter backdrop for code blocks or inputs */
-
-    /* Typography & Borders */
-    --text-main: #f8fafc;          /* High contrast clean white text */
-    --text-muted: #94a3b8;         /* Smooth silver for descriptions */
-    --border-color: #23372c;       /* Muted emerald border lines */
-  }
-}
+/* Old appended theme removed — using simplified `--color-*` system above. */
 
 /* Base theme usage examples and utilities */
 body {
-  background-color: var(--bg-main);
-  color: var(--text-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-family: system-ui, -apple-system, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .btn-primary {
-  background-color: var(--primary-brand);
+  background-color: var(--color-primary);
   color: #ffffff;
-  border: 1px solid transparent;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 12px var(--accent-glow);
-  transition: all 0.2s ease;
+  box-shadow: none;
+  transition: background-color 0.12s ease;
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-1px);
+  background-color: var(--color-primary-hover);
 }
 
 h1, h2, h3 {
-  color: var(--text-main);
+  color: var(--color-text);
 }
 
 a {
-  color: var(--primary-accent);
+  color: var(--color-primary);
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--primary-hover);
+  color: var(--color-primary-hover);
   text-decoration: underline;
 }
 
 .card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 1.5rem;
 }
@@ -439,17 +355,15 @@ a:hover {
    ═══════════════════════════════════════════════════════════ */
 
 .hover-glow {
-  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  transition: border-color 0.12s ease, transform 0.12s ease;
 }
 
 .hover-glow:hover {
-  box-shadow: 0 8px 30px -8px rgba(79, 70, 229, 0.12), 0 0 0 1px rgba(79, 70, 229, 0.08);
-  border-color: rgba(79, 70, 229, 0.2);
+  border-color: var(--color-border);
 }
 
 .dark .hover-glow:hover {
-  box-shadow: 0 8px 30px -8px rgba(99, 102, 241, 0.15), 0 0 0 1px rgba(99, 102, 241, 0.1);
-  border-color: rgba(99, 102, 241, 0.25);
+  border-color: var(--color-border);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -475,12 +389,10 @@ a:hover {
   .animate-fade-in-up,
   .animate-slide-in-left,
   .animate-slide-in-right,
-  .animate-shimmer,
   .animate-pulse-subtle,
   .animate-wiggle,
   .animate-grow-width,
   .animate-float,
-  .animate-gradient-shift,
   .animate-scale-in,
   .animate-marquee {
     animation: none !important;
