@@ -1,14 +1,12 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter, Plus_Jakarta_Sans, Satoshi } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import './globals.css'
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
+const inter = Inter({ variable: '--font-inter', subsets: ['latin'], display: 'swap' })
+const plusJakarta = Plus_Jakarta_Sans({ variable: '--font-plus-jakarta', subsets: ['latin'], display: 'swap' })
+const satoshi = Satoshi({ variable: '--font-satoshi', subsets: ['latin'], display: 'swap' })
 
 export const metadata: Metadata = {
   title: 'Milestone X — Transparent Community Funding',
@@ -49,7 +47,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${plusJakarta.variable} ${satoshi.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>

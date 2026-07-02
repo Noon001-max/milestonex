@@ -72,10 +72,10 @@ export default async function HomePage() {
               Escrow-Backed, Milestone-Verified Funding
             </span>
             <div className="space-y-5">
-              <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-[1.1]">
+              <h1 className="text-4xl font-heading font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-[1.1]">
                 Empowering Communities with <span className="gradient-text">Absolute Trust</span>
               </h1>
-              <p className="max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+              <p className="max-w-xl text-lg leading-relaxed font-subheading text-muted-foreground sm:text-xl">
                 Every contribution is secured in a smart escrow system. Funds are only unlocked when milestone progress is independently verified by the community.
               </p>
             </div>
@@ -228,10 +228,10 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(79,70,229,0.03),_transparent_50%)]" />
         <div className="relative z-10 mx-auto max-w-6xl px-4">
           <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="text-3xl font-heading font-bold tracking-tight text-foreground sm:text-4xl">
               How accountability works
             </h2>
-            <p className="mt-3 text-lg text-muted-foreground">
+            <p className="mt-3 text-lg font-subheading text-muted-foreground">
               Milestone X aligns incentives by releasing funds only as tasks are completed and verified by the people who benefit from them.
             </p>
           </div>
@@ -267,10 +267,10 @@ export default async function HomePage() {
             <span className="rounded-full bg-card/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider border border-border">
               Secure & Transparent
             </span>
-            <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl max-w-2xl leading-none">
+            <h2 className="text-balance text-3xl font-heading font-bold tracking-tight sm:text-4xl md:text-5xl max-w-2xl leading-none">
               Build trust into every single dollar
             </h2>
-            <p className="max-w-xl text-lg text-muted-foreground leading-relaxed">
+            <p className="max-w-xl text-lg font-subheading text-muted-foreground leading-relaxed">
               Whether you give, build, or verify, join a community funding ecosystem where transparency is the default.
             </p>
             <a
