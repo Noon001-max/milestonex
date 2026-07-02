@@ -86,7 +86,7 @@ export default async function HomePage() {
               </a>
               <a
                 href="/sign-up"
-                className="inline-flex items-center justify-center rounded-full border border-border bg-background px-8 py-4 text-sm font-semibold transition-colors duration-200 hover:bg-muted"
+                className="inline-flex items-center justify-center rounded-full border border-primary/20 bg-primary/10 px-8 py-4 text-sm font-semibold text-primary transition-colors duration-200 hover:bg-primary/20"
               >
                 Start a Project
               </a>
@@ -172,7 +172,7 @@ export default async function HomePage() {
           </div>
           <a
             href="/projects"
-            className="inline-flex items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold transition-colors duration-200 hover:bg-muted self-start md:self-auto"
+            className="inline-flex items-center justify-center rounded-full border border-primary/20 bg-primary/10 px-6 py-3 text-sm font-semibold text-primary transition-colors duration-200 hover:bg-primary/20 self-start md:self-auto"
           >
             Explore All Projects
             <ArrowRight className="size-4 ml-2 transition-transform duration-200" />
@@ -200,7 +200,7 @@ export default async function HomePage() {
             </div>
             <a
               href="/sign-up"
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors duration-200"
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
             >
               Start a Project
             </a>
