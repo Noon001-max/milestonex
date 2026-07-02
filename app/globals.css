@@ -53,7 +53,26 @@
   --animate-duration-slow: 600ms;
 }
 
+/* Map the premium theme into the app's expected `--app-*` variables
+   This forces components that depend on the old app variables to use
+   the premium theme you provided so the theme is the single source.
+*/
 :root {
+  /* Theme -> App mappings (light by default) */
+  --app-background: var(--bg-main);
+  --app-surface: var(--bg-surface);
+  --app-home-background: var(--bg-subtle);
+  --app-zone-hairline: var(--border-color);
+  --app-secondary-surface: var(--bg-subtle);
+  --app-text: var(--text-main);
+  --app-text-secondary: var(--text-muted);
+  --app-border: var(--border-color);
+  --app-accent: var(--primary-accent);
+  --app-accent-hover: var(--primary-hover);
+  --app-success: #10B981;
+  --app-error: #EF4444;
+
+  /* Core compatibility aliases used elsewhere */
   color-scheme: light;
   --background: var(--app-background);
   --foreground: var(--app-text);
@@ -73,120 +92,43 @@
   --border: var(--app-border);
   --input: var(--app-border);
   --ring: var(--app-accent);
-    --sidebar-ring: oklch(0.45 0.09 160);
-
-    /* App Color System - Light Theme */
-    --app-background: #F8FAFC;
-    --app-home-background: #F1F5F9;
-    --app-zone-hairline: #E2E8F0;
-    --app-surface: #FFFFFF;
-    --app-secondary-surface: #F1F5F9;
-    --app-text: #0F172A;
-    --app-text-secondary: #475569;
-    --app-border: #E2E8F0;
-    --app-accent: #4F46E5;
-    --app-accent-hover: #4338CA;
-    --app-success: #10B981;
-    --app-error: #EF4444;
   --chart-1: oklch(0.5 0.2 250);
   --chart-2: oklch(0.8 0.12 85);
   --chart-3: oklch(0.6 0.07 200);
   --chart-4: oklch(0.55 0.06 140);
   --chart-5: oklch(0.35 0.05 160);
   --radius: 0.75rem;
-  --sidebar: oklch(0.99 0.003 240);
-  --sidebar-foreground: oklch(0.25 0.04 240);
-  --sidebar-primary: oklch(0.5 0.2 250);
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: oklch(0.96 0.01 240);
-  --sidebar-accent-foreground: oklch(0.25 0.04 240);
-  --sidebar-border: oklch(0.92 0.01 240);
-  --sidebar-ring: oklch(0.5 0.2 250);
 }
 
 .dark {
+  /* When `.dark` class is present, map to the dark theme variables */
+  --app-background: var(--bg-main);
+  --app-surface: var(--bg-surface);
+  --app-secondary-surface: var(--bg-subtle);
+  --app-text: var(--text-main);
+  --app-text-secondary: var(--text-muted);
+  --app-border: var(--border-color);
+  --app-accent: var(--primary-accent);
+  --app-accent-hover: var(--primary-hover);
   color-scheme: dark;
   --background: var(--app-background);
   --foreground: var(--app-text);
-  --card: var(--app-surface);
-  --card-foreground: var(--app-text);
-  --popover: var(--app-surface);
-  --popover-foreground: var(--app-text);
-  --primary: var(--app-accent);
-  --primary-foreground: #FFFFFF;
-  --secondary: var(--app-secondary-surface);
-  --secondary-foreground: var(--app-text-secondary);
-  --muted: var(--app-secondary-surface);
-  --muted-foreground: var(--app-text-secondary);
-  --accent: var(--app-accent);
-  --accent-foreground: #FFFFFF;
-  --destructive: var(--app-error);
-  --border: var(--app-border);
-  --input: var(--app-border);
-  --ring: var(--app-accent);
-
-    /* App Color System - Dark Theme */
-    --app-background: #030712;
-    --app-home-background: #030712;
-    --app-zone-hairline: #1E293B;
-    --app-surface: #0B1329;
-    --app-secondary-surface: #1E293B;
-    --app-text: #F8FAFC;
-    --app-text-secondary: #94A3B8;
-    --app-border: #1E293B;
-    --app-accent: #6366F1;
-    --app-accent-hover: #818CF8;
-    --app-success: #10B981;
-    --app-error: #EF4444;
-  --chart-1: oklch(0.65 0.2 250);
-  --chart-2: oklch(0.8 0.12 85);
-  --chart-3: oklch(0.65 0.08 200);
-  --chart-4: oklch(0.6 0.07 140);
-  --chart-5: oklch(0.5 0.06 160);
-  --sidebar: oklch(0.12 0.02 240);
-  --sidebar-foreground: oklch(0.95 0.01 240);
-  --sidebar-primary: oklch(0.6 0.18 250);
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: oklch(0.18 0.03 240);
-  --sidebar-accent-foreground: oklch(0.95 0.01 240);
-  --sidebar-border: oklch(0.2 0.03 240 / 50%);
-  --sidebar-ring: oklch(0.6 0.18 250);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
+    /* System dark preference maps to the premium theme's dark variables */
+    --app-background: var(--bg-main);
+    --app-surface: var(--bg-surface);
+    --app-secondary-surface: var(--bg-subtle);
+    --app-text: var(--text-main);
+    --app-text-secondary: var(--text-muted);
+    --app-border: var(--border-color);
+    --app-accent: var(--primary-accent);
+    --app-accent-hover: var(--primary-hover);
     color-scheme: dark;
     --background: var(--app-background);
     --foreground: var(--app-text);
-    --card: var(--app-surface);
-    --card-foreground: var(--app-text);
-    --popover: var(--app-surface);
-    --popover-foreground: var(--app-text);
-    --primary: var(--app-accent);
-    --primary-foreground: #000000;
-    --secondary: var(--app-secondary-surface);
-    --secondary-foreground: var(--app-text-secondary);
-    --muted: var(--app-secondary-surface);
-    --muted-foreground: var(--app-text-secondary);
-    --accent: var(--app-accent);
-    --accent-foreground: #FFFFFF;
-    --destructive: var(--app-error);
-    --border: var(--app-border);
-    --input: var(--app-border);
-    --ring: var(--app-accent);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
   }
 }
 
@@ -397,6 +339,94 @@
 .dark ::-webkit-scrollbar-thumb:hover {
   background: rgba(148, 163, 184, 0.25);
 }
+
+/* ==========================================================================
+   Premium Light/Dark Theme - Appended
+   ========================================================================== */
+:root {
+  /* Brand Accents */
+  --primary-brand: #0f5132;        /* Deep, rich forest green */
+  --primary-accent: #198754;       /* Vibrant emerald for links and toggles */
+  --primary-hover: #146c43;        /* Slightly darker emerald for active states */
+  --accent-glow: rgba(25, 135, 84, 0.15); /* Soft premium ambient shadow */
+
+  /* Backgrounds & Canvas */
+  --bg-main: #f8fafc;              /* Soft, clean off-white canvas */
+  --bg-surface: #ffffff;           /* Pure white for cards, headers, and dialogs */
+  --bg-subtle: #f1f5f9;            /* Light gray-green for tables/inputs */
+
+  /* Typography & Borders */
+  --text-main: #0f172a;            /* Dark charcoal for high readability */
+  --text-muted: #475569;           /* Soft gray for secondary information */
+  --border-color: #e2e8f0;         /* Minimalist hair-line dividers */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Brand Accents */
+    --primary-brand: #198754;      /* Brighter premium green to pop off dark backgrounds */
+    --primary-accent: #2ec4b6;     /* High-end mint accent for call-to-actions */
+    --primary-hover: #12b886;      /* Vibrant green-teal for interactive hovering */
+    --accent-glow: rgba(46, 196, 182, 0.25);
+
+    /* Backgrounds & Canvas */
+    --bg-main: #0b130e;            /* Ultra-dark canvas mixed with a drop of green */
+    --bg-surface: #121e17;         /* Deep obsidian green for containers and panels */
+    --bg-subtle: #1a2a21;          /* Slightly lighter backdrop for code blocks or inputs */
+
+    /* Typography & Borders */
+    --text-main: #f8fafc;          /* High contrast clean white text */
+    --text-muted: #94a3b8;         /* Smooth silver for descriptions */
+    --border-color: #23372c;       /* Muted emerald border lines */
+  }
+}
+
+/* Base theme usage examples and utilities */
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-brand);
+  color: #ffffff;
+  border: 1px solid transparent;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--accent-glow);
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+h1, h2, h3 {
+  color: var(--text-main);
+}
+
+a {
+  color: var(--primary-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
 
 /* Firefox scrollbar */
 * {
