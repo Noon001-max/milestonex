@@ -53,16 +53,24 @@
   --animate-duration-slow: 600ms;
 }
 
-/* YouTube-like flat palette (white canvas, bold dark accents). Primary = dark green */
+/* Replaced palette: flat color tokens provided by user */
 :root {
-  --color-bg: #ffffff;            /* YouTube-style white background */
-  --color-surface: #ffffff;
-  --color-muted: #f3f3f3;         /* subtle light gray for containers */
-  --color-text: #0f0f0f;          /* near-black text */
-  --color-muted-text: #606060;    /* YouTube-like muted copy */
-  --color-border: #e5e5e5;        /* faint dividers */
-  --color-primary: #0f5132;       /* dark green replacing YouTube red */
-  --color-primary-hover: #0b442b; /* slightly darker for hover */
+  /* CSS HEX tokens */
+  --ghost-white: #e8e9f3ff;
+  --silver: #cececeff;
+  --pale-slate: #a6a6a8ff;
+  --shadow-grey: #272635ff;
+  --frosted-blue: #b1e5f2ff;
+
+  /* Core color aliases mapped from the new tokens */
+  --color-bg: var(--ghost-white);
+  --color-surface: var(--ghost-white);
+  --color-muted: var(--silver);
+  --color-text: var(--shadow-grey);
+  --color-muted-text: var(--pale-slate);
+  --color-border: var(--silver);
+  --color-primary: var(--shadow-grey);
+  --color-primary-hover: var(--shadow-grey);
   color-scheme: light;
 
   /* Backwards-compatible aliases used across the app */
@@ -80,14 +88,21 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #0f0f0f;          /* dark canvas */
-    --color-surface: #181818;
-    --color-muted: #202020;
-    --color-text: #ffffff;
-    --color-muted-text: #b3b3b3;
-    --color-border: #303030;
-    --color-primary: #198754;     /* brighter green on dark */
-    --color-primary-hover: #12b886;
+    /* CSS HSL tokens (dark-mode equivalents provided by user) */
+    --ghost-white: hsla(235, 31%, 93%, 1);
+    --silver: hsla(0, 0%, 81%, 1);
+    --pale-slate: hsla(240, 1%, 65%, 1);
+    --shadow-grey: hsla(244, 16%, 18%, 1);
+    --frosted-blue: hsla(192, 71%, 82%, 1);
+
+    --color-bg: var(--ghost-white);
+    --color-surface: var(--ghost-white);
+    --color-muted: var(--silver);
+    --color-text: var(--shadow-grey);
+    --color-muted-text: var(--pale-slate);
+    --color-border: var(--silver);
+    --color-primary: var(--shadow-grey);
+    --color-primary-hover: var(--shadow-grey);
     color-scheme: dark;
 
     --app-background: var(--color-bg);

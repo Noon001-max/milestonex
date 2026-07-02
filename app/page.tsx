@@ -61,9 +61,9 @@ export default async function HomePage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-background py-20 lg:py-32">
-        {/* Modern decorative glowing mesh background */}
-        <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_30%_30%,_rgba(79,70,229,0.08),_transparent_40%),_radial-gradient(circle_at_70%_60%,_rgba(99,102,241,0.05),_transparent_45%)]" />
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+        {/* Decorative flat background */}
+        <div className="absolute inset-0 z-0 bg-background" />
+        <div className="absolute inset-x-0 top-0 h-40 bg-primary/5 pointer-events-none" />
         
         <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 px-4 md:grid-cols-2">
           <div className="flex flex-col gap-6 text-left animate-fade-in-up">
@@ -105,10 +105,10 @@ export default async function HomePage() {
           </div>
 
           <div className="relative lg:ml-4 animate-fade-in" style={{ animationDelay: "200ms" }}>
-            {/* Glowing accent border ring */}
-            <div className="absolute -inset-1 rounded-[2rem] bg-gradient-to-r from-primary to-indigo-500 opacity-20 blur-xl animate-gradient-shift" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-border bg-gradient-to-br from-slate-900 via-slate-900/80 to-slate-950 p-2.5 shadow-2xl noise-overlay">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(99,102,241,0.15),_transparent_50%)] pointer-events-none" />
+            {/* Solid accent border */}
+            <div className="absolute -inset-1 rounded-[2rem] bg-primary/10" />
+            <div className="relative overflow-hidden rounded-[2rem] border border-border bg-card p-2.5 shadow-sm noise-overlay">
+              <div className="absolute inset-0 bg-card/10 pointer-events-none" />
               <div className="relative overflow-hidden rounded-[1.75rem] bg-muted h-[24rem] sm:h-[28rem] lg:h-[32rem]">
                 <Image
                   src="/hero-community.png"
@@ -118,7 +118,7 @@ export default async function HomePage() {
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover transition-transform duration-700 hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-background/40 pointer-events-none" />
               </div>
             </div>
           </div>
@@ -126,10 +126,10 @@ export default async function HomePage() {
       </section>
 
       {/* Stats */}
-      <section className="relative border-y border-border bg-card/60 backdrop-blur-md py-12 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,_rgba(79,70,229,0.03),_transparent_50%)]" />
+      <section className="relative border-y border-border bg-card/60 py-12 overflow-hidden">
+        <div className="absolute inset-0 bg-card/30" />
         <div className="relative z-10 mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4 stagger-children">
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
+          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow transition-all duration-150 animate-fade-in-up">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
               Active Projects
             </p>
@@ -139,7 +139,7 @@ export default async function HomePage() {
             <div className="absolute right-4 bottom-4 size-12 rounded-full bg-primary/5 flex items-center justify-center text-primary/30 font-mono text-xs">ACT</div>
           </Card>
           
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
+          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow transition-all duration-150 animate-fade-in-up">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
               Total Raised
             </p>
@@ -149,7 +149,7 @@ export default async function HomePage() {
             <div className="absolute right-4 bottom-4 size-12 rounded-full bg-emerald-500/5 flex items-center justify-center text-emerald-500/30 font-mono text-xs">VAL</div>
           </Card>
 
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
+          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow transition-all duration-150 animate-fade-in-up">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
               Secured in Escrow
             </p>
@@ -159,7 +159,7 @@ export default async function HomePage() {
             <div className="absolute right-4 bottom-4 size-12 rounded-full bg-indigo-500/5 flex items-center justify-center text-indigo-500/30 font-mono text-xs">ESC</div>
           </Card>
 
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
+          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow transition-all duration-150 animate-fade-in-up">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
               Verified Milestones
             </p>
@@ -261,23 +261,21 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section className="mx-auto w-full max-w-6xl px-4 py-20">
-        <div className="relative overflow-hidden rounded-[2.5rem] border border-border bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 p-8 sm:p-16 text-center text-primary-foreground shadow-2xl noise-overlay">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(99,102,241,0.15),_transparent_60%)] pointer-events-none" />
-          {/* Animated gradient border accent */}
-          <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-r from-primary via-indigo-500 to-violet-500 opacity-[0.07] animate-gradient-shift pointer-events-none" />
+        <div className="relative overflow-hidden rounded-[2.5rem] border border-border bg-card p-8 sm:p-16 text-center text-foreground shadow-md noise-overlay">
+          <div className="absolute inset-0 bg-card/10 pointer-events-none" />
           <div className="relative z-10 flex flex-col items-center gap-6 animate-fade-in-up">
-            <span className="rounded-full bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider backdrop-blur-md border border-white/10">
+            <span className="rounded-full bg-card/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider border border-border">
               Secure & Transparent
             </span>
             <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl max-w-2xl leading-none">
               Build trust into every single dollar
             </h2>
-            <p className="max-w-xl text-lg text-indigo-200/80 leading-relaxed">
+            <p className="max-w-xl text-lg text-muted-foreground leading-relaxed">
               Whether you give, build, or verify, join a community funding ecosystem where transparency is the default.
             </p>
             <a
               href="/sign-up"
-              className="inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-sm font-bold text-indigo-950 hover:bg-slate-100 hover:scale-105 active:scale-100 transition-all duration-300 shadow-xl shadow-black/35 mt-2"
+              className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-sm font-bold text-primary-foreground hover:opacity-95 transition-all duration-200 mt-2"
             >
               Create Your Account
             </a>
