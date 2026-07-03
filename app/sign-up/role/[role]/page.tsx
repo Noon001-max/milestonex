@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
-import { getSession } from "@/lib/session"
+import { getSession, type Role } from "@/lib/session"
 import { db } from "@/lib/db"
 import { user as userTable } from "@/lib/db/schema"
 import { ROLES } from "@/lib/roles"
@@ -11,7 +11,11 @@ type RoleParam = {
   }
 }
 
-const ALLOWED_ROLES = ROLES.filter((r) => r.value !== "suspended").map((r) => r.value)
+const ALLOWED_ROLES = ROLES.filter((r) => r.value !== "suspended").map((r) => r.value) as Role[]
+
+function isAllowedRole(role: string): role is Role {
+  return ALLOWED_ROLES.includes(role as Role)
+}
 
 export default async function RoleSelectionHandler({ params }: RoleParam) {
   const { role } = params
@@ -21,7 +25,7 @@ export default async function RoleSelectionHandler({ params }: RoleParam) {
     redirect("/sign-in")
   }
 
-  if (!ALLOWED_ROLES.includes(role)) {
+  if (!isAllowedRole(role)) {
     redirect("/sign-up/role")
   }
 
