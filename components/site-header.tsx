@@ -112,7 +112,7 @@ export function SiteHeader({
                     aria-label="Profile"
                   >
                     {user.image ? (
-                      <div className="h-8 w-8 overflow-hidden rounded-lg border border-border">
+                      <div className="h-8 w-8 overflow-hidden rounded-full border border-border">
                         <Image
                           src={user.image}
                           alt={`${user.name}'s avatar`}
@@ -122,7 +122,7 @@ export function SiteHeader({
                         />
                       </div>
                     ) : (
-                      <div className="w-8 h-8 rounded-lg bg-muted text-foreground border border-border flex items-center justify-center text-xs font-bold">
+                      <div className="w-8 h-8 rounded-full bg-muted text-foreground border border-border flex items-center justify-center text-xs font-bold">
                         {initials}
                       </div>
                     )}
