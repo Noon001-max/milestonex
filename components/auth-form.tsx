@@ -75,7 +75,7 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
           </h1>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
             {isSignUp
-              ? "Sign up quickly and choose your role on the next page."
+              ? "Sign up quickly and continue to role selection."
               : "Sign in with your email and password to continue."}
           </p>
         </div>
@@ -124,12 +124,6 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
               />
             </div>
 
-            {isSignUp && (
-              <div className="rounded-3xl border border-border/70 bg-background/80 p-4 text-sm text-muted-foreground">
-                Role selection will happen on the next screen.
-              </div>
-            )}
-
             {error && (
               <p className="rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert">
                 {error}
@@ -143,7 +137,7 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
             )}
 
             <Button type="submit" disabled={loading} className="w-full rounded-full py-3">
-              {loading ? "Please wait..." : isSignUp ? "Create account" : "Sign in"}
+              {loading ? "Please wait..." : isSignUp ? "Continue to role selection" : "Sign in"}
             </Button>
           </form>
 

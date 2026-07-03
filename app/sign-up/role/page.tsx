@@ -17,10 +17,10 @@ export default async function RoleSelectionPage() {
             Role selection
           </div>
           <h1 className="mt-6 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            How will you use Milestone X?
+            Create account
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-sm text-muted-foreground sm:text-base">
-            Select the role that best matches your goals. This determines what projects, workflows, and dashboard tools you see.
+            Select the role that best matches your goals to finish creating your account.
           </p>
         </div>
 
@@ -57,7 +57,7 @@ export default async function RoleSelectionPage() {
           </div>
           <div className="rounded-[1.75rem] border border-border/70 bg-primary/5 p-6 text-sm text-muted-foreground">
             <p className="font-semibold text-foreground">Tip</p>
-            <p className="mt-2">You can update your role later in your profile settings if your needs change.</p>
+            <p className="mt-2">Choose the role that best fits your current goals to complete account setup.</p>
           </div>
         </Card>
       </div>
