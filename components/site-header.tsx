@@ -17,24 +17,24 @@ export function SiteHeader({
   onMenuClick?: () => void
 }) {
   const renderLogo = () => (
-    <Link href="/" className="flex items-center gap-2.5 group">
+    <Link href="/" className="flex items-center gap-3 group">
       <Image
         src="/logo.png"
         alt="Milestone X"
-        width={36}
-        height={36}
-        className="rounded-lg transition-transform duration-200 group-hover:scale-105"
+        width={44}
+        height={44}
+        className="rounded-2xl transition-transform duration-200 group-hover:scale-105"
       />
-      <span className="text-base font-bold tracking-tight text-foreground">
+      <span className="text-lg font-bold tracking-tight text-foreground">
         Milestone X
       </span>
     </Link>
   )
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/20 dark:border-white/10 glass shadow-lg">
-      <div className="mx-auto grid h-16 max-w-6xl grid-cols-[auto_1fr_auto] items-center px-4">
-        <div className="flex items-center min-w-[3rem]">
+    <header className="sticky top-0 z-40 border-b border-border/20 bg-background/60 dark:bg-background/60 backdrop-blur-xl shadow-sm">
+      <div className="mx-auto grid h-18 max-w-6xl grid-cols-[auto_1fr_auto] items-center px-4 py-2">
+        <div className="flex items-center min-w-[4rem]">
           {user ? (
             showMenuButton ? (
               <button

@@ -64,35 +64,35 @@ export default async function HomePage() {
         <div className="mx-auto grid max-w-6xl items-center gap-16 px-4 md:grid-cols-[1.1fr_0.9fr]">
           <div className="flex flex-col gap-8">
             <div className="space-y-4">
-              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-primary">Escrow-secured impact</p>
-              <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl leading-tight">
-                Fund local communities with transparent, milestone-driven accountability.
-              </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-                Back projects built by the community, keep every donation locked until progress is verified, and turn funding into trust with full visibility at every step.
-              </p>
+              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-primary">Escrow-secured transparency</p>
+            <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl leading-tight">
+              Empower communities with funding that unlocks only after verified progress.
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
+              Support projects with escrow-backed safety, milestone-based release, and open progress tracking so every investment is visible, accountable, and meaningful.
+            </p>
             </div>
             <div className="flex flex-wrap items-center gap-4">
               <a
                 href="/projects"
                 className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-3 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/95 active:scale-[0.98] transition-all duration-200"
               >
-                Explore Projects
+                Browse Projects
               </a>
               <a
                 href="/sign-up"
                 className="inline-flex items-center justify-center rounded-full border border-primary/20 bg-background px-10 py-3 text-base font-semibold text-primary shadow-sm hover:border-primary hover:bg-primary/5 transition-all duration-200"
               >
-                Start a Project
+                Launch a Project
               </a>
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               {[
-                'Escrow-held donations',
-                'Verified milestones',
-                'Open progress tracking',
+                'Donations held securely in escrow',
+                'Milestones verified before release',
+                'Transparent progress for every project',
               ].map((item) => (
-                <div key={item} className="rounded-3xl border border-border/70 bg-primary/5 px-5 py-4 text-sm font-medium text-foreground shadow-sm shadow-primary/5">
+                <div key={item} className="rounded-[1.75rem] border border-primary/10 bg-primary/5 px-5 py-4 text-sm font-medium text-foreground shadow-sm shadow-primary/10">
                   {item}
                 </div>
               ))}
@@ -115,23 +115,23 @@ export default async function HomePage() {
       </section>
 
       {/* Stats */}
-      <section className="border-y border-border bg-card py-12">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="text-center">
+      <section className="border-y border-border bg-background py-14">
+        <div className="mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-[1.75rem] border border-border/70 bg-card p-6 text-center shadow-sm shadow-primary/5">
             <p className="text-3xl font-bold text-foreground">{stats.totalProjects}</p>
-            <p className="mt-2 text-sm text-muted-foreground">Active Projects</p>
+            <p className="mt-3 text-sm text-muted-foreground">Active Projects live on the platform</p>
           </div>
-          <div className="text-center">
+          <div className="rounded-[1.75rem] border border-border/70 bg-card p-6 text-center shadow-sm shadow-primary/5">
             <p className="text-3xl font-bold text-foreground">{formatCurrency(stats.totalRaised)}</p>
-            <p className="mt-2 text-sm text-muted-foreground">Total Raised</p>
+            <p className="mt-3 text-sm text-muted-foreground">Total capital raised for vetted work</p>
           </div>
-          <div className="text-center">
+          <div className="rounded-[1.75rem] border border-border/70 bg-card p-6 text-center shadow-sm shadow-primary/5">
             <p className="text-3xl font-bold text-primary">{formatCurrency(stats.totalEscrow)}</p>
-            <p className="mt-2 text-sm text-muted-foreground">Secured in Escrow</p>
+            <p className="mt-3 text-sm text-muted-foreground">Held securely in escrow until milestones clear</p>
           </div>
-          <div className="text-center">
+          <div className="rounded-[1.75rem] border border-border/70 bg-card p-6 text-center shadow-sm shadow-primary/5">
             <p className="text-3xl font-bold text-foreground">{stats.verifiedMilestones}/{stats.totalMilestones}</p>
-            <p className="mt-2 text-sm text-muted-foreground">Verified Milestones</p>
+            <p className="mt-3 text-sm text-muted-foreground">Milestones verified and approved</p>
           </div>
         </div>
       </section>
