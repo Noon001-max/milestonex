@@ -59,19 +59,19 @@ export function SiteHeader({
               <nav className="hidden items-center gap-8 text-sm md:flex">
                 <a
                   href="/projects"
-                  className="font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                  className="font-medium text-muted-foreground transition-colors duration-200 hover:text-primary"
                 >
                   Projects
                 </a>
                 <a
                   href="/transparency"
-                  className="font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                  className="font-medium text-muted-foreground transition-colors duration-200 hover:text-primary"
                 >
                   Transparency
                 </a>
                 <a
                   href="/#how-it-works"
-                  className="font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                  className="font-medium text-muted-foreground transition-colors duration-200 hover:text-primary"
                 >
                   How it works
                 </a>

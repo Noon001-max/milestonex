@@ -64,16 +64,16 @@ export function SiteFooter() {
           <div className="flex flex-col gap-4">
             <p className="text-sm font-semibold text-foreground">Navigate</p>
             <div className="flex flex-col gap-3 text-sm text-muted-foreground">
-              <a href="/projects" className="transition-colors duration-200 hover:text-foreground">
+              <a href="/projects" className="transition-colors duration-200 hover:text-primary">
                 Projects
               </a>
-              <a href="/transparency" className="transition-colors duration-200 hover:text-foreground">
+              <a href="/transparency" className="transition-colors duration-200 hover:text-primary">
                 Transparency
               </a>
-              <a href="/#how-it-works" className="transition-colors duration-200 hover:text-foreground">
+              <a href="/#how-it-works" className="transition-colors duration-200 hover:text-primary">
                 How it works
               </a>
-              <a href="/sign-up" className="transition-colors duration-200 hover:text-foreground">
+              <a href="/sign-up" className="transition-colors duration-200 hover:text-primary">
                 Start a project
               </a>
             </div>

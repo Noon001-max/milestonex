@@ -67,6 +67,12 @@
   --color-border: var(--silver);
   --color-primary: #7E2A49;
   --color-primary-hover: #A4375F;
+  --primary: #7E2A49;
+  --primary-foreground: #FFFFFF;
+  --accent: #7E2A49;
+  --accent-foreground: #FFFFFF;
+  --secondary: #7E2A73;
+  --secondary-foreground: #FFFFFF;
   color-scheme: light;
 
   /* Backwards-compatible aliases used across the app */
@@ -99,6 +105,12 @@
     --color-border: var(--silver);
     --color-primary: #7E2A49;
     --color-primary-hover: #A4375F;
+    --primary: #7E2A49;
+    --primary-foreground: #FFFFFF;
+    --accent: #7E2A49;
+    --accent-foreground: #FFFFFF;
+    --secondary: #7E2A73;
+    --secondary-foreground: #FFFFFF;
     color-scheme: dark;
 
     --app-background: var(--color-bg);
