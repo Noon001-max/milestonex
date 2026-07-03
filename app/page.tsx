@@ -183,7 +183,7 @@ export default async function HomePage() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => (
-              <div key={s.title} className="flex flex-col gap-4 p-6 rounded-lg border border-border bg-card shadow-sm hover:shadow-md transition-all duration-200">
+              <div key={s.title} className="flex flex-col gap-4 p-6 rounded-2xl border border-border bg-card shadow-md hover:shadow-lg transition-all duration-200">
                 <div className="flex items-start justify-between">
                   <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <s.icon className="size-5" />

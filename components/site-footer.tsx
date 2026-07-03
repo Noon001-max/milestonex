@@ -38,7 +38,7 @@ export function SiteFooter() {
   }, [isPaused])
 
   return (
-    <footer className="border-t border-border/30 glass">
+    <footer className="border-t border-white/20 dark:border-white/10 glass shadow-lg">
       <div className="mx-auto w-full max-w-6xl px-4 py-12">
         <div className="grid gap-8 md:grid-cols-2 mb-8">
           {/* Branding */}

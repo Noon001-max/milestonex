@@ -32,7 +32,7 @@ export function SiteHeader({
   )
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/30 glass shadow-sm">
+    <header className="sticky top-0 z-40 border-b border-white/20 dark:border-white/10 glass shadow-lg">
       <div className="mx-auto grid h-16 max-w-6xl grid-cols-[auto_1fr_auto] items-center px-4">
         <div className="flex items-center min-w-[3rem]">
           {user ? (
