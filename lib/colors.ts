@@ -13,8 +13,8 @@ export const colors = {
   text: '#0F172A',
   textSecondary: '#475569',
   border: '#E2E8F0',
-  accent: '#4F46E5',
-  accentHover: '#4338CA',
+  accent: '#7E2A49',
+  accentHover: '#A4375F',
   success: '#10B981',
   error: '#EF4444',
 
@@ -25,8 +25,8 @@ export const colors = {
   textDark: '#F8FAFC',
   textSecondaryDark: '#94A3B8',
   borderDark: '#1E293B',
-  accentDark: '#6366F1',
-  accentHoverDark: '#818CF8',
+  accentDark: '#C34B77',
+  accentHoverDark: '#D07194',
   successDark: '#10B981',
   errorDark: '#EF4444',
 } as const;

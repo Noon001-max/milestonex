@@ -65,8 +65,8 @@
   --color-text: var(--shadow-grey);
   --color-muted-text: var(--pale-slate);
   --color-border: var(--silver);
-  --color-primary: var(--shadow-grey);
-  --color-primary-hover: var(--shadow-grey);
+  --color-primary: #7E2A49;
+  --color-primary-hover: #A4375F;
   color-scheme: light;
 
   /* Backwards-compatible aliases used across the app */
@@ -97,8 +97,8 @@
     --color-text: var(--shadow-grey);
     --color-muted-text: var(--pale-slate);
     --color-border: var(--silver);
-    --color-primary: var(--shadow-grey);
-    --color-primary-hover: var(--shadow-grey);
+    --color-primary: #7E2A49;
+    --color-primary-hover: #A4375F;
     color-scheme: dark;
 
     --app-background: var(--color-bg);
