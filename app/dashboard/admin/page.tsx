@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { CheckCircle2, Clock, AlertCircle, Users, TrendingUp, GitBranch, Banknote, Landmark, ArrowRight, Activity } from "lucide-react"
+import { Clock, Users, TrendingUp, GitBranch, Landmark, ArrowRight, Activity } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { getAllProjects } from "@/lib/queries"
@@ -45,66 +45,56 @@ export default async function AdminDashboard() {
   const completionRate = totalProjects > 0 ? Math.round((completedProjects.length / totalProjects) * 100) : 0
 
   const keyMetrics = [
-    { label: "Platform Members", value: allUsers.length, icon: Users, subtext: "Total registered users", color: "text-blue-500 bg-blue-500/10" },
-    { label: "Total Funds Raised", value: formatCurrency(totalRaised), icon: TrendingUp, subtext: `${fundingProjects.length} active fundraisers`, color: "text-emerald-500 bg-emerald-500/10" },
-    { label: "Secured in Escrow", value: formatCurrency(totalEscrow), icon: Landmark, subtext: "Awaiting milestone releases", color: "text-indigo-500 bg-indigo-500/10" },
-    { label: "Completion Rate", value: `${completionRate}%`, icon: CheckCircle2, subtext: `${completedProjects.length} completed projects`, color: "text-purple-500 bg-purple-500/10" },
+    { label: "Platform members", value: allUsers.length, icon: Users, subtext: "Active registered accounts", color: "text-primary bg-primary/10" },
+    { label: "Open project requests", value: pendingProjects.length, icon: Clock, subtext: "New project proposals awaiting review", color: "text-foreground bg-primary/10" },
+    { label: "Milestones pending", value: pendingMilestones, icon: GitBranch, subtext: "Milestones waiting validation", color: "text-primary bg-primary/10" },
+    { label: "Escrow balance", value: formatCurrency(totalEscrow), icon: Landmark, subtext: "Funds held until milestone completion", color: "text-foreground bg-primary/10" },
   ]
 
   const actionItems = [
     {
-      title: "Project Approvals",
+      title: "Review projects",
       href: "/dashboard/admin/projects",
       count: pendingProjects.length,
-      description: "Evaluate and approve new project proposals submitted by creators.",
+      description: "Approve or reject incoming project proposals.",
       icon: Clock,
-      color: "border-l-amber-500/70 text-amber-500 bg-amber-500/5 hover:bg-amber-500/10",
-      badgeColor: "bg-amber-500/20 text-amber-600 dark:text-amber-400"
+      color: "border-l-primary/70 text-foreground bg-background hover:bg-muted",
+      badgeColor: "bg-primary/10 text-primary"
     },
     {
-      title: "Milestone Queue",
+      title: "Approve milestones",
       href: "/dashboard/admin/milestones",
       count: pendingMilestones,
-      description: "Review submitted evidence from project owners and unlock payments.",
+      description: "Verify work submissions and release escrow payments.",
       icon: GitBranch,
-      color: "border-l-indigo-500/70 text-indigo-500 bg-indigo-500/5 hover:bg-indigo-500/10",
-      badgeColor: "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400"
+      color: "border-l-primary/70 text-foreground bg-background hover:bg-muted",
+      badgeColor: "bg-primary/10 text-primary"
     },
     {
-      title: "Launch Approvals",
+      title: "Launch readiness",
       href: "/dashboard/admin/ready-to-start",
       count: readyToStartCount,
-      description: "Authorize the activation of fully-funded projects to begin work.",
-      icon: PlayCircleIcon,
-      color: "border-l-primary/70 text-primary bg-primary/5 hover:bg-primary/10",
-      badgeColor: "bg-primary/20 text-primary-foreground font-bold bg-primary/20 text-primary"
+      description: "Authorize fully funded projects to begin delivery.",
+      icon: ArrowRight,
+      color: "border-l-primary/70 text-foreground bg-background hover:bg-muted",
+      badgeColor: "bg-primary/10 text-primary"
     },
     {
-      title: "User Management",
+      title: "Manage users",
       href: "/dashboard/admin/users",
-      count: null,
-      description: "Manage accounts, update user permissions, and suspend accounts.",
+      count: allUsers.length,
+      description: "Update permissions and review account status.",
       icon: Users,
-      color: "border-l-emerald-500/70 text-emerald-500 bg-emerald-500/5 hover:bg-emerald-500/10",
-      badgeColor: ""
+      color: "border-l-primary/70 text-foreground bg-background hover:bg-muted",
+      badgeColor: "bg-primary/10 text-primary"
     },
-    {
-      title: "Dispute Review",
-      href: "/dashboard/disputes",
-      count: null,
-      description: "Moderate and resolve claims raised regarding milestone completions.",
-      icon: AlertCircle,
-      color: "border-l-rose-500/70 text-rose-500 bg-rose-500/5 hover:bg-rose-500/10",
-      badgeColor: ""
-    }
   ]
 
   const pipelineStats = [
-    { label: "Pending Review", value: pendingProjects.length, percentage: totalProjects > 0 ? Math.round((pendingProjects.length / totalProjects) * 100) : 0, barColor: "bg-amber-500" },
-    { label: "Approved (Not Live)", value: approvedProjects.length, percentage: totalProjects > 0 ? Math.round((approvedProjects.length / totalProjects) * 100) : 0, barColor: "bg-blue-500" },
-    { label: "Fundraising", value: fundingProjects.length, percentage: totalProjects > 0 ? Math.round((fundingProjects.length / totalProjects) * 100) : 0, barColor: "bg-emerald-500" },
-    { label: "Active Implementation", value: startedProjects.length, percentage: totalProjects > 0 ? Math.round((startedProjects.length / totalProjects) * 100) : 0, barColor: "bg-purple-500" },
-    { label: "Completed", value: completedProjects.length, percentage: totalProjects > 0 ? Math.round((completedProjects.length / totalProjects) * 100) : 0, barColor: "bg-slate-500 dark:bg-slate-400" },
+    { label: "Pending review", value: pendingProjects.length, percentage: totalProjects > 0 ? Math.round((pendingProjects.length / totalProjects) * 100) : 0, barColor: "bg-primary" },
+    { label: "Approved", value: approvedProjects.length, percentage: totalProjects > 0 ? Math.round((approvedProjects.length / totalProjects) * 100) : 0, barColor: "bg-muted" },
+    { label: "Fundraising", value: fundingProjects.length, percentage: totalProjects > 0 ? Math.round((fundingProjects.length / totalProjects) * 100) : 0, barColor: "bg-primary/80" },
+    { label: "Completed", value: completedProjects.length, percentage: totalProjects > 0 ? Math.round((completedProjects.length / totalProjects) * 100) : 0, barColor: "bg-muted/70" },
   ]
 
   return (

@@ -71,53 +71,28 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
       <div className="w-full max-w-5xl">
         <div className="mb-10 flex flex-col items-center gap-4 text-center">
           <div className="inline-flex items-center justify-center rounded-3xl bg-primary/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.35em] text-primary shadow-sm shadow-primary/10">
-            {isSignUp ? "Join Milestone X" : "Secure sign in"}
+            {isSignUp ? "Join Milestone X" : "Sign in"}
           </div>
           <div className="space-y-3">
             <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              {isSignUp ? "Create an account to launch trusted community projects" : "Sign in and manage your escrow-backed funding"}
+              {isSignUp ? "Create an account to launch trusted community projects" : "Sign in to continue."}
             </h1>
             <p className="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base">
               {isSignUp
                 ? "Set up your account quickly and join a transparent funding marketplace with escrow protection and milestone accountability."
-                : "Access your dashboard, review verified milestones, and track funds held securely in escrow."}
+                : "Enter your email and password to access your dashboard."}
             </p>
           </div>
         </div>
 
-        <Card className="grid gap-8 rounded-[2rem] border border-border/70 bg-card p-8 shadow-xl sm:grid-cols-[1.1fr_0.9fr] sm:p-10">
-          <div className="space-y-6">
-            <div className="rounded-[1.75rem] border border-primary/10 bg-primary/5 p-6 shadow-sm shadow-primary/10">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary">{isSignUp ? "Why join?" : "Why sign in?"}</p>
-              <ul className="mt-5 space-y-4 text-sm text-muted-foreground">
-                <li className="flex gap-3">
-                  <span className="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-primary text-primary-foreground">✓</span>
-                  <span>{isSignUp ? "Create an account to submit projects and receive escrow-secured funding." : "Continue funding progress with a secure dashboard and notification stream."}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-primary text-primary-foreground">✓</span>
-                  <span>{isSignUp ? "Choose the role that fits you: donor, owner, verifier, or admin." : "See project milestones, escrow balances, and approval status quickly."}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-primary text-primary-foreground">✓</span>
-                  <span>{isSignUp ? "Start with a secure onboarding flow and clear role selection." : "Sign in instantly and keep your funding activity transparent."}</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="rounded-[1.75rem] border border-border/70 bg-background/80 p-6 text-sm text-muted-foreground shadow-sm">
-              <p className="font-semibold text-foreground">Pro tip</p>
-              <p className="mt-2">Use a strong password and keep your email secure. Your account protects your access to escrow and milestone workflows.</p>
-            </div>
-          </div>
-
+        <Card className="rounded-[2rem] border border-border/70 bg-card p-8 shadow-xl sm:p-10">
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-semibold text-foreground">{isSignUp ? "Create your account" : "Welcome back"}</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 {isSignUp
-                  ? "Sign up in seconds and start connecting with verified projects."
-                  : "Enter your credentials to continue where you left off."}
+                  ? "Sign up quickly and choose your role on the next page."
+                  : "Enter your email and password to continue."}
               </p>
             </div>
 
@@ -165,28 +140,28 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
               </div>
 
               {isSignUp && (
-              <div className="rounded-[1.75rem] border border-border/70 bg-background/80 p-5 text-sm text-muted-foreground shadow-sm">
-                <p className="font-semibold text-foreground mb-2">Choose your role on the next page.</p>
-                <p>After creating your account, you will select how you want to use Milestone X: donor, project proposer, verifier, or admin.</p>
-              </div>
-            )}
+                <div className="rounded-[1.75rem] border border-border/70 bg-background/80 p-5 text-sm text-muted-foreground shadow-sm">
+                  <p className="font-semibold text-foreground mb-2">Choose your role next.</p>
+                  <p>Your role selection will happen after signup, so you can decide later.</p>
+                </div>
+              )}
 
-            {error && (
-              <p className="rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert">
-                {error}
-              </p>
-            )}
+              {error && (
+                <p className="rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert">
+                  {error}
+                </p>
+              )}
 
-            {success && (
-              <p className="rounded-2xl border border-success/20 bg-success/10 px-4 py-3 text-sm text-success" role="status">
-                {success}
-              </p>
-            )}
+              {success && (
+                <p className="rounded-2xl border border-success/20 bg-success/10 px-4 py-3 text-sm text-success" role="status">
+                  {success}
+                </p>
+              )}
 
-            <Button type="submit" disabled={loading} className="w-full rounded-full py-3">
-              {loading ? "Please wait..." : isSignUp ? "Create account" : "Sign in"}
-            </Button>
-          </form>
+              <Button type="submit" disabled={loading} className="w-full rounded-full py-3">
+                {loading ? "Please wait..." : isSignUp ? "Create account" : "Sign in"}
+              </Button>
+            </form>
 
             <p className="text-sm text-muted-foreground text-center mt-6">
               {isSignUp ? "Already have an account? " : "Don't have an account? "}
