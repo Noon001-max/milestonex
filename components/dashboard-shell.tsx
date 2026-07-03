@@ -35,10 +35,8 @@ export default function DashboardShell({
         />
 
         <main className="flex-1 md:pl-72">
-          {/* Subtle accent gradient line at top of content area */}
-          <div className="h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+          <div className="border-b border-border" />
           
-          {/* Animated page content wrapper */}
           <div className="animate-fade-in">
             {children}
           </div>
