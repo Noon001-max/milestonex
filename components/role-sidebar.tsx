@@ -109,26 +109,18 @@ export default function RoleSidebar({
   const getItemClassName = (href: string) => {
     const isActive = pathname === href || pathname?.startsWith(`${href}/`)
     if (user.role === "suspended") {
-      return `flex items-center gap-3 rounded-[1.75rem] px-4 py-3 text-sm font-medium transition-all duration-200 ${
+      return `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
         isActive
-          ? "bg-destructive/10 text-destructive shadow-sm shadow-destructive/10"
-          : "text-destructive/80 hover:bg-destructive/5 hover:text-destructive"
+          ? "bg-destructive/10 text-destructive shadow-sm"
+          : "text-destructive/70 hover:bg-destructive/5 hover:text-destructive"
       }`
     }
 
-    return `group/item relative flex items-center gap-3 rounded-xl border border-border/70 bg-background/90 px-4 py-3 text-sm font-semibold transition-all duration-200 ${
+    return `group/item relative flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
       isActive
-        ? "bg-primary/10 text-primary shadow-sm shadow-primary/10"
-        : "text-muted-foreground hover:border-primary/20 hover:bg-primary/5 hover:text-foreground"
+        ? "bg-primary/10 text-primary shadow-sm"
+        : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
     }`
-  }
-
-  const getActiveIndicator = (href: string) => {
-    const isActive = pathname === href || pathname?.startsWith(`${href}/`)
-    if (!isActive || user.role === "suspended") return null
-    return (
-      <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full bg-primary animate-scale-in" />
-    )
   }
 
   const initials = user.name
@@ -143,24 +135,19 @@ export default function RoleSidebar({
   const sidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Role Label */}
-      <div className="rounded-xl border border-primary/10 bg-primary/5 px-4 py-4 shadow-sm shadow-slate-900/5">
-        <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-primary/80">
+      <div className="px-3 py-4 border-b border-border/40">
+        <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-muted-foreground/70 px-1">
           {ROLE_LABELS[user.role] || user.role}
         </span>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 mt-6 flex flex-col gap-3 px-1 stagger-children">
+      <nav className="flex-1 mt-4 flex flex-col gap-1 px-2 stagger-children">
         {items.map((it) => {
           const Icon = it.icon
           return (
-            <Link
-              key={it.id}
-              href={it.href}
-              className={getItemClassName(it.href)}
-            >
-              {getActiveIndicator(it.href)}
-              <Icon className="size-[18px] flex-shrink-0 transition-transform duration-200 group-hover/item:scale-110" />
+            <Link key={it.id} href={it.href} className={getItemClassName(it.href)}>
+              <Icon className="size-4.5" />
               <span>{it.label}</span>
             </Link>
           )
@@ -168,25 +155,26 @@ export default function RoleSidebar({
       </nav>
 
       {/* Bottom Profile and Signout Section */}
-      <div className="mt-auto rounded-xl border border-border/70 bg-background/90 p-4 shadow-sm shadow-slate-900/5">
-        <div className="flex items-center gap-3 px-1 py-1.5">
+      <div className="mt-auto border-t border-border/40 pt-4 pb-3 px-2 space-y-3">
+        <div className="flex items-center gap-3 px-2 py-1.5">
           <div className="relative">
-            <div className="size-11 rounded-full bg-gradient-to-br from-primary/25 to-slate-900/10 text-primary flex items-center justify-center font-bold text-sm ring-1 ring-primary/20">
+            <div className="size-9 rounded-full bg-gradient-to-br from-primary/20 to-indigo-500/20 text-primary flex items-center justify-center font-bold text-sm ring-2 ring-primary/10">
               {initials}
             </div>
+            {/* Online indicator dot */}
             <span className="absolute -bottom-0.5 -right-0.5 size-2.5 rounded-full bg-emerald-500 ring-2 ring-card" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-foreground truncate leading-none">{user.name}</p>
+            <p className="text-sm font-bold text-foreground truncate leading-none">{user.name}</p>
             <p className="text-[11px] text-muted-foreground truncate capitalize mt-1">{user.role}</p>
           </div>
         </div>
 
         <button
           onClick={handleLogout}
-          className="mt-4 flex w-full items-center gap-3 rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm font-semibold text-destructive transition-all duration-200 hover:bg-destructive/10"
+          className="flex w-full items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-destructive/80 hover:text-destructive hover:bg-destructive/8 transition-all duration-200"
         >
-          <LogOut className="size-[18px]" />
+          <LogOut className="size-4.5" />
           <span>Sign Out</span>
         </button>
       </div>
@@ -195,8 +183,8 @@ export default function RoleSidebar({
 
   return (
     <>
-      {/* Desktop sidebar */}
-      <aside className="hidden md:flex flex-col w-72 h-[calc(100vh-4rem)] fixed left-0 top-16 p-4 border-r border-border/60 bg-card/95 shadow-2xl shadow-slate-900/10 backdrop-blur-xl z-30">
+      {/* Desktop sidebar — glassmorphism */}
+      <aside className="hidden md:flex flex-col w-72 h-[calc(100vh-4rem)] fixed left-0 top-16 p-3 border-r border-border/60 glass z-30">
         {sidebarContent()}
       </aside>
 
@@ -204,28 +192,27 @@ export default function RoleSidebar({
         <button
           aria-label="Open menu"
           onClick={handleOpen}
-          className="md:hidden inline-flex items-center justify-center rounded-2xl border border-border/80 bg-card/90 p-2 text-muted-foreground transition-colors duration-200 hover:bg-primary/10 hover:text-foreground"
+          className="md:hidden inline-flex items-center justify-center rounded-xl p-2 text-muted-foreground hover:bg-accent/50 transition-colors"
         >
           <Menu className="size-5" />
         </button>
       )}
 
-      {/* Mobile drawer with smooth animation */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex">
           {/* Backdrop with fade */}
           <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm animate-fade-in"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm animate-fade-in"
             onClick={handleClose}
           />
           
           {/* Sidebar panel with slide-in */}
-          <div className="relative w-72 max-w-[85vw] bg-card/95 p-4 border-r border-border/60 h-screen flex flex-col z-10 animate-slide-in-right shadow-2xl shadow-slate-900/20">
+          <div className="relative w-72 max-w-[85vw] glass p-3 border-r border-border/60 h-screen flex flex-col z-10 animate-slide-in-right shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-border/40 px-1">
               <h3 className="text-sm font-bold tracking-tight text-foreground">Navigation</h3>
               <button
                 onClick={handleClose}
-                className="p-2 rounded-lg text-muted-foreground transition-colors duration-200 hover:bg-primary/10 hover:text-foreground"
+                className="p-2 rounded-xl text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-all duration-200"
               >
                 <X className="size-5" />
               </button>

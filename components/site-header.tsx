@@ -16,60 +16,67 @@ export function SiteHeader({
   showMenuButton?: boolean
   onMenuClick?: () => void
 }) {
-  return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-card/95 backdrop-blur-xl shadow-sm shadow-slate-900/5">
-      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-4">
-        <div className="flex items-center gap-3">
-          {user && showMenuButton ? (
-            <button
-              type="button"
-              onClick={onMenuClick}
-              className="inline-flex items-center justify-center rounded-2xl border border-border px-2.5 py-2 text-foreground hover:border-primary/40 hover:bg-primary/10 transition-all duration-200 md:hidden active:scale-95"
-              aria-label="Open menu"
-            >
-              <Menu className="size-5" />
-            </button>
-          ) : null}
+  const renderLogo = () => (
+    <Link href="/" className="flex items-center gap-2.5 group">
+      <Image
+        src="/logo.png"
+        alt="Milestone X"
+        width={36}
+        height={36}
+        className="rounded-lg transition-transform duration-200 group-hover:scale-105"
+      />
+      <span className="text-base font-bold tracking-tight text-foreground">
+        Milestone X
+      </span>
+    </Link>
+  )
 
-          <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/logo.png"
-              alt="Milestone X"
-              width={40}
-              height={40}
-              className="rounded-2xl"
-            />
-            <div>
-              <p className="text-sm font-semibold tracking-tight text-foreground">
-                Milestone X
-              </p>
-           
-            </div>
-          </Link>
+  return (
+    <header className="sticky top-0 z-40 border-b border-border/50 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 shadow-sm">
+      <div className="mx-auto grid h-16 max-w-6xl grid-cols-[auto_1fr_auto] items-center px-4">
+        <div className="flex items-center min-w-[3rem]">
+          {user ? (
+            showMenuButton ? (
+              <button
+                type="button"
+                onClick={onMenuClick}
+                className="inline-flex items-center justify-center rounded-xl p-2 text-foreground hover:bg-secondary transition-all duration-200 md:hidden active:scale-95"
+                aria-label="Open menu"
+              >
+                <Menu className="size-5" />
+              </button>
+            ) : null
+          ) : (
+            renderLogo()
+          )}
         </div>
 
-        <div className="flex-1">
-          {!user && !hideNavigation && (
-            <nav className="hidden items-center justify-center gap-10 text-sm md:flex">
-              <a
-                href="/projects"
-                className="font-semibold text-muted-foreground transition-colors duration-200 hover:text-primary"
-              >
-                Projects
-              </a>
-              <a
-                href="/transparency"
-                className="font-semibold text-muted-foreground transition-colors duration-200 hover:text-primary"
-              >
-                Transparency
-              </a>
-              <a
-                href="/#how-it-works"
-                className="font-semibold text-muted-foreground transition-colors duration-200 hover:text-primary"
-              >
-                How it works
-              </a>
-            </nav>
+        <div className="flex items-center justify-center">
+          {user ? (
+            renderLogo()
+          ) : (
+            !hideNavigation && (
+              <nav className="hidden items-center gap-8 text-sm md:flex">
+                <a
+                  href="/projects"
+                  className="font-bold text-muted-foreground transition-all duration-200 hover:text-primary hover:-translate-y-0.5"
+                >
+                  Projects
+                </a>
+                <a
+                  href="/transparency"
+                  className="font-bold text-muted-foreground transition-all duration-200 hover:text-primary hover:-translate-y-0.5"
+                >
+                  Transparency
+                </a>
+                <a
+                  href="/#how-it-works"
+                  className="font-bold text-muted-foreground transition-all duration-200 hover:text-primary hover:-translate-y-0.5"
+                >
+                  How it works
+                </a>
+              </nav>
+            )
           )}
         </div>
 
@@ -86,14 +93,14 @@ export function SiteHeader({
                 <div className="flex items-center gap-3">
                   <Link
                     href="/dashboard/notifications"
-                    className={`relative inline-flex items-center justify-center rounded-2xl border border-border px-3 py-2 text-muted-foreground hover:border-primary/40 hover:text-foreground transition-all duration-200 ${
+                    className={`relative p-2.5 rounded-xl hover:bg-secondary text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 ${
                       unreadCount > 0 ? "animate-wiggle" : ""
                     }`}
                     title="Notifications"
                   >
                     <Bell className="size-5" />
                     {unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold ring-2 ring-background">
+                      <span className="absolute top-1 right-1 flex size-4.5 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold ring-2 ring-background animate-pulse-subtle">
                         {unreadCount > 99 ? "99+" : unreadCount}
                       </span>
                     )}
@@ -101,11 +108,11 @@ export function SiteHeader({
 
                   <Link
                     href="/dashboard/profile"
-                    className="group inline-flex items-center gap-2.5 rounded-full border border-border px-2 py-1 transition-all duration-200 hover:border-primary/40 hover:bg-primary/10"
+                    className="group flex items-center gap-2.5 rounded-full p-1 hover:bg-secondary/60 transition-all duration-200"
                     aria-label="Profile"
                   >
                     {user.image ? (
-                      <div className="h-9 w-9 overflow-hidden rounded-full border-2 border-primary/20 transition-all duration-200">
+                      <div className="h-8 w-8 overflow-hidden rounded-full border-2 border-primary/20 ring-2 ring-transparent group-hover:ring-primary/10 transition-all duration-200">
                         <Image
                           src={user.image}
                           alt={`${user.name}'s avatar`}
@@ -115,11 +122,12 @@ export function SiteHeader({
                         />
                       </div>
                     ) : (
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-primary/20 bg-primary/10 text-xs font-bold text-primary">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/15 to-indigo-500/15 text-primary border-2 border-primary/20 flex items-center justify-center text-xs font-bold ring-2 ring-transparent group-hover:ring-primary/10 transition-all duration-200">
                         {initials}
                       </div>
                     )}
-                    <span className="hidden lg:block max-w-[100px] truncate text-xs font-semibold text-muted-foreground group-hover:text-foreground">
+                    {/* Name on hover — desktop only */}
+                    <span className="hidden lg:block text-xs font-bold text-muted-foreground group-hover:text-foreground transition-colors max-w-[100px] truncate">
                       {user.name.split(" ")[0]}
                     </span>
                   </Link>
@@ -130,13 +138,13 @@ export function SiteHeader({
             <div className="flex items-center gap-4">
               <a
                 href="/sign-in"
-                className="text-sm font-semibold text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                className="text-sm font-bold text-muted-foreground hover:text-foreground transition-colors duration-200"
               >
                 Sign in
               </a>
               <a
                 href="/sign-up"
-                className="inline-flex items-center justify-center rounded-lg border border-primary/20 bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
+                className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-md shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.03] active:scale-95 transition-all duration-200"
               >
                 Get Started
               </a>

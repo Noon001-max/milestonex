@@ -47,11 +47,6 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-
-  /* Custom animation durations */
-  --animate-duration-fast: 200ms;
-  --animate-duration-normal: 400ms;
-  --animate-duration-slow: 600ms;
 }
 
 /* Replaced palette: flat color tokens provided by user */
@@ -148,7 +143,10 @@
   to { opacity: 0; transform: translateX(-100%); }
 }
 
-/* removed shimmer gradient for minimalist flat look */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
 
 @keyframes pulse-subtle {
   0%, 100% { opacity: 1; }
@@ -173,7 +171,11 @@
   50% { transform: translateY(-6px); }
 }
 
-/* removed gradient-shift for minimalist flat look */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
 @keyframes scale-in {
   from { opacity: 0; transform: scale(0.95); }
@@ -206,8 +208,10 @@
   animation: slide-out-left 0.2s ease-in both;
 }
 
-.animate-shimmer { /* simplified: solid subtle shimmer placeholder removed */
-  background: transparent;
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
 }
 
 .animate-pulse-subtle {
@@ -226,8 +230,9 @@
   animation: float 3s ease-in-out infinite;
 }
 
-.animate-gradient-shift { /* removed gradient animation for flat style */
-  background: transparent;
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
 }
 
 .animate-scale-in {
@@ -280,7 +285,12 @@
    Gradient Text Utility
    ═══════════════════════════════════════════════════════════ */
 
-/* gradient-text removed for flat/minimal theme */
+.gradient-text {
+  background: linear-gradient(135deg, var(--app-accent), #818CF8, #A78BFA);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 /* ═══════════════════════════════════════════════════════════
    Premium Scrollbar Styling
@@ -312,65 +322,6 @@
   background: rgba(148, 163, 184, 0.25);
 }
 
-/* Old appended theme removed — using simplified `--color-*` system above. */
-
-/* Base theme usage examples and utilities */
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-}
-
-.subheading,
-.subtitle,
-h2 + p,
-h3 + p {
-  font-family: var(--font-subheading);
-}
-
-.btn-primary {
-  background-color: var(--color-primary);
-  color: #ffffff;
-  border: 1px solid var(--color-border);
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: none;
-  transition: background-color 0.12s ease;
-}
-
-.btn-primary:hover {
-  background-color: var(--color-primary-hover);
-}
-
-h1, h2, h3 {
-  color: var(--color-text);
-}
-
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--color-primary-hover);
-  text-decoration: underline;
-}
-
-.card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 1.5rem;
-}
-
-
 /* Firefox scrollbar */
 * {
   scrollbar-width: thin;
@@ -382,15 +333,17 @@ a:hover {
    ═══════════════════════════════════════════════════════════ */
 
 .hover-glow {
-  transition: border-color 0.12s ease, transform 0.12s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
 }
 
 .hover-glow:hover {
-  border-color: var(--color-border);
+  box-shadow: 0 8px 30px -8px rgba(79, 70, 229, 0.12), 0 0 0 1px rgba(79, 70, 229, 0.08);
+  border-color: rgba(79, 70, 229, 0.2);
 }
 
 .dark .hover-glow:hover {
-  border-color: var(--color-border);
+  box-shadow: 0 8px 30px -8px rgba(99, 102, 241, 0.15), 0 0 0 1px rgba(99, 102, 241, 0.1);
+  border-color: rgba(99, 102, 241, 0.25);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -416,10 +369,12 @@ a:hover {
   .animate-fade-in-up,
   .animate-slide-in-left,
   .animate-slide-in-right,
+  .animate-shimmer,
   .animate-pulse-subtle,
   .animate-wiggle,
   .animate-grow-width,
   .animate-float,
+  .animate-gradient-shift,
   .animate-scale-in,
   .animate-marquee {
     animation: none !important;
@@ -443,6 +398,5 @@ a:hover {
   }
   html {
     @apply font-sans;
-    scroll-behavior: smooth;
   }
 }
