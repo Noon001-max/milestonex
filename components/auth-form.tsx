@@ -1,27 +1,21 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
+import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
-import { ROLES } from "@/lib/roles"
-import type { Role } from "@/lib/session"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
-import { ShieldCheck, Users, Briefcase, CheckCircle2, Banknote } from "lucide-react"
 
 export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
   const router = useRouter()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [role, setRole] = useState<Role>("donor")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const [showAdvanced, setShowAdvanced] = useState(false)
   const [success, setSuccess] = useState<string | null>(null)
 
   const isSignUp = mode === "sign-up"
@@ -55,8 +49,6 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
           email,
           password,
           name,
-          // @ts-expect-error role is a registered additional field
-          role,
         })
       : await authClient.signIn.email({ email, password })
 
@@ -67,186 +59,145 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
       return
     }
 
-    setSuccess(isSignUp ? "Account created — redirecting..." : "Signed in — redirecting...")
+    setSuccess(isSignUp ? "Account created — continue to role selection..." : "Signed in — redirecting...")
     setTimeout(() => {
-      router.push("/dashboard")
+      router.push(isSignUp ? "/sign-up/role" : "/dashboard")
       router.refresh()
     }, 700)
   }
 
   return (
-    <main className="min-h-svh bg-background flex flex-col items-center justify-start px-4 py-10">
-      <div className="w-full max-w-md flex flex-col">
-        <div className="mb-8 flex items-center justify-center gap-2">
-          <Image
-            src="/logo.png"
-            alt="Milestone X"
-            width={36}
-            height={36}
-            className="rounded-md"
-          />
-          <span className="text-base font-semibold tracking-tight text-foreground">
-            Milestone X
-          </span>
-        </div>
-
-        <Card className="p-6">
-          <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-              {isSignUp ? "Create your account" : "Welcome back"}
+    <main className="min-h-svh bg-background flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-5xl">
+        <div className="mb-10 flex flex-col items-center gap-4 text-center">
+          <div className="inline-flex items-center justify-center rounded-3xl bg-primary/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.35em] text-primary shadow-sm shadow-primary/10">
+            {isSignUp ? "Join Milestone X" : "Secure sign in"}
+          </div>
+          <div className="space-y-3">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              {isSignUp ? "Create an account to launch trusted community projects" : "Sign in and manage your escrow-backed funding"}
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base">
               {isSignUp
-                ? "Join the transparent funding platform"
-                : "Sign in to your account to continue"}
+                ? "Set up your account quickly and join a transparent funding marketplace with escrow protection and milestone accountability."
+                : "Access your dashboard, review verified milestones, and track funds held securely in escrow."}
             </p>
           </div>
+        </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {isSignUp && (
+        <Card className="grid gap-8 rounded-[2rem] border border-border/70 bg-card p-8 shadow-xl sm:grid-cols-[1.1fr_0.9fr] sm:p-10">
+          <div className="space-y-6">
+            <div className="rounded-[1.75rem] border border-primary/10 bg-primary/5 p-6 shadow-sm shadow-primary/10">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary">{isSignUp ? "Why join?" : "Why sign in?"}</p>
+              <ul className="mt-5 space-y-4 text-sm text-muted-foreground">
+                <li className="flex gap-3">
+                  <span className="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-primary text-primary-foreground">✓</span>
+                  <span>{isSignUp ? "Create an account to submit projects and receive escrow-secured funding." : "Continue funding progress with a secure dashboard and notification stream."}</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-primary text-primary-foreground">✓</span>
+                  <span>{isSignUp ? "Choose the role that fits you: donor, owner, verifier, or admin." : "See project milestones, escrow balances, and approval status quickly."}</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-primary text-primary-foreground">✓</span>
+                  <span>{isSignUp ? "Start with a secure onboarding flow and clear role selection." : "Sign in instantly and keep your funding activity transparent."}</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="rounded-[1.75rem] border border-border/70 bg-background/80 p-6 text-sm text-muted-foreground shadow-sm">
+              <p className="font-semibold text-foreground">Pro tip</p>
+              <p className="mt-2">Use a strong password and keep your email secure. Your account protects your access to escrow and milestone workflows.</p>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-semibold text-foreground">{isSignUp ? "Create your account" : "Welcome back"}</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {isSignUp
+                  ? "Sign up in seconds and start connecting with verified projects."
+                  : "Enter your credentials to continue where you left off."}
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              {isSignUp && (
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="name">Full name</Label>
+                  <Input
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    autoComplete="name"
+                    placeholder="Jane Doe"
+                  />
+                </div>
+              )}
               <div className="flex flex-col gap-2">
-                <Label htmlFor="name">Full name</Label>
+                <Label htmlFor="email">Email address</Label>
                 <Input
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
-                  autoComplete="name"
+                  autoComplete="email"
+                  placeholder="you@example.com"
                 />
               </div>
-            )}
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={8}
-                autoComplete={isSignUp ? "new-password" : "current-password"}
-              />
-            </div>
-
-            {isSignUp && (
-              <fieldset className="flex flex-col gap-2">
-                <legend className="text-sm font-medium text-foreground mb-2">
-                  Account type
-                </legend>
-                <p className="text-xs text-muted-foreground mb-2">
-                  Choose the role that best matches how you'll use the platform.
-                </p>
-
-                <div className="flex items-center gap-3 mb-2">
-                  <label className="text-sm text-muted-foreground">Advanced options</label>
-                  <button
-                    type="button"
-                    onClick={() => setShowAdvanced((s) => !s)}
-                    className="text-sm text-primary underline-offset-4 hover:underline"
-                  >
-                    {showAdvanced ? "Hide" : "Show"}
-                  </button>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-3">
+                  <Label htmlFor="password">Password</Label>
+                  <span className="text-xs text-muted-foreground">8+ characters</span>
                 </div>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={8}
+                  autoComplete={isSignUp ? "new-password" : "current-password"}
+                  placeholder="Enter a secure password"
+                />
+              </div>
 
-                {showAdvanced ? (
-                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    {ROLES.filter((r) => r.value !== "suspended").map((r) => {
-                      const Icon =
-                        r.value === "donor"
-                          ? Users
-                          : r.value === "owner"
-                          ? Briefcase
-                          : r.value === "verifier"
-                          ? CheckCircle2
-                          : r.value === "admin"
-                          ? ShieldCheck
-                          : Banknote
-                      const selected = role === r.value
-                      return (
-                        <button
-                          key={r.value}
-                          type="button"
-                          onClick={() => {
-                            setRole(r.value)
-                            setShowAdvanced(false)
-                          }}
-                          aria-pressed={selected}
-                          className={`group relative flex items-start gap-3 rounded-xl border p-4 text-left transition-all text-sm shadow-md hover:shadow-lg ${
-                            selected
-                              ? "border-primary bg-primary/10 shadow-primary/20"
-                              : "border-border bg-background hover:border-primary hover:bg-muted"
-                          }`}
-                        >
-                          <span className={`grid h-10 w-10 place-items-center rounded-lg transition-colors flex-shrink-0 ${selected ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary"}`}>
-                            <Icon className="size-4" />
-                          </span>
-                          <span className="flex-1 min-w-0">
-                            <span className="block text-sm font-semibold text-foreground">
-                              {r.label}
-                            </span>
-                            <span className="block text-xs text-muted-foreground">
-                              {r.description}
-                            </span>
-                          </span>
-                          {selected ? (
-                            <span className="absolute right-3 top-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                              ✓
-                            </span>
-                          ) : null}
-                        </button>
-                      )
-                    })}
-                  </div>
-                ) : (
-                  <div className="rounded-md border border-border bg-muted p-3 text-sm text-muted-foreground">
-                    Selected role: <strong className="text-foreground">{ROLES.find(r => r.value === role)?.label || 'Donor / Investor'}</strong>
-                    <p className="text-xs mt-1">{ROLES.find(r => r.value === role)?.description}</p>
-                  </div>
-                )}
-              </fieldset>
+              {isSignUp && (
+              <div className="rounded-[1.75rem] border border-border/70 bg-background/80 p-5 text-sm text-muted-foreground shadow-sm">
+                <p className="font-semibold text-foreground mb-2">Choose your role on the next page.</p>
+                <p>After creating your account, you will select how you want to use Milestone X: donor, project proposer, verifier, or admin.</p>
+              </div>
             )}
 
             {error && (
-              <p className="text-sm text-destructive" role="alert">
+              <p className="rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert">
                 {error}
               </p>
             )}
 
             {success && (
-              <p className="text-sm text-success" role="status">
+              <p className="rounded-2xl border border-success/20 bg-success/10 px-4 py-3 text-sm text-success" role="status">
                 {success}
               </p>
             )}
 
-            <Button type="submit" disabled={loading} className="w-full">
-              {loading
-                ? "Please wait..."
-                : isSignUp
-                  ? "Create account"
-                  : "Sign in"}
+            <Button type="submit" disabled={loading} className="w-full rounded-full py-3">
+              {loading ? "Please wait..." : isSignUp ? "Create account" : "Sign in"}
             </Button>
           </form>
 
-          <p className="text-sm text-muted-foreground text-center mt-6">
-            {isSignUp ? "Already have an account? " : "Don't have an account? "}
-            <Link
-              href={isSignUp ? "/sign-in" : "/sign-up"}
-              className="text-foreground font-medium underline-offset-4 hover:underline"
-            >
-              {isSignUp ? "Sign in" : "Sign up"}
-            </Link>
-          </p>
+            <p className="text-sm text-muted-foreground text-center mt-6">
+              {isSignUp ? "Already have an account? " : "Don't have an account? "}
+              <Link
+                href={isSignUp ? "/sign-in" : "/sign-up"}
+                className="text-primary font-medium underline-offset-4 hover:underline"
+              >
+                {isSignUp ? "Sign in" : "Sign up"}
+              </Link>
+            </p>
+          </div>
         </Card>
       </div>
     </main>
