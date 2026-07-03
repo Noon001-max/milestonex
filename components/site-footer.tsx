@@ -38,51 +38,57 @@ export function SiteFooter() {
   }, [isPaused])
 
   return (
-    <footer className="border-t border-border/60 bg-background/50 backdrop-blur-md">
-      <div className="mx-auto w-full max-w-6xl px-4 py-12">
-        <div className="flex items-center gap-4 mb-8">
-          <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm shadow-primary/20">
-            <ShieldCheck className="size-5.5" />
-          </span>
+    <footer className="border-t border-border/60 bg-card/95 px-4 py-14">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr_1fr]">
           <div>
-            <div className="text-lg font-bold tracking-tight text-foreground">
+            <div className="inline-flex items-center gap-3 rounded-2xl border border-border/80 bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">
+              <ShieldCheck className="size-5" />
               Milestone X
             </div>
-            <div className="text-sm text-muted-foreground">Transparent Escrow-Backed Funding</div>
+            <p className="mt-5 max-w-md text-sm leading-7 text-muted-foreground">
+              Trusted escrow funding, transparent milestone accountability, and a platform built to turn community trust into measurable impact.
+            </p>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-primary">
+              <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+              Premium funding clarity
+            </div>
           </div>
-        </div>
 
-        {/* Marquee with fading edge gradients */}
-        <div className="relative my-6">
-          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-          
-          <div
-            ref={scrollerRef}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-            className="overflow-hidden w-full"
-            style={{
-              WebkitOverflowScrolling: "touch",
-            }}
-          >
-            <div className="flex w-max gap-4 py-2 whitespace-nowrap">
-              {teamMembers.concat(teamMembers).map((member, idx) => (
-                <div
-                  key={`${member.id}-${idx}`}
-                  className="inline-flex flex-col gap-1 rounded-xl border border-border/80 bg-card/60 px-5 py-3.5 text-sm text-foreground shadow-sm hover:border-primary/20 transition-all duration-200"
-                  style={{ minWidth: 240 }}
-                >
+          <div>
+            <p className="text-sm font-semibold text-foreground mb-4">Navigate</p>
+            <div className="flex flex-col gap-3 text-sm text-muted-foreground">
+              <a href="/projects" className="transition-colors duration-200 hover:text-foreground">
+                Projects
+              </a>
+              <a href="/transparency" className="transition-colors duration-200 hover:text-foreground">
+                Transparency
+              </a>
+              <a href="/#how-it-works" className="transition-colors duration-200 hover:text-foreground">
+                How it works
+              </a>
+              <a href="/sign-up" className="transition-colors duration-200 hover:text-foreground">
+                Start a project
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-sm font-semibold text-foreground mb-4">Team</p>
+            <div className="grid gap-3 text-sm text-muted-foreground">
+              {teamMembers.map((member) => (
+                <div key={member.id} className="rounded-[1.5rem] border border-border/80 bg-background/80 px-4 py-4 shadow-sm shadow-slate-900/5">
                   <div className="font-semibold text-foreground tracking-tight">{member.name}</div>
-                  <div className="text-xs text-muted-foreground font-mono">{member.id}</div>
+                  <div className="text-xs font-mono text-muted-foreground">{member.id}</div>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-border/40 text-center text-xs font-semibold text-muted-foreground/80">
-          © {new Date().getFullYear()} Milestone X. All rights reserved.
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-6 text-center text-sm text-muted-foreground sm:flex-row sm:text-left">
+          <p>© {new Date().getFullYear()} Milestone X. All rights reserved.</p>
+          <p className="max-w-md">Designed for communities that need stronger accountability, safer funding, and more meaningful impact.</p>
         </div>
       </div>
     </footer>
