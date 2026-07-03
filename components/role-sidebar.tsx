@@ -116,7 +116,7 @@ export default function RoleSidebar({
       }`
     }
 
-    return `group/item relative flex items-center gap-3 rounded-[1.75rem] border border-border/70 bg-background/90 px-4 py-3 text-sm font-semibold transition-all duration-200 ${
+    return `group/item relative flex items-center gap-3 rounded-xl border border-border/70 bg-background/90 px-4 py-3 text-sm font-semibold transition-all duration-200 ${
       isActive
         ? "bg-primary/10 text-primary shadow-sm shadow-primary/10"
         : "text-muted-foreground hover:border-primary/20 hover:bg-primary/5 hover:text-foreground"
@@ -143,7 +143,7 @@ export default function RoleSidebar({
   const sidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Role Label */}
-      <div className="rounded-[2rem] border border-primary/10 bg-primary/5 px-4 py-4 shadow-sm shadow-slate-900/5">
+      <div className="rounded-xl border border-primary/10 bg-primary/5 px-4 py-4 shadow-sm shadow-slate-900/5">
         <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-primary/80">
           {ROLE_LABELS[user.role] || user.role}
         </span>
@@ -168,7 +168,7 @@ export default function RoleSidebar({
       </nav>
 
       {/* Bottom Profile and Signout Section */}
-      <div className="mt-auto rounded-[2rem] border border-border/70 bg-background/90 p-4 shadow-sm shadow-slate-900/5">
+      <div className="mt-auto rounded-xl border border-border/70 bg-background/90 p-4 shadow-sm shadow-slate-900/5">
         <div className="flex items-center gap-3 px-1 py-1.5">
           <div className="relative">
             <div className="size-11 rounded-full bg-gradient-to-br from-primary/25 to-slate-900/10 text-primary flex items-center justify-center font-bold text-sm ring-1 ring-primary/20">
@@ -184,7 +184,7 @@ export default function RoleSidebar({
 
         <button
           onClick={handleLogout}
-          className="mt-4 flex w-full items-center gap-3 rounded-[1.5rem] border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm font-semibold text-destructive transition-all duration-200 hover:bg-destructive/10"
+          className="mt-4 flex w-full items-center gap-3 rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm font-semibold text-destructive transition-all duration-200 hover:bg-destructive/10"
         >
           <LogOut className="size-[18px]" />
           <span>Sign Out</span>
@@ -225,7 +225,7 @@ export default function RoleSidebar({
               <h3 className="text-sm font-bold tracking-tight text-foreground">Navigation</h3>
               <button
                 onClick={handleClose}
-                className="p-2 rounded-2xl text-muted-foreground transition-colors duration-200 hover:bg-primary/10 hover:text-foreground"
+                className="p-2 rounded-lg text-muted-foreground transition-colors duration-200 hover:bg-primary/10 hover:text-foreground"
               >
                 <X className="size-5" />
               </button>

@@ -316,10 +316,10 @@
 
 /* Base theme usage examples and utilities */
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: var(--background);
+  color: var(--foreground);
   font-family: var(--font-sans);
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {

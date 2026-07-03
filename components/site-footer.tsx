@@ -49,7 +49,7 @@ export function SiteFooter() {
             <p className="mt-5 max-w-md text-sm leading-7 text-muted-foreground">
               Trusted escrow funding, transparent milestone accountability, and a platform built to turn community trust into measurable impact.
             </p>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-primary">
+            <div className="mt-6 inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-primary">
               <span className="h-2.5 w-2.5 rounded-full bg-primary" />
               Premium funding clarity
             </div>

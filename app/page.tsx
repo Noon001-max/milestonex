@@ -65,7 +65,7 @@ export default async function HomePage() {
         <div className="relative z-10 mx-auto max-w-6xl px-4">
           <div className="grid gap-12 items-center md:grid-cols-[1.15fr_0.85fr]">
             <div className="space-y-6 animate-fade-in-up">
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+              <div className="inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
                 <ShieldCheck className="size-4 text-primary" />
                 Escrow-backed milestone funding
               </div>
@@ -80,14 +80,14 @@ export default async function HomePage() {
               <div className="flex flex-wrap gap-4">
                 <a
                   href="/projects"
-                  className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
+                  className="inline-flex items-center justify-center rounded-xl bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
                 >
                   Browse Projects
                   <ArrowRight className="size-4 ml-2 transition-transform duration-200" />
                 </a>
                 <a
                   href="/sign-up"
-                  className="inline-flex items-center justify-center rounded-full border border-primary/20 bg-background px-8 py-4 text-sm font-semibold text-primary transition-colors duration-200 hover:border-primary/40 hover:bg-primary/10"
+                  className="inline-flex items-center justify-center rounded-xl border border-primary/20 bg-background px-8 py-4 text-sm font-semibold text-primary transition-colors duration-200 hover:border-primary/40 hover:bg-primary/10"
                 >
                   Start a Project
                 </a>
@@ -191,7 +191,7 @@ export default async function HomePage() {
           </div>
           <a
             href="/projects"
-            className="inline-flex items-center justify-center rounded-full border border-primary/20 bg-primary/10 px-6 py-3 text-sm font-semibold text-primary transition-colors duration-200 hover:bg-primary/20 self-start md:self-auto"
+            className="inline-flex items-center justify-center rounded-xl border border-primary/20 bg-primary/10 px-6 py-3 text-sm font-semibold text-primary transition-colors duration-200 hover:bg-primary/20 self-start md:self-auto"
           >
             Explore All Projects
             <ArrowRight className="size-4 ml-2 transition-transform duration-200" />
