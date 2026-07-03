@@ -173,7 +173,7 @@ export default async function HomePage() {
 
       {/* Featured Projects */}
       <section className="mx-auto w-full max-w-6xl px-4 py-20 lg:py-28 relative">
-        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4 animate-fade-in-up">
+        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Featured Projects
@@ -192,11 +192,9 @@ export default async function HomePage() {
         </div>
 
         {featured.length > 0 ? (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 stagger-children">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {featured.map((p) => (
-              <div key={p.id} className="animate-fade-in-up">
-                <ProjectCard project={p} />
-              </div>
+              <ProjectCard key={p.id} project={p} />
             ))}
           </div>
         ) : (
@@ -212,7 +210,7 @@ export default async function HomePage() {
             </div>
             <a
               href="/sign-up"
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition shadow-md"
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
             >
               Start a Project
             </a>
@@ -223,7 +221,7 @@ export default async function HomePage() {
       {/* How it works */}
       <section
         id="how-it-works"
-        className="relative border-t border-border bg-card/40 py-20 lg:py-28 overflow-hidden"
+        className="border-t border-border bg-background py-20 lg:py-28"
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(79,70,229,0.03),_transparent_50%)]" />
         <div className="relative z-10 mx-auto max-w-6xl px-4">
@@ -231,12 +229,12 @@ export default async function HomePage() {
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               How accountability works
             </h2>
-            <p className="mt-3 text-lg text-muted-foreground">
-              Milestone X aligns incentives by releasing funds only as tasks are completed and verified by the people who benefit from them.
+            <p className="mt-3 text-lg font-subheading text-muted-foreground">
+              Milestone X combines escrow security, community review, and milestone-based release so every project earns trust before funds move.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 stagger-children">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => (
               <Card key={s.title} className="group relative flex flex-col gap-4 p-6 border border-border/80 bg-card hover:border-primary/30 hover-glow transition-all duration-300 hover:-translate-y-1 animate-fade-in-up">
                 <div className="flex items-center justify-between">
@@ -247,8 +245,8 @@ export default async function HomePage() {
                     0{i + 1}
                   </span>
                 </div>
-                <div className="space-y-2 mt-2">
-                  <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300">{s.title}</h3>
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {s.body}
                   </p>
@@ -269,15 +267,15 @@ export default async function HomePage() {
             <span className="rounded-full bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider backdrop-blur-md border border-white/10">
               Secure & Transparent
             </span>
-            <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl max-w-2xl leading-none">
+            <h2 className="text-balance text-3xl font-heading font-bold tracking-tight sm:text-4xl md:text-5xl max-w-2xl leading-none">
               Build trust into every single dollar
             </h2>
-            <p className="max-w-xl text-lg text-indigo-200/80 leading-relaxed">
+            <p className="max-w-xl text-lg font-subheading text-muted-foreground leading-relaxed">
               Whether you give, build, or verify, join a community funding ecosystem where transparency is the default.
             </p>
             <a
               href="/sign-up"
-              className="inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-sm font-bold text-indigo-950 hover:bg-slate-100 hover:scale-105 active:scale-100 transition-all duration-300 shadow-xl shadow-black/35 mt-2"
+              className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors duration-200 mt-2"
             >
               Create Your Account
             </a>
