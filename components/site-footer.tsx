@@ -87,25 +87,17 @@ export function SiteFooter() {
             ref={scrollerRef}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
-            className="overflow-hidden w-full rounded-lg border border-border"
-            style={{
-              WebkitOverflowScrolling: "touch",
-            }}
+            className="overflow-hidden w-full rounded-[1.5rem] border border-border bg-card px-3 py-4"
+            style={{ WebkitOverflowScrolling: "touch" }}
           >
-            <div className="flex w-max gap-2 py-3 px-4 whitespace-nowrap bg-card">
+            <div className="flex w-max gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory">
               {teamMembers.concat(teamMembers).map((member, idx) => (
                 <div
                   key={`${member.id}-${idx}`}
-                  className="inline-flex flex-col gap-1 rounded-lg bg-background px-4 py-2.5 text-sm text-foreground shadow-sm hover:bg-muted transition-all duration-200 flex-shrink-0"
-                  style={{ minWidth: 200 }}
+                  className="snap-start inline-flex flex-col gap-1 rounded-[1.5rem] bg-background/95 px-4 py-3 text-sm text-foreground shadow-sm ring-1 ring-border/50 transition-all duration-200 hover:-translate-y-0.5 flex-shrink-0"
+                  style={{ minWidth: 220 }}
                 >
-                  <div className="font-semibold text-foreground tracking-tight text-sm">{member.name}</div>
-                  <div className="text-xs text-muted-foreground font-mono">{member.id}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+                  <div className="font-semibold tracking-tight text-sm text-foreground">{member.name}</div>
 
         {/* Footer */}
         <div className="border-t border-border/50 pt-8 flex flex-col items-center justify-between gap-4 text-center text-sm text-muted-foreground sm:flex-row sm:text-left">

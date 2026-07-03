@@ -60,46 +60,54 @@ export default async function HomePage() {
       <SiteHeader user={user} />
 
       {/* Hero */}
-      <section className="bg-background py-16 lg:py-24">
-        <div className="mx-auto grid max-w-6xl items-center gap-16 px-4 md:grid-cols-2">
+      <section className="bg-background py-20 lg:py-28">
+        <div className="mx-auto grid max-w-6xl items-center gap-16 px-4 md:grid-cols-[1.1fr_0.9fr]">
           <div className="flex flex-col gap-8">
-            <div className="space-y-2">
+            <div className="space-y-4">
+              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-primary">Escrow-secured impact</p>
               <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl leading-tight">
-                Transparent funding for real communities
+                Fund local communities with transparent, milestone-driven accountability.
               </h1>
-              <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
-                Fund local projects with confidence. Every donation is secured in escrow and released only when progress is independently verified.
+              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
+                Back projects built by the community, keep every donation locked until progress is verified, and turn funding into trust with full visibility at every step.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-4">
               <a
                 href="/projects"
-                className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-primary-foreground shadow-md hover:bg-primary/90 active:scale-95 transition-all duration-200"
+                className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-3 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/95 active:scale-[0.98] transition-all duration-200"
               >
                 Explore Projects
               </a>
               <a
                 href="/sign-up"
-                className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-8 py-3 text-base font-semibold hover:bg-muted shadow-sm transition-all duration-200"
+                className="inline-flex items-center justify-center rounded-full border border-primary/20 bg-background px-10 py-3 text-base font-semibold text-primary shadow-sm hover:border-primary hover:bg-primary/5 transition-all duration-200"
               >
                 Start a Project
               </a>
             </div>
-            <div className="flex items-center gap-3 pt-4">
-              <ShieldCheck className="size-5 text-primary" />
-              <span className="text-sm font-medium text-foreground">Escrow-backed, milestone-verified</span>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {[
+                'Escrow-held donations',
+                'Verified milestones',
+                'Open progress tracking',
+              ].map((item) => (
+                <div key={item} className="rounded-3xl border border-border/70 bg-primary/5 px-5 py-4 text-sm font-medium text-foreground shadow-sm shadow-primary/5">
+                  {item}
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="relative">
-            <div className="overflow-hidden rounded-2xl shadow-lg h-[28rem] sm:h-[32rem]">
+            <div className="overflow-hidden rounded-[2rem] shadow-2xl ring-1 ring-primary/10 h-[28rem] sm:h-[32rem]">
               <Image
                 src="/hero-community.png"
                 alt="Community collaboration"
                 fill
                 priority
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover hover:scale-105 transition-transform duration-500"
+                className="object-cover transition-transform duration-500 hover:scale-105"
               />
             </div>
           </div>
@@ -130,16 +138,19 @@ export default async function HomePage() {
 
       {/* Featured Projects */}
       <section className="mx-auto w-full max-w-6xl px-4 py-20 lg:py-28 relative">
-        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4 animate-fade-in-up">
-          <div>
-            <h2 className="text-4xl font-bold text-foreground">Featured Projects</h2>
-            <p className="mt-3 text-lg text-muted-foreground">Discover high-impact funding opportunities</p>
+        <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between animate-fade-in-up">
+          <div className="max-w-xl">
+            <span className="text-sm font-semibold uppercase tracking-[0.32em] text-primary">
+              Spotlight
+            </span>
+            <h2 className="mt-4 text-4xl font-bold text-foreground">Featured projects making measurable change</h2>
+            <p className="mt-3 text-lg text-muted-foreground">Browse a curated selection of vetted community initiatives with escrow-backed delivery.</p>
           </div>
           <a
             href="/projects"
-            className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-6 py-3 text-sm font-semibold hover:bg-muted shadow-sm transition-all duration-200"
+            className="inline-flex items-center justify-center rounded-full border border-primary/20 bg-background px-7 py-3 text-sm font-semibold text-primary shadow-sm hover:border-primary hover:bg-primary/5 transition-all duration-200"
           >
-            View All
+            View All Projects
           </a>
         </div>
 
@@ -183,14 +194,14 @@ export default async function HomePage() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => (
-              <div key={s.title} className="flex flex-col gap-4 p-6 rounded-2xl border border-border bg-card shadow-md hover:shadow-lg transition-all duration-200">
-                <div className="flex items-start justify-between">
-                  <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <div key={s.title} className="flex flex-col gap-4 rounded-[1.75rem] border border-primary/10 bg-primary/5 p-6 shadow-sm shadow-primary/10 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
+                <div className="flex items-center justify-between">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-primary text-primary-foreground shadow-sm shadow-primary/20">
                     <s.icon className="size-5" />
                   </div>
-                  <span className="text-lg font-bold text-muted-foreground/40">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="text-lg font-bold text-muted-foreground/70">{String(i + 1).padStart(2, '0')}</span>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <h3 className="font-semibold text-foreground">{s.title}</h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {s.body}
@@ -204,17 +215,17 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section className="mx-auto w-full max-w-6xl px-4 py-20">
-        <div className="overflow-hidden rounded-lg border border-border bg-card p-12 sm:p-16 text-center shadow-md">
+        <div className="overflow-hidden rounded-[2rem] border border-primary/10 bg-primary/5 p-12 sm:p-16 text-center shadow-xl shadow-primary/10">
           <div className="flex flex-col items-center gap-8">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl max-w-3xl leading-tight text-foreground">
-              Ready to make a difference?
+              Ready to fund projects that deliver results?
             </h2>
             <p className="max-w-2xl text-lg text-muted-foreground leading-relaxed">
-              Join thousands funding transparent, accountable community projects backed by escrow.
+              Start or support projects with escrow security, clear milestones, and trusted verification at every stage.
             </p>
             <a
               href="/sign-up"
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200 shadow-md"
+              className="inline-flex items-center justify-center rounded-full bg-primary px-10 py-3 text-base font-semibold text-primary-foreground hover:bg-primary/95 active:scale-[0.98] transition-all duration-200 shadow-lg shadow-primary/20"
             >
               Get Started
             </a>
