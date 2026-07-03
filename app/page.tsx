@@ -169,30 +169,29 @@ export default async function HomePage() {
       {/* How it works */}
       <section
         id="how-it-works"
-        className="relative border-t border-border bg-card/40 py-20 lg:py-28 overflow-hidden"
+        className="border-t border-border bg-background py-20"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(79,70,229,0.03),_transparent_50%)]" />
-        <div className="relative z-10 mx-auto max-w-6xl px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              How accountability works
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="text-left max-w-3xl mb-16">
+            <h2 className="text-4xl font-bold text-foreground">
+              How It Works
             </h2>
             <p className="mt-3 text-lg text-muted-foreground">
-              Milestone X aligns incentives by releasing funds only as tasks are completed and verified by the people who benefit from them.
+              Simple, transparent funding process built for accountability
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 stagger-children">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => (
-              <div key={s.title} className="flex flex-col gap-4 p-6 rounded-xl border border-border bg-card hover:border-primary/30 shadow-sm hover:shadow-md transition-all duration-200">
+              <div key={s.title} className="flex flex-col gap-4 p-6 rounded-lg border border-border bg-card shadow-sm hover:shadow-md transition-all duration-200">
                 <div className="flex items-start justify-between">
                   <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <s.icon className="size-5" />
                   </div>
-                  <span className="text-xl font-bold text-muted-foreground/30">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="text-lg font-bold text-muted-foreground/40">{String(i + 1).padStart(2, '0')}</span>
                 </div>
-                <div className="space-y-2 mt-2">
-                  <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300">{s.title}</h3>
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-foreground">{s.title}</h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {s.body}
                   </p>
@@ -205,23 +204,17 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section className="mx-auto w-full max-w-6xl px-4 py-20">
-        <div className="relative overflow-hidden rounded-[2.5rem] border border-border bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 p-8 sm:p-16 text-center text-primary-foreground shadow-2xl noise-overlay">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(99,102,241,0.15),_transparent_60%)] pointer-events-none" />
-          {/* Animated gradient border accent */}
-          <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-r from-primary via-indigo-500 to-violet-500 opacity-[0.07] animate-gradient-shift pointer-events-none" />
-          <div className="relative z-10 flex flex-col items-center gap-6 animate-fade-in-up">
-            <span className="rounded-full bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider backdrop-blur-md border border-white/10">
-              Secure & Transparent
-            </span>
-            <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl max-w-2xl leading-none">
-              Build trust into every single dollar
+        <div className="overflow-hidden rounded-lg border border-border bg-card p-12 sm:p-16 text-center shadow-md">
+          <div className="flex flex-col items-center gap-8">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl max-w-3xl leading-tight text-foreground">
+              Ready to make a difference?
             </h2>
-            <p className="max-w-xl text-lg text-indigo-200/80 leading-relaxed">
-              Whether you give, build, or verify, join a community funding ecosystem where transparency is the default.
+            <p className="max-w-2xl text-lg text-muted-foreground leading-relaxed">
+              Join thousands funding transparent, accountable community projects backed by escrow.
             </p>
             <a
               href="/sign-up"
-              className="inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-sm font-bold text-indigo-950 hover:bg-slate-100 hover:scale-105 active:scale-100 transition-all duration-300 shadow-xl shadow-black/35 mt-2"
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-3 text-base font-semibold text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200 shadow-md"
             >
               Get Started
             </a>

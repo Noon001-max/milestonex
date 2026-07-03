@@ -38,42 +38,68 @@ export function SiteFooter() {
   }, [isPaused])
 
   return (
-    <footer className="border-t border-border bg-card/30">
+    <footer className="border-t border-border/60 bg-background/50 backdrop-blur-md">
       <div className="mx-auto w-full max-w-6xl px-4 py-12">
-        <div className="flex items-center gap-4 mb-8">
-          <span className="flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md">
-            <ShieldCheck className="size-5" />
-          </span>
-          <div>
-            <div className="text-lg font-bold text-foreground">
-              Milestone X
+        <div className="grid gap-8 md:grid-cols-2 mb-8">
+          {/* Branding */}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm shadow-primary/20">
+                <ShieldCheck className="size-5.5" />
+              </span>
+              <div className="text-lg font-bold tracking-tight text-foreground">
+                Milestone X
+              </div>
             </div>
-            <div className="text-sm text-muted-foreground">Transparent Escrow-Backed Funding</div>
+            <p className="max-w-md text-sm leading-7 text-muted-foreground">
+              Trusted escrow funding, transparent milestone accountability, and a platform built to turn community trust into measurable impact.
+            </p>
+            <div className="inline-flex w-fit items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-primary">
+              <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+              Premium funding clarity
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex flex-col gap-4">
+            <p className="text-sm font-semibold text-foreground">Navigate</p>
+            <div className="flex flex-col gap-3 text-sm text-muted-foreground">
+              <a href="/projects" className="transition-colors duration-200 hover:text-foreground">
+                Projects
+              </a>
+              <a href="/transparency" className="transition-colors duration-200 hover:text-foreground">
+                Transparency
+              </a>
+              <a href="/#how-it-works" className="transition-colors duration-200 hover:text-foreground">
+                How it works
+              </a>
+              <a href="/sign-up" className="transition-colors duration-200 hover:text-foreground">
+                Start a project
+              </a>
+            </div>
           </div>
         </div>
 
         {/* Marquee */}
-        <div className="relative my-8">
-          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-card/30 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-card/30 to-transparent z-10 pointer-events-none" />
-          
+        <div className="my-8">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Team Members</p>
           <div
             ref={scrollerRef}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
-            className="overflow-hidden w-full"
+            className="overflow-hidden w-full rounded-lg border border-border"
             style={{
               WebkitOverflowScrolling: "touch",
             }}
           >
-            <div className="flex w-max gap-4 py-2 whitespace-nowrap">
+            <div className="flex w-max gap-2 py-3 px-4 whitespace-nowrap bg-card">
               {teamMembers.concat(teamMembers).map((member, idx) => (
                 <div
                   key={`${member.id}-${idx}`}
-                  className="inline-flex flex-col gap-1 rounded-lg border border-border bg-card px-4 py-3 text-sm text-foreground shadow-sm hover:border-primary/30 transition-all duration-200"
-                  style={{ minWidth: 240 }}
+                  className="inline-flex flex-col gap-1 rounded-lg bg-background px-4 py-2.5 text-sm text-foreground shadow-sm hover:bg-muted transition-all duration-200 flex-shrink-0"
+                  style={{ minWidth: 200 }}
                 >
-                  <div className="font-semibold text-foreground">{member.name}</div>
+                  <div className="font-semibold text-foreground tracking-tight text-sm">{member.name}</div>
                   <div className="text-xs text-muted-foreground font-mono">{member.id}</div>
                 </div>
               ))}
@@ -81,8 +107,10 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-border/40 text-center text-xs font-semibold text-muted-foreground/80">
-          © {new Date().getFullYear()} Milestone X. All rights reserved.
+        {/* Footer */}
+        <div className="border-t border-border/50 pt-8 flex flex-col items-center justify-between gap-4 text-center text-sm text-muted-foreground sm:flex-row sm:text-left">
+          <p>© {new Date().getFullYear()} Milestone X. All rights reserved.</p>
+          <p className="max-w-md">Designed for communities that need stronger accountability, safer funding, and more meaningful impact.</p>
         </div>
       </div>
     </footer>

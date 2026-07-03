@@ -61,7 +61,7 @@ export default async function SuspendedDashboard() {
         </div>
 
         {/* Info Card */}
-        <Card className="p-8 mb-8 bg-gradient-to-br from-muted/50 to-muted">
+        <Card className="p-8 mb-8 bg-card border border-border">
           <h2 className="text-xl font-bold text-foreground mb-4">What you can do</h2>
           <ul className="space-y-3 text-sm text-muted-foreground">
             <li className="flex items-start gap-3">

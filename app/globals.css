@@ -143,11 +143,6 @@
   to { opacity: 0; transform: translateX(-100%); }
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
 @keyframes pulse-subtle {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.7; }
@@ -169,12 +164,6 @@
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
-}
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 @keyframes scale-in {
@@ -208,12 +197,6 @@
   animation: slide-out-left 0.2s ease-in both;
 }
 
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 1.8s ease-in-out infinite;
-}
-
 .animate-pulse-subtle {
   animation: pulse-subtle 2.5s ease-in-out infinite;
 }
@@ -228,11 +211,6 @@
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
-}
-
-.animate-gradient-shift {
-  background-size: 200% 200%;
-  animation: gradient-shift 4s ease infinite;
 }
 
 .animate-scale-in {
@@ -273,15 +251,6 @@
 .dark .glass-card {
   background: var(--card);
   border: 1px solid var(--border);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   Gradient Text Utility
-   ═══════════════════════════════════════════════════════════ */
-
-.gradient-text {
-  color: var(--primary);
-  font-weight: 700;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -360,12 +329,10 @@
   .animate-fade-in-up,
   .animate-slide-in-left,
   .animate-slide-in-right,
-  .animate-shimmer,
   .animate-pulse-subtle,
   .animate-wiggle,
   .animate-grow-width,
   .animate-float,
-  .animate-gradient-shift,
   .animate-scale-in,
   .animate-marquee {
     animation: none !important;

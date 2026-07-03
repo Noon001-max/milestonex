@@ -182,16 +182,16 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
                             setShowAdvanced(false)
                           }}
                           aria-pressed={selected}
-                          className={`group relative flex items-start gap-3 rounded-2xl border p-4 text-left transition-all text-sm shadow-sm ${
+                          className={`group relative flex items-start gap-3 rounded-lg border p-3 text-left transition-all text-sm shadow-sm ${
                             selected
                               ? "border-primary bg-primary/10 shadow-primary/20"
                               : "border-border bg-background hover:border-primary hover:bg-muted"
                           }`}
                         >
-                          <span className={`grid h-10 w-10 place-items-center rounded-2xl transition-colors ${selected ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary"}`}>
-                            <Icon className="size-5" />
+                          <span className={`grid h-9 w-9 place-items-center rounded-md transition-colors flex-shrink-0 ${selected ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary"}`}>
+                            <Icon className="size-4" />
                           </span>
-                          <span className="flex-1">
+                          <span className="flex-1 min-w-0">
                             <span className="block text-sm font-semibold text-foreground">
                               {r.label}
                             </span>
