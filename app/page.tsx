@@ -60,65 +60,63 @@ export default async function HomePage() {
       <SiteHeader user={user} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-background py-20 lg:py-32">
-        {/* Modern decorative glowing mesh background */}
-        <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_30%_30%,_rgba(79,70,229,0.08),_transparent_40%),_radial-gradient(circle_at_70%_60%,_rgba(99,102,241,0.05),_transparent_45%)]" />
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
-        
-        <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 px-4 md:grid-cols-2">
-          <div className="flex flex-col gap-6 text-left animate-fade-in-up">
-            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary backdrop-blur-sm animate-pulse-subtle">
-              <ShieldCheck className="size-4 text-primary" />
-              Escrow-Backed, Milestone-Verified Funding
-            </span>
-            <div className="space-y-5">
-              <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-[1.1]">
-                Empowering Communities with <span className="gradient-text">Absolute Trust</span>
-              </h1>
-              <p className="max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                Every contribution is secured in a smart escrow system. Funds are only unlocked when milestone progress is independently verified by the community.
-              </p>
+      <section className="relative overflow-hidden bg-background py-24 lg:py-32">
+        <div className="absolute inset-x-0 top-0 h-32 bg-primary/5" />
+        <div className="relative z-10 mx-auto max-w-6xl px-4">
+          <div className="grid gap-12 items-center md:grid-cols-[1.15fr_0.85fr]">
+            <div className="space-y-6 animate-fade-in-up">
+              <div className="inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+                <ShieldCheck className="size-4 text-primary" />
+                Escrow-backed milestone funding
+              </div>
+              <div className="space-y-5">
+                <h1 className="text-5xl font-heading font-extrabold tracking-tight text-foreground sm:text-6xl lg:text-7xl leading-[1.02]">
+                  A premium funding platform for <span className="text-primary">trusted community projects</span>
+                </h1>
+                <p className="max-w-2xl text-lg leading-relaxed font-subheading text-muted-foreground sm:text-xl">
+                  Build trust with escrow-secured donations, milestone verification, and transparent fund release for every local initiative.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <a
+                  href="/projects"
+                  className="inline-flex items-center justify-center rounded-xl bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
+                >
+                  Browse Projects
+                  <ArrowRight className="size-4 ml-2 transition-transform duration-200" />
+                </a>
+                <a
+                  href="/sign-up"
+                  className="inline-flex items-center justify-center rounded-xl border border-primary/20 bg-background px-8 py-4 text-sm font-semibold text-primary transition-colors duration-200 hover:border-primary/40 hover:bg-primary/10"
+                >
+                  Start a Project
+                </a>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 text-sm font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                <div className="inline-flex items-center gap-2 rounded-2xl border border-border/70 bg-card/80 px-4 py-3">
+                  <span className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                  Verified Escrow releases
+                </div>
+                <div className="inline-flex items-center gap-2 rounded-2xl border border-border/70 bg-card/80 px-4 py-3">
+                  <span className="inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+                  Secure project vetting
+                </div>
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <a
-                href="/projects"
-                className="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 hover:shadow-primary/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
-              >
-                Browse Projects
-                <ArrowRight className="size-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-              </a>
-              <a
-                href="/sign-up"
-                className="inline-flex items-center justify-center rounded-full border border-border bg-background px-8 py-4 text-sm font-semibold hover:bg-muted hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
-              >
-                Start a Project
-              </a>
-            </div>
-            <div className="flex flex-wrap items-center gap-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 pt-4">
-              <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 shadow-sm">
-                <span className="size-2 rounded-full bg-emerald-500 animate-pulse-subtle" /> Secure Escrow
-              </span>
-              <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 shadow-sm">
-                Verified Progress
-              </span>
-            </div>
-          </div>
 
-          <div className="relative lg:ml-4 animate-fade-in" style={{ animationDelay: "200ms" }}>
-            {/* Glowing accent border ring */}
-            <div className="absolute -inset-1 rounded-[2rem] bg-gradient-to-r from-primary to-indigo-500 opacity-20 blur-xl animate-gradient-shift" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-border bg-gradient-to-br from-slate-900 via-slate-900/80 to-slate-950 p-2.5 shadow-2xl noise-overlay">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(99,102,241,0.15),_transparent_50%)] pointer-events-none" />
-              <div className="relative overflow-hidden rounded-[1.75rem] bg-muted h-[24rem] sm:h-[28rem] lg:h-[32rem]">
-                <Image
-                  src="/hero-community.png"
-                  alt="A community collaborating on a local development project"
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover transition-transform duration-700 hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
+            <div className="relative animate-fade-in" style={{ animationDelay: "200ms" }}>
+              <div className="absolute -right-8 -top-8 hidden h-[calc(100%-1rem)] w-24 rounded-[2rem] bg-primary/5 md:block" />
+              <div className="relative overflow-hidden rounded-[2rem] border border-border bg-card p-1 shadow-sm">
+                <div className="relative overflow-hidden rounded-[1.75rem] bg-muted h-[26rem] sm:h-[30rem] lg:h-[34rem]">
+                  <Image
+                    src="/hero-community.png"
+                    alt="A community collaborating on a local development project"
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-700 hover:scale-105"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -126,48 +124,57 @@ export default async function HomePage() {
       </section>
 
       {/* Stats */}
-      <section className="relative border-y border-border bg-card/60 backdrop-blur-md py-12 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,_rgba(79,70,229,0.03),_transparent_50%)]" />
-        <div className="relative z-10 mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4 stagger-children">
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              Active Projects
-            </p>
-            <p className="mt-4 text-4xl font-extrabold text-foreground tracking-tight">
-              {stats.totalProjects}
-            </p>
-            <div className="absolute right-4 bottom-4 size-12 rounded-full bg-primary/5 flex items-center justify-center text-primary/30 font-mono text-xs">ACT</div>
-          </Card>
-          
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              Total Raised
-            </p>
-            <p className="mt-4 text-4xl font-extrabold text-foreground tracking-tight">
-              {formatCurrency(stats.totalRaised)}
-            </p>
-            <div className="absolute right-4 bottom-4 size-12 rounded-full bg-emerald-500/5 flex items-center justify-center text-emerald-500/30 font-mono text-xs">VAL</div>
-          </Card>
+      <section className="bg-background py-16">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <Card className="rounded-[2rem] border border-primary/10 bg-primary/5 p-8 shadow-sm animate-fade-in-up">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">
+                Active Projects
+              </p>
+              <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
+                {stats.totalProjects}
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Active initiatives currently being supported by the community.
+              </p>
+            </Card>
 
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              Secured in Escrow
-            </p>
-            <p className="mt-4 text-4xl font-extrabold text-primary tracking-tight">
-              {formatCurrency(stats.totalEscrow)}
-            </p>
-            <div className="absolute right-4 bottom-4 size-12 rounded-full bg-indigo-500/5 flex items-center justify-center text-indigo-500/30 font-mono text-xs">ESC</div>
-          </Card>
+            <Card className="rounded-[2rem] border border-emerald-200 bg-emerald-50 p-8 shadow-sm animate-fade-in-up">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
+                Total Raised
+              </p>
+              <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
+                {formatCurrency(stats.totalRaised)}
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Donations and investments secured for verified community work.
+              </p>
+            </Card>
 
-          <Card className="relative overflow-hidden border border-border/80 bg-card p-6 shadow-sm hover-glow hover:-translate-y-1 transition-all duration-300 animate-fade-in-up">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              Verified Milestones
-            </p>
-            <p className="mt-4 text-4xl font-extrabold text-foreground tracking-tight">
-              {stats.verifiedMilestones} <span className="text-lg font-medium text-muted-foreground">/ {stats.totalMilestones}</span>
-            </p>
-            <div className="absolute right-4 bottom-4 size-12 rounded-full bg-violet-500/5 flex items-center justify-center text-violet-500/30 font-mono text-xs">VER</div>
-          </Card>
+            <Card className="rounded-[2rem] border border-slate-200 bg-slate-50 p-8 shadow-sm animate-fade-in-up">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-700">
+                Secured in Escrow
+              </p>
+              <p className="mt-4 text-4xl font-extrabold tracking-tight text-primary">
+                {formatCurrency(stats.totalEscrow)}
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Funds currently held safely until milestone approval.
+              </p>
+            </Card>
+
+            <Card className="rounded-[2rem] border border-violet-200 bg-violet-50 p-8 shadow-sm animate-fade-in-up">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-violet-700">
+                Verified Milestones
+              </p>
+              <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
+                {stats.verifiedMilestones} <span className="text-lg font-medium text-muted-foreground">/ {stats.totalMilestones}</span>
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Completed milestones passed through independent review.
+              </p>
+            </Card>
+          </div>
         </div>
       </section>
 
@@ -184,10 +191,10 @@ export default async function HomePage() {
           </div>
           <a
             href="/projects"
-            className="group inline-flex items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold hover:bg-muted shadow-sm hover:-translate-y-0.5 transition-all duration-300 self-start md:self-auto"
+            className="inline-flex items-center justify-center rounded-xl border border-primary/20 bg-primary/10 px-6 py-3 text-sm font-semibold text-primary transition-colors duration-200 hover:bg-primary/20 self-start md:self-auto"
           >
             Explore All Projects
-            <ArrowRight className="size-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
+            <ArrowRight className="size-4 ml-2 transition-transform duration-200" />
           </a>
         </div>
 
@@ -201,7 +208,7 @@ export default async function HomePage() {
           </div>
         ) : (
           <Card className="flex flex-col items-center gap-4 p-16 text-center border-dashed animate-fade-in">
-            <div className="rounded-full bg-primary/10 p-4 text-primary animate-float">
+            <div className="rounded-full border border-border bg-background p-4 text-primary">
               <ShieldCheck className="size-8" />
             </div>
             <div>
@@ -212,7 +219,7 @@ export default async function HomePage() {
             </div>
             <a
               href="/sign-up"
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition shadow-md"
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90"
             >
               Start a Project
             </a>
@@ -223,32 +230,31 @@ export default async function HomePage() {
       {/* How it works */}
       <section
         id="how-it-works"
-        className="relative border-t border-border bg-card/40 py-20 lg:py-28 overflow-hidden"
+        className="border-t border-border bg-background py-20 lg:py-28"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(79,70,229,0.03),_transparent_50%)]" />
-        <div className="relative z-10 mx-auto max-w-6xl px-4">
+        <div className="mx-auto max-w-6xl px-4">
           <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              How accountability works
+            <h2 className="text-3xl font-heading font-bold tracking-tight text-foreground sm:text-4xl">
+              Built for accountability at every milestone
             </h2>
-            <p className="mt-3 text-lg text-muted-foreground">
-              Milestone X aligns incentives by releasing funds only as tasks are completed and verified by the people who benefit from them.
+            <p className="mt-3 text-lg font-subheading text-muted-foreground">
+              Milestone X combines escrow security, community review, and milestone-based release so every project earns trust before funds move.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 stagger-children">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => (
-              <Card key={s.title} className="group relative flex flex-col gap-4 p-6 border border-border/80 bg-card hover:border-primary/30 hover-glow transition-all duration-300 hover:-translate-y-1 animate-fade-in-up">
-                <div className="flex items-center justify-between">
-                  <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+              <Card key={s.title} className="group relative flex flex-col gap-5 rounded-[1.75rem] border border-border/80 bg-card p-8 transition-all duration-200 hover:-translate-y-1 animate-fade-in-up">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-primary/10 text-primary">
                     <s.icon className="size-6" />
-                  </span>
-                  <span className="text-3xl font-extrabold text-muted-foreground/20 font-mono group-hover:text-primary/20 transition-all duration-300">
-                    0{i + 1}
-                  </span>
+                  </div>
+                  <div className="rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-sm font-semibold text-primary">
+                    Step {i + 1}
+                  </div>
                 </div>
-                <div className="space-y-2 mt-2">
-                  <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300">{s.title}</h3>
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {s.body}
                   </p>
@@ -261,23 +267,20 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section className="mx-auto w-full max-w-6xl px-4 py-20">
-        <div className="relative overflow-hidden rounded-[2.5rem] border border-border bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 p-8 sm:p-16 text-center text-primary-foreground shadow-2xl noise-overlay">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(99,102,241,0.15),_transparent_60%)] pointer-events-none" />
-          {/* Animated gradient border accent */}
-          <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-r from-primary via-indigo-500 to-violet-500 opacity-[0.07] animate-gradient-shift pointer-events-none" />
-          <div className="relative z-10 flex flex-col items-center gap-6 animate-fade-in-up">
-            <span className="rounded-full bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider backdrop-blur-md border border-white/10">
+        <div className="rounded-[2.5rem] border border-border bg-card p-8 sm:p-16 text-center text-foreground">
+          <div className="flex flex-col items-center gap-6 animate-fade-in-up">
+            <span className="rounded-full bg-background px-4 py-1.5 text-xs font-semibold uppercase tracking-wider border border-border">
               Secure & Transparent
             </span>
-            <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl max-w-2xl leading-none">
+            <h2 className="text-balance text-3xl font-heading font-bold tracking-tight sm:text-4xl md:text-5xl max-w-2xl leading-none">
               Build trust into every single dollar
             </h2>
-            <p className="max-w-xl text-lg text-indigo-200/80 leading-relaxed">
+            <p className="max-w-xl text-lg font-subheading text-muted-foreground leading-relaxed">
               Whether you give, build, or verify, join a community funding ecosystem where transparency is the default.
             </p>
             <a
               href="/sign-up"
-              className="inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-sm font-bold text-indigo-950 hover:bg-slate-100 hover:scale-105 active:scale-100 transition-all duration-300 shadow-xl shadow-black/35 mt-2"
+              className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors duration-200 mt-2"
             >
               Create Your Account
             </a>
