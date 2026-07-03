@@ -80,7 +80,7 @@ export function SiteHeader({
           )}
         </div>
 
-        <div className="flex items-center gap-4 justify-end min-w-[10rem]">
+        <div className="flex items-center gap-3 justify-end min-w-[10rem]">
           {user ? (
             (() => {
               const initials = user.name
@@ -116,8 +116,8 @@ export function SiteHeader({
                         <Image
                           src={user.image}
                           alt={`${user.name}'s avatar`}
-                          width={32}
-                          height={32}
+                          width={36}
+                          height={36}
                           className="h-full w-full object-cover"
                         />
                       </div>

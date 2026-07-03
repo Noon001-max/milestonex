@@ -34,6 +34,7 @@ export default function DashboardShell({
           hideToggleButton={true}
         />
 
+<<<<<<< HEAD
         <main className="flex-1 md:pl-72">
           <div className="border-b border-border" />
           
@@ -41,6 +42,9 @@ export default function DashboardShell({
             {children}
           </div>
         </main>
+=======
+        <main className="flex-1 md:pl-72">{children}</main>
+>>>>>>> ca9cfd6111e8479ebb34aa9f3d1cde80f7e574d0
       </div>
     </div>
   )

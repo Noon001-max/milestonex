@@ -127,7 +127,7 @@ export default function RoleSidebar({
     const isActive = pathname === href || pathname?.startsWith(`${href}/`)
     if (!isActive || user.role === "suspended") return null
     return (
-      <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full bg-primary" />
+      <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full bg-primary animate-scale-in" />
     )
   }
 
@@ -160,7 +160,7 @@ export default function RoleSidebar({
               className={getItemClassName(it.href)}
             >
               {getActiveIndicator(it.href)}
-              <Icon className="size-5 flex-shrink-0" />
+              <Icon className="size-[18px] flex-shrink-0 transition-transform duration-200 group-hover/item:scale-110" />
               <span>{it.label}</span>
             </Link>
           )
@@ -183,7 +183,7 @@ export default function RoleSidebar({
           onClick={handleLogout}
           className="flex w-full items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-destructive/80 hover:text-destructive hover:bg-destructive/8 transition-colors duration-200"
         >
-          <LogOut className="size-5" />
+          <LogOut className="size-[18px]" />
           <span>Sign Out</span>
         </button>
       </div>
@@ -207,7 +207,7 @@ export default function RoleSidebar({
         </button>
       )}
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer with smooth animation */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex">
           {/* Backdrop */}
@@ -228,7 +228,7 @@ export default function RoleSidebar({
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto mt-2">
+            <div className="flex-1 overflow-y-auto mt-4">
               {sidebarContent()}
             </div>
           </div>
