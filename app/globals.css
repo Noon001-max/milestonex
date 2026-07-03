@@ -236,21 +236,29 @@
    ═══════════════════════════════════════════════════════════ */
 
 .glass {
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .dark .glass {
-  background: var(--card);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .glass-card {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .dark .glass-card {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -356,5 +364,20 @@
   }
   html {
     @apply font-sans;
+  }
+  
+  /* Enhanced card and surface styling */
+  [class*="card"], [class*="Card"] {
+    @apply shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+  
+  /* Smooth transitions for interactive elements */
+  button, a, input, select, textarea {
+    @apply transition-all duration-200;
+  }
+  
+  /* Refined input styling */
+  input, textarea, select {
+    @apply rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground;
   }
 }
