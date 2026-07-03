@@ -98,6 +98,12 @@ export function SiteFooter() {
                   style={{ minWidth: 220 }}
                 >
                   <div className="font-semibold tracking-tight text-sm text-foreground">{member.name}</div>
+                  <div className="text-xs text-muted-foreground font-mono">{member.id}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
         {/* Footer */}
         <div className="border-t border-border/50 pt-8 flex flex-col items-center justify-between gap-4 text-center text-sm text-muted-foreground sm:flex-row sm:text-left">
