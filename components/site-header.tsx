@@ -21,7 +21,7 @@ export function SiteHeader({
   onMenuClick?: () => void
 }) {
   const renderLogo = () => (
-    <Link href="/" className="flex items-center gap-3 group">
+    <Link href="/" className="group flex items-center gap-2 sm:gap-3">
       <Image
         src="/logo.png"
         alt="Milestone X"
@@ -29,7 +29,7 @@ export function SiteHeader({
         height={44}
         className="rounded-2xl transition-transform duration-200 group-hover:scale-105"
       />
-      <span className="text-lg font-bold tracking-tight text-foreground">
+      <span className="whitespace-nowrap text-base font-bold tracking-tight text-foreground sm:text-lg">
         Milestone X
       </span>
     </Link>
@@ -103,19 +103,32 @@ export function SiteHeader({
           )}
         </div>
 
-        <div className="flex flex-1 items-center justify-end">
+        <div className="flex flex-1 items-center justify-end gap-2 sm:gap-3">
+          <button
+            type="button"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="inline-flex items-center justify-center rounded-full p-2 text-foreground transition-all duration-200 hover:bg-muted active:scale-95"
+            aria-label="Toggle theme"
+          >
+            {mounted && theme === "dark" ? (
+              <Sun className="size-5" />
+            ) : (
+              <Moon className="size-5" />
+            )}
+          </button>
+
           {user ? (
             <div className="flex items-center gap-2 sm:gap-3">
               <Link
                 href="/dashboard/notifications"
-                className={`relative hidden p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-all duration-200 sm:inline-flex ${
+                className={`relative hidden rounded-full p-2 text-muted-foreground transition-all duration-200 hover:bg-muted hover:text-foreground sm:inline-flex ${
                   unreadCount > 0 ? "animate-wiggle" : ""
                 }`}
                 title="Notifications"
               >
                 <Bell className="size-5" />
                 {unreadCount > 0 && (
-                  <span className="absolute top-0 right-0 flex size-5 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold ring-2 ring-background">
+                  <span className="absolute right-0 top-0 flex size-5 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground ring-2 ring-background">
                     {unreadCount > 99 ? "99+" : unreadCount}
                   </span>
                 )}
@@ -123,7 +136,7 @@ export function SiteHeader({
 
               <Link
                 href="/dashboard/profile"
-                className="group hidden items-center gap-2 rounded-lg p-1 hover:bg-muted transition-all duration-200 sm:flex"
+                className="group hidden items-center gap-2 rounded-full p-1 transition-all duration-200 hover:bg-muted sm:flex"
                 aria-label="Profile"
               >
                 {user.image ? (
@@ -137,26 +150,26 @@ export function SiteHeader({
                     />
                   </div>
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-muted text-foreground border border-border flex items-center justify-center text-xs font-bold">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-muted text-xs font-bold text-foreground">
                     {initials}
                   </div>
                 )}
-                <span className="hidden lg:block text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors max-w-[100px] truncate">
+                <span className="hidden max-w-[100px] truncate text-xs font-medium text-muted-foreground transition-colors group-hover:text-foreground lg:block">
                   {user.name.split(" ")[0]}
                 </span>
               </Link>
             </div>
           ) : (
-            <div className="hidden items-center gap-2 sm:flex sm:gap-4">
+            <div className="hidden items-center gap-2 sm:flex sm:gap-3">
               <a
                 href="/sign-in"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+                className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
               >
                 Sign in
               </a>
               <a
                 href="/sign-up"
-                className="inline-flex items-center justify-center rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-md hover:bg-primary/90 transition-all duration-200 sm:px-5"
+                className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-md transition-all duration-200 hover:bg-primary/90 sm:px-5"
               >
                 Get Started
               </a>
@@ -165,21 +178,8 @@ export function SiteHeader({
 
           <button
             type="button"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="inline-flex items-center justify-center rounded-lg p-2 text-foreground hover:bg-muted transition-all duration-200 active:scale-95"
-            aria-label="Toggle theme"
-          >
-            {mounted && theme === "dark" ? (
-              <Sun className="size-5" />
-            ) : (
-              <Moon className="size-5" />
-            )}
-          </button>
-
-          <button
-            type="button"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
-            className="inline-flex items-center justify-center rounded-lg p-2 text-foreground hover:bg-muted transition-all duration-200 md:hidden active:scale-95"
+            className="inline-flex items-center justify-center rounded-full p-2 text-foreground transition-all duration-200 hover:bg-muted active:scale-95 md:hidden"
             aria-label="Open navigation menu"
           >
             {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -200,7 +200,7 @@ export function SiteHeader({
                 </a>
                 <a
                   href="/sign-up"
-                  className="rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground text-center"
+                  className="rounded-full bg-primary px-3 py-2 text-center text-sm font-semibold text-primary-foreground"
                 >
                   Get Started
                 </a>
