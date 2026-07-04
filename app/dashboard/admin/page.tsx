@@ -100,41 +100,41 @@ export default async function AdminDashboard() {
       <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:py-12">
         
         {/* Header */}
-        <div className="mb-10">
-          <div className="flex items-center gap-2.5 text-xs font-bold text-primary uppercase tracking-widest mb-1.5">
+        <div className="mb-6 sm:mb-8">
+          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-primary">
             <Activity className="size-4" />
             <span>Operational Console</span>
           </div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Admin Dashboard
           </h1>
-          <p className="mt-2 text-base text-muted-foreground max-w-3xl">
-            Monitor platform fundraising activity, evaluate project submissions, verify milestones, and moderate user dynamics.
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground sm:text-base">
+            Monitor projects, reviews, and milestone activity from one place.
           </p>
         </div>
 
         {/* Key Metrics Grid */}
-        <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {keyMetrics.map((metric) => {
             const Icon = metric.icon
             return (
-              <Card key={metric.label} className="p-6 border border-border/80 bg-card shadow-sm flex flex-col justify-between">
+              <Card key={metric.label} className="flex flex-col justify-between border border-border/70 bg-card p-4 shadow-sm sm:p-5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{metric.label}</span>
                   <div className={`p-2 rounded-xl ${metric.color}`}>
                     <Icon className="size-4.5" />
                   </div>
                 </div>
-                <div className="mt-4">
-                  <p className="text-2xl font-extrabold text-foreground tracking-tight">{metric.value}</p>
-                  <p className="text-[11px] text-muted-foreground font-medium mt-1">{metric.subtext}</p>
+                <div className="mt-3">
+                  <p className="text-xl font-bold tracking-tight text-foreground">{metric.value}</p>
+                  <p className="mt-1 text-[11px] font-medium leading-5 text-muted-foreground">{metric.subtext}</p>
                 </div>
               </Card>
             )
           })}
         </div>
 
-        <div className="mb-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mb-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           {[
             {
               label: "Approved projects",
@@ -162,12 +162,12 @@ export default async function AdminDashboard() {
             },
           ].map((item) => (
             <Link key={item.label} href={item.href} className="group block">
-              <Card className="border border-border/80 bg-card p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+              <Card className="border border-border/70 bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md sm:p-5">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-sm font-semibold text-foreground">{item.label}</p>
-                    <p className="mt-3 text-3xl font-black tracking-tight text-foreground">{item.value}</p>
-                    <p className="mt-2 text-sm text-muted-foreground">{item.detail}</p>
+                    <p className="mt-2 text-2xl font-bold tracking-tight text-foreground">{item.value}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">{item.detail}</p>
                   </div>
                   <span className="rounded-full border border-border bg-background px-2.5 py-1 text-xs font-semibold text-muted-foreground transition group-hover:text-primary">
                     View
@@ -178,10 +178,10 @@ export default async function AdminDashboard() {
           ))}
         </div>
 
-        <div className="mb-10 rounded-[1.5rem] border border-border/80 bg-card/80 p-6 shadow-sm">
+        <div className="mb-6 rounded-[1.25rem] border border-border/70 bg-card/80 p-4 shadow-sm sm:p-5">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div>
-              <h2 className="text-xl font-bold tracking-tight text-foreground">Decision history</h2>
+              <h2 className="text-lg font-semibold tracking-tight text-foreground">Decision history</h2>
               <p className="text-sm text-muted-foreground">A quick view of what the admin team has already approved or rejected.</p>
             </div>
           </div>
@@ -243,16 +243,16 @@ export default async function AdminDashboard() {
           {/* Action Center - Occupies 2 columns */}
           <div className="lg:col-span-2 space-y-6">
             <div>
-              <h2 className="text-xl font-bold tracking-tight text-foreground mb-1">Administrative Actions</h2>
-              <p className="text-sm text-muted-foreground">Operational tasks awaiting attention or access channels.</p>
+              <h2 className="mb-1 text-lg font-semibold tracking-tight text-foreground">Administrative Actions</h2>
+              <p className="text-sm text-muted-foreground">Operational tasks awaiting attention.</p>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-1">
+            <div className="grid gap-3 sm:grid-cols-1">
               {actionItems.map((item) => {
                 const Icon = item.icon
                 return (
                   <Link key={item.title} href={item.href} className="group block">
-                    <Card className={`p-5 border border-border/80 border-l-4 ${item.color} shadow-sm transition-all duration-200 group-hover:translate-x-1 cursor-pointer flex items-center justify-between gap-4`}>
+                    <Card className={`flex items-center justify-between gap-4 border border-border/70 border-l-4 p-4 shadow-sm transition-all duration-200 group-hover:translate-x-1 sm:p-5 ${item.color}`}>
                       <div className="flex items-start gap-4 min-w-0">
                         <div className="p-2.5 rounded-xl bg-card border border-border shadow-sm text-foreground mt-0.5">
                           <Icon className="size-5" />
@@ -280,11 +280,11 @@ export default async function AdminDashboard() {
           {/* Pipeline & Distribution Panel - Occupies 1 column */}
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl font-bold tracking-tight text-foreground mb-1">Platform Pipeline</h2>
+              <h2 className="mb-1 text-lg font-semibold tracking-tight text-foreground">Platform Pipeline</h2>
               <p className="text-sm text-muted-foreground">Distribution of projects across stages.</p>
             </div>
 
-            <Card className="p-6 border border-border/80 bg-card shadow-sm space-y-6">
+            <Card className="space-y-5 border border-border/70 bg-card p-4 shadow-sm sm:p-5">
               <div className="space-y-4">
                 {pipelineStats.map((stat) => (
                   <div key={stat.label} className="space-y-1.5">
