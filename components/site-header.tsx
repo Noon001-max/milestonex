@@ -44,8 +44,8 @@ export function SiteHeader({
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/20 bg-background/60 dark:bg-background/60 backdrop-blur-xl shadow-sm">
-      <div className="mx-auto grid h-18 max-w-6xl grid-cols-[auto_1fr_auto] items-center px-4 py-2">
-        <div className="flex items-center min-w-[4rem]">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 px-3 py-2 sm:h-18 sm:px-4">
+        <div className="flex min-w-0 flex-1 items-center">
           {user ? (
             showMenuButton ? (
               <button
@@ -58,13 +58,17 @@ export function SiteHeader({
               </button>
             ) : null
           ) : (
-            renderLogo()
+            <div className="min-w-0">
+              {renderLogo()}
+            </div>
           )}
         </div>
 
-        <div className="flex items-center justify-center">
+        <div className="flex min-w-0 flex-1 items-center justify-center">
           {user ? (
-            renderLogo()
+            <div className="min-w-0">
+              {renderLogo()}
+            </div>
           ) : (
             !hideNavigation && (
               <nav className="hidden items-center gap-8 text-sm md:flex">
@@ -91,7 +95,7 @@ export function SiteHeader({
           )}
         </div>
 
-        <div className="flex items-center gap-3 justify-end min-w-[10rem]">
+        <div className="flex flex-1 items-center justify-end gap-2 sm:gap-3">
           <button
             type="button"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -114,7 +118,7 @@ export function SiteHeader({
                 .toUpperCase()
 
               return (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <Link
                     href="/dashboard/notifications"
                     className={`relative p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-all duration-200 ${
@@ -158,7 +162,7 @@ export function SiteHeader({
               )
             })()
           ) : (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <a
                 href="/sign-in"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
@@ -167,7 +171,7 @@ export function SiteHeader({
               </a>
               <a
                 href="/sign-up"
-                className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-md hover:bg-primary/90 transition-all duration-200"
+                className="inline-flex items-center justify-center rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-md hover:bg-primary/90 transition-all duration-200 sm:px-5"
               >
                 Get Started
               </a>
