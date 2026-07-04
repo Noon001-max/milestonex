@@ -86,17 +86,7 @@ export default async function HomePage() {
                 Launch a Project
               </a>
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {[
-                'Donations held securely in escrow',
-                'Milestones verified before release',
-                'Transparent progress for every project',
-              ].map((item) => (
-                <div key={item} className="rounded-[1.75rem] border border-primary/10 bg-primary/5 px-5 py-4 text-sm font-medium text-foreground shadow-sm shadow-primary/10">
-                  {item}
-                </div>
-              ))}
-            </div>
+            
           </div>
 
           <div className="relative">
