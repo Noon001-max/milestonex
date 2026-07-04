@@ -38,6 +38,13 @@ export function SiteHeader({
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .map((part) => part[0])
+        .join("")
+        .toUpperCase()
+    : "U"
 
   useEffect(() => {
     setMounted(true)
