@@ -35,25 +35,21 @@ export default async function DonorDashboard() {
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:py-12">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">
-            My contributions
+        <div className="mb-6 rounded-2xl border border-border/70 bg-card/80 p-4 shadow-sm sm:p-5">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Your contribution activity
           </h1>
-          <p className="mt-2 text-muted-foreground">
-            Track your donations and investments across community projects
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
+            Review your donations, track project impact, and keep an eye on the initiatives you support.
           </p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="mb-8 grid gap-4 sm:grid-cols-4">
-          <Card className="p-5 border border-border/80 border-l-4 border-l-primary/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
-            <div className="flex items-start justify-between">
+        <div className="mb-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <Card className="border border-border/70 bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Total Contributed</p>
-                <p className="mt-2 text-2xl font-bold text-foreground">
-                  {formatCurrency(totalGiven)}
-                </p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Total contributed</p>
+                <p className="mt-2 text-xl font-semibold text-foreground">{formatCurrency(totalGiven)}</p>
                 <p className="mt-1 text-xs text-muted-foreground">Across all projects</p>
               </div>
               <div className="rounded-xl bg-primary/10 p-2.5">
@@ -62,13 +58,11 @@ export default async function DonorDashboard() {
             </div>
           </Card>
 
-          <Card className="p-5 border border-border/80 border-l-4 border-l-indigo-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
-            <div className="flex items-start justify-between">
+          <Card className="border border-border/70 bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Donations</p>
-                <p className="mt-2 text-2xl font-bold text-foreground">
-                  {donationsCount}
-                </p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Donations</p>
+                <p className="mt-2 text-xl font-semibold text-foreground">{donationsCount}</p>
                 <p className="mt-1 text-xs text-muted-foreground">Gifts to projects</p>
               </div>
               <div className="rounded-xl bg-indigo-500/10 p-2.5">
@@ -77,13 +71,11 @@ export default async function DonorDashboard() {
             </div>
           </Card>
 
-          <Card className="p-5 border border-border/80 border-l-4 border-l-amber-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
-            <div className="flex items-start justify-between">
+          <Card className="border border-border/70 bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Investments</p>
-                <p className="mt-2 text-2xl font-bold text-foreground">
-                  {investmentsCount}
-                </p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Investments</p>
+                <p className="mt-2 text-xl font-semibold text-foreground">{investmentsCount}</p>
                 <p className="mt-1 text-xs text-muted-foreground">Stake in projects</p>
               </div>
               <div className="rounded-xl bg-amber-500/10 p-2.5">
@@ -92,14 +84,12 @@ export default async function DonorDashboard() {
             </div>
           </Card>
 
-          <Card className="p-5 border border-border/80 border-l-4 border-l-emerald-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
-            <div className="flex items-start justify-between">
+          <Card className="border border-border/70 bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Active Projects</p>
-                <p className="mt-2 text-2xl font-bold text-foreground">
-                  {activeProjects}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground">Contributing to</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Active projects</p>
+                <p className="mt-2 text-xl font-semibold text-foreground">{activeProjects}</p>
+                <p className="mt-1 text-xs text-muted-foreground">Currently supporting</p>
               </div>
               <div className="rounded-xl bg-emerald-500/10 p-2.5">
                 <CheckCircle2 className="size-4.5 text-emerald-500" />

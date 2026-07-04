@@ -74,38 +74,36 @@ export default function OwnerProjectsClient({ projects }: OwnerProjectsClientPro
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:py-12">
         
-        {/* Title Header */}
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-border/70 bg-card/80 p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-5">
           <div>
-            <h1 className="text-4xl font-extrabold tracking-tight text-foreground">Creator Center</h1>
-            <p className="mt-2 text-muted-foreground">
-              Submit new funding proposals, track escrow payouts, and manage milestone progression.
+            <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Project proposer dashboard</h1>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
+              Track proposals, review milestone progress, and keep your fundraising activity organized in one place.
             </p>
           </div>
           <a
             href="/dashboard/projects/new"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-md shadow-primary/10 hover:shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all self-start sm:self-center"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4.5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:scale-[1.01] hover:shadow-md"
           >
             <Plus className="size-4.5" />
-            <span>New proposal</span>
+            <span>Create new proposal</span>
           </a>
         </div>
 
-        {/* Creator Control Panel Metrics */}
-        <div className="mb-10 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mb-8 grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {creatorMetrics.map((metric) => {
             const Icon = metric.icon
             return (
-              <Card key={metric.label} className="p-5 border border-border/80 bg-card shadow-sm flex flex-col justify-between">
+              <Card key={metric.label} className="flex flex-col justify-between border border-border/70 bg-card p-4 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{metric.label}</span>
-                  <div className={`p-2 rounded-xl ${metric.color}`}>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">{metric.label}</span>
+                  <div className={`rounded-xl p-2 ${metric.color}`}>
                     <Icon className="size-4.5" />
                   </div>
                 </div>
-                <div className="mt-4">
-                  <p className="text-2xl font-black text-foreground tracking-tight">{metric.value}</p>
-                  <p className="text-[10px] text-muted-foreground mt-1 font-semibold">{metric.desc}</p>
+                <div className="mt-3">
+                  <p className="text-xl font-semibold tracking-tight text-foreground">{metric.value}</p>
+                  <p className="mt-1 text-[11px] font-medium text-muted-foreground">{metric.desc}</p>
                 </div>
               </Card>
             )

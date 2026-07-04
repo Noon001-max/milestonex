@@ -16,12 +16,12 @@ export default async function AdminUsersPage() {
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
-        <div className="mb-6">
+        <div className="mb-6 rounded-2xl border border-border/70 bg-card/80 p-4 shadow-sm sm:p-5">
           <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-            Manage users
+            User management
           </h1>
-          <p className="mt-1 text-muted-foreground">
-            View all users, roles, and account status.
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
+            Review registered accounts, adjust roles, and manage account access from one place.
           </p>
         </div>
 
@@ -29,7 +29,7 @@ export default async function AdminUsersPage() {
           <>
             {/* Desktop/tablet: table layout */}
             <div className="hidden md:block">
-              <Card className="p-2">
+              <Card className="overflow-hidden border border-border/70 bg-card shadow-sm">
                 <table className="w-full text-sm">
                       <thead className="border-b border-border">
                         <tr>
@@ -95,7 +95,7 @@ export default async function AdminUsersPage() {
             {/* Mobile: card list */}
             <div className="md:hidden grid gap-4">
               {users.map((u) => (
-                <Card key={u.id} className="p-4">
+                <Card key={u.id} className="border border-border/70 bg-card p-4 shadow-sm">
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
                       <div className="flex items-center gap-3">
