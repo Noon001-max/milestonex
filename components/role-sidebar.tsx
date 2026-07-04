@@ -193,7 +193,7 @@ export default function RoleSidebar({
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex flex-col w-72 h-[calc(100vh-4rem)] fixed left-0 top-16 p-3 border-r border-border bg-background z-30">
+      <aside className="hidden md:flex flex-col w-72 h-[calc(100vh-4rem)] fixed left-0 top-16 border-r border-border bg-card/95 p-3 shadow-sm z-30 backdrop-blur-sm">
         {sidebarContent()}
       </aside>
 
@@ -217,7 +217,7 @@ export default function RoleSidebar({
           />
           
           {/* Sidebar panel */}
-          <div className="relative w-72 max-w-[85vw] bg-background p-3 border-r border-border h-screen flex flex-col z-10 animate-slide-in-right shadow-lg">
+          <div className="relative w-72 max-w-[85vw] h-screen flex flex-col border-r border-border bg-card/95 p-3 z-10 animate-slide-in-right shadow-xl backdrop-blur-sm">
             <div className="flex items-center justify-between pb-3 border-b border-border px-2">
               <h3 className="text-sm font-semibold text-foreground">Menu</h3>
               <button

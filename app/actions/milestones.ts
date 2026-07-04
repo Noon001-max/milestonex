@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { milestones, projects, verifications } from "@/lib/db/schema"
 import { requireRole, requireUser } from "@/lib/session"
 import { notify } from "@/lib/notify"
-import { eq } from "drizzle-orm"
+import { eq, inArray } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
 // Project proposer submits milestone completion + evidence
@@ -204,6 +204,24 @@ export async function getAdminMilestoneQueue() {
     .from(milestones)
     .innerJoin(projects, eq(projects.id, milestones.projectId))
     .where(eq(milestones.status, "verifying"))
+}
+
+export async function getAdminMilestoneHistory() {
+  await requireRole(["admin"])
+  return db
+    .select({
+      id: milestones.id,
+      title: milestones.title,
+      description: milestones.description,
+      amount: milestones.amount,
+      status: milestones.status,
+      projectId: milestones.projectId,
+      projectTitle: projects.title,
+      updatedAt: milestones.updatedAt,
+    })
+    .from(milestones)
+    .innerJoin(projects, eq(projects.id, milestones.projectId))
+    .where(inArray(milestones.status, ["approved", "rejected"]))
 }
 
 // Milestones awaiting verification (for verifier queue)

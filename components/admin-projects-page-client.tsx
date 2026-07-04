@@ -16,7 +16,7 @@ type AdminProjectsPageClientProps = {
 
 export function AdminProjectsPageClient({ projects }: AdminProjectsPageClientProps) {
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectedStatuses, setSelectedStatuses] = useState<ProjectStatus[]>(["pending"])
+  const [selectedStatuses, setSelectedStatuses] = useState<ProjectStatus[]>([])
   const [expandedFilters, setExpandedFilters] = useState(false)
 
   const statusOptions: { value: ProjectStatus; label: string; icon: string }[] = [
@@ -46,7 +46,7 @@ export function AdminProjectsPageClient({ projects }: AdminProjectsPageClientPro
 
   const handleClearFilters = () => {
     setSearchTerm("")
-    setSelectedStatuses(["pending"])
+    setSelectedStatuses([])
   }
 
   const projectStats = statusOptions.map((stat) => ({

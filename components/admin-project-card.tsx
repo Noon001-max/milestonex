@@ -49,24 +49,29 @@ export function AdminProjectCard({
   }
 
   return (
-    <Card className="p-4">
-      <div className="flex items-start justify-between gap-4">
+    <Card className="overflow-hidden border border-border/70 bg-card p-0 shadow-sm transition-all duration-200 hover:shadow-md">
+      <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex-1">
+          <div className="mb-2 flex flex-wrap items-center gap-2">
+            <StatusBadge status={status} />
+            <span className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+              Project review
+            </span>
+          </div>
           <Link
             href={`/dashboard/projects/${id}`}
-            className="font-medium text-foreground hover:underline"
+            className="text-base font-semibold text-foreground transition hover:text-primary"
           >
             {title}
           </Link>
-          <p className="text-sm text-muted-foreground line-clamp-1 mt-1">
+          <p className="mt-2 text-sm leading-6 text-muted-foreground line-clamp-2">
             {summary}
           </p>
-          <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
-            <span>Goal: {formatCurrency(fundingGoal)}</span>
-            <StatusBadge status={status} />
+          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            <span className="rounded-full bg-muted/70 px-2.5 py-1">Goal: {formatCurrency(fundingGoal)}</span>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 sm:flex-col">
           <Button
             onClick={handleApprove}
             disabled={isLoading}
@@ -75,7 +80,7 @@ export function AdminProjectCard({
             variant="default"
           >
             <CheckCircle className="size-4" />
-            <span className="hidden sm:inline">Approve</span>
+            <span>Approve</span>
           </Button>
           <Button
             onClick={handleReject}
@@ -85,7 +90,7 @@ export function AdminProjectCard({
             variant="outline"
           >
             <XCircle className="size-4" />
-            <span className="hidden sm:inline">Reject</span>
+            <span>Reject</span>
           </Button>
         </div>
       </div>
