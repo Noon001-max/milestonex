@@ -134,183 +134,39 @@ export default async function AdminDashboard() {
           })}
         </div>
 
-        <div className="mb-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-          {[
-            {
-              label: "Approved projects",
-              value: approvedProjects.length,
-              detail: "Projects already cleared for progress",
-              href: "/dashboard/admin/projects?status=approved",
-            },
-            {
-              label: "Rejected projects",
-              value: rejectedProjects.length,
-              detail: "Projects that were declined",
-              href: "/dashboard/admin/projects?status=rejected",
-            },
-            {
-              label: "Approved milestones",
-              value: approvedMilestones.length,
-              detail: "Milestones accepted for release",
-              href: "/dashboard/admin/milestones?status=approved",
-            },
-            {
-              label: "Rejected milestones",
-              value: rejectedMilestones.length,
-              detail: "Milestones blocked after review",
-              href: "/dashboard/admin/milestones?status=rejected",
-            },
-          ].map((item) => (
-            <Link key={item.label} href={item.href} className="group block">
-              <Card className="border border-border/70 bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md sm:p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">{item.label}</p>
-                    <p className="mt-2 text-2xl font-bold tracking-tight text-foreground">{item.value}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">{item.detail}</p>
-                  </div>
-                  <span className="rounded-full border border-border bg-background px-2.5 py-1 text-xs font-semibold text-muted-foreground transition group-hover:text-primary">
-                    View
-                  </span>
-                </div>
-              </Card>
-            </Link>
-          ))}
-        </div>
-
-        <div className="mb-6 rounded-[1.25rem] border border-border/70 bg-card/80 p-4 shadow-sm sm:p-5">
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <div>
-              <h2 className="text-lg font-semibold tracking-tight text-foreground">Decision history</h2>
-              <p className="text-sm text-muted-foreground">A quick view of what the admin team has already approved or rejected.</p>
-            </div>
+        <div className="space-y-3">
+          <div>
+            <h2 className="mb-1 text-lg font-semibold tracking-tight text-foreground">Quick actions</h2>
+            <p className="text-sm text-muted-foreground">The main tasks that need attention.</p>
           </div>
 
-          <div className="grid gap-4 lg:grid-cols-2">
-            <div className="rounded-2xl border border-border/70 bg-background p-4">
-              <h3 className="text-sm font-semibold text-foreground">Approved items</h3>
-              <div className="mt-3 space-y-2 text-sm text-muted-foreground">
-                {approvedProjects.length > 0 ? (
-                  approvedProjects.slice(0, 4).map((project) => (
-                    <div key={project.id} className="rounded-xl border border-border/60 bg-card/70 px-3 py-2">
-                      <p className="font-medium text-foreground">{project.title}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="rounded-xl border border-dashed border-border/70 px-3 py-2">No approved projects yet.</p>
-                )}
-                {approvedMilestones.length > 0 && (
-                  <div className="mt-2 space-y-2">
-                    {approvedMilestones.slice(0, 3).map((milestone) => (
-                      <div key={milestone.id} className="rounded-xl border border-border/60 bg-card/70 px-3 py-2">
-                        <p className="font-medium text-foreground">{milestone.title}</p>
-                        <p className="text-xs text-muted-foreground">{milestone.projectTitle}</p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {actionItems.map((item) => {
+              const Icon = item.icon
+              return (
+                <Link key={item.title} href={item.href} className="group block">
+                  <Card className={`flex items-center justify-between gap-4 border border-border/70 border-l-4 p-4 shadow-sm transition-all duration-200 group-hover:translate-x-1 sm:p-5 ${item.color}`}>
+                    <div className="flex items-start gap-3 min-w-0">
+                      <div className="mt-0.5 rounded-xl border border-border bg-card p-2.5 text-foreground shadow-sm">
+                        <Icon className="size-4.5" />
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-border/70 bg-background p-4">
-              <h3 className="text-sm font-semibold text-foreground">Rejected items</h3>
-              <div className="mt-3 space-y-2 text-sm text-muted-foreground">
-                {rejectedProjects.length > 0 ? (
-                  rejectedProjects.slice(0, 4).map((project) => (
-                    <div key={project.id} className="rounded-xl border border-border/60 bg-card/70 px-3 py-2">
-                      <p className="font-medium text-foreground">{project.title}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="rounded-xl border border-dashed border-border/70 px-3 py-2">No rejected projects yet.</p>
-                )}
-                {rejectedMilestones.length > 0 && (
-                  <div className="mt-2 space-y-2">
-                    {rejectedMilestones.slice(0, 3).map((milestone) => (
-                      <div key={milestone.id} className="rounded-xl border border-border/60 bg-card/70 px-3 py-2">
-                        <p className="font-medium text-foreground">{milestone.title}</p>
-                        <p className="text-xs text-muted-foreground">{milestone.projectTitle}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid gap-8 lg:grid-cols-3">
-          {/* Action Center - Occupies 2 columns */}
-          <div className="lg:col-span-2 space-y-6">
-            <div>
-              <h2 className="mb-1 text-lg font-semibold tracking-tight text-foreground">Administrative Actions</h2>
-              <p className="text-sm text-muted-foreground">Operational tasks awaiting attention.</p>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-1">
-              {actionItems.map((item) => {
-                const Icon = item.icon
-                return (
-                  <Link key={item.title} href={item.href} className="group block">
-                    <Card className={`flex items-center justify-between gap-4 border border-border/70 border-l-4 p-4 shadow-sm transition-all duration-200 group-hover:translate-x-1 sm:p-5 ${item.color}`}>
-                      <div className="flex items-start gap-4 min-w-0">
-                        <div className="p-2.5 rounded-xl bg-card border border-border shadow-sm text-foreground mt-0.5">
-                          <Icon className="size-5" />
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2.5 flex-wrap">
+                          <h3 className="text-sm font-semibold text-foreground transition-colors group-hover:text-primary">{item.title}</h3>
+                          {item.count !== null && item.count > 0 && (
+                            <span className={`inline-flex items-center justify-center rounded-full px-2 py-0.5 text-[10px] font-bold ${item.badgeColor}`}>
+                              {item.count}
+                            </span>
+                          )}
                         </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2.5 flex-wrap">
-                            <h3 className="font-bold text-foreground text-sm group-hover:text-primary transition-colors">{item.title}</h3>
-                            {item.count !== null && item.count > 0 && (
-                              <span className={`inline-flex items-center justify-center text-[10px] font-bold px-2 py-0.5 rounded-full ${item.badgeColor}`}>
-                                {item.count} awaiting
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{item.description}</p>
-                        </div>
+                        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.description}</p>
                       </div>
-                      <ArrowRight className="size-4.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-                    </Card>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Pipeline & Distribution Panel - Occupies 1 column */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="mb-1 text-lg font-semibold tracking-tight text-foreground">Platform Pipeline</h2>
-              <p className="text-sm text-muted-foreground">Distribution of projects across stages.</p>
-            </div>
-
-            <Card className="space-y-5 border border-border/70 bg-card p-4 shadow-sm sm:p-5">
-              <div className="space-y-4">
-                {pipelineStats.map((stat) => (
-                  <div key={stat.label} className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs font-semibold">
-                      <span className="text-foreground">{stat.label}</span>
-                      <span className="text-muted-foreground">{stat.value} ({stat.percentage}%)</span>
                     </div>
-                    <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
-                      <div 
-                        className={`h-full rounded-full transition-all duration-500 ${stat.barColor}`}
-                        style={{ width: `${stat.percentage}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="border-t border-border pt-4 text-center">
-                <div className="inline-flex items-center gap-2.5 text-xs font-bold text-foreground">
-                  <span>Total System Scope:</span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-secondary text-foreground text-sm font-black border border-border">
-                    {totalProjects}
-                  </span>
-                </div>
-              </div>
-            </Card>
+                    <ArrowRight className="size-4 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
+                  </Card>
+                </Link>
+              )
+            })}
           </div>
         </div>
 
