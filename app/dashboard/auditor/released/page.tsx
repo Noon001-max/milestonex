@@ -84,7 +84,7 @@ export default async function ReleasedFundsPage() {
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Latest release</p>
                   <p className="mt-2 text-3xl font-bold text-foreground">
-                    {releases[0] ? formatCurrency(releases[0].amount) : "$0"}
+                    {releases[0] ? formatCurrency(releases[0].amount) : "Ksh 0"}
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">Most recent</p>
                 </div>

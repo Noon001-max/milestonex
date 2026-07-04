@@ -39,7 +39,7 @@ export default async function ReleasedFundsReportPage() {
             <div>
               <p className="text-sm text-muted-foreground">Average release</p>
               <p className="mt-2 text-2xl font-semibold text-foreground">
-                {releases.length > 0 ? formatCurrency(Math.round(totalReleased / releases.length)) : "$0"}
+                {releases.length > 0 ? formatCurrency(Math.round(totalReleased / releases.length)) : "Ksh 0"}
               </p>
             </div>
           </div>

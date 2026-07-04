@@ -1,7 +1,11 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { useTheme } from "next-themes"
 import type { SessionUser } from "@/lib/session"
-import { Bell, Menu } from "lucide-react"
+import { Bell, Menu, Moon, Sun } from "lucide-react"
 
 export function SiteHeader({
   user,
@@ -30,6 +34,13 @@ export function SiteHeader({
       </span>
     </Link>
   )
+
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/20 bg-background/60 dark:bg-background/60 backdrop-blur-xl shadow-sm">
@@ -81,6 +92,19 @@ export function SiteHeader({
         </div>
 
         <div className="flex items-center gap-3 justify-end min-w-[10rem]">
+          <button
+            type="button"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="inline-flex items-center justify-center rounded-lg p-2 text-foreground hover:bg-muted transition-all duration-200 active:scale-95"
+            aria-label="Toggle theme"
+          >
+            {mounted && theme === "dark" ? (
+              <Sun className="size-5" />
+            ) : (
+              <Moon className="size-5" />
+            )}
+          </button>
+
           {user ? (
             (() => {
               const initials = user.name

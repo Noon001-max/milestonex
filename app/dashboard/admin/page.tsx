@@ -7,16 +7,10 @@ import { getAllUsers } from "@/app/actions/admin"
 import { getAdminMilestoneQueue } from "@/app/actions/milestones"
 import { getReadyToStartProjects } from "@/app/actions/projects"
 import { Card } from "@/components/ui/card"
+import { formatCurrency } from "@/lib/roles"
 
 export const dynamic = "force-dynamic"
 
-const formatCurrency = (val: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(val)
-}
 
 export default async function AdminDashboard() {
   const user = await getSession()

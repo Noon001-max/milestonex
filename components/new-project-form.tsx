@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select"
 import { ImageUpload } from "@/components/image-upload"
 import { StatusBadge } from "@/components/status-badge"
+import { formatCurrency } from "@/lib/roles"
 
 const CATEGORIES = [
   { value: "community", label: "Community Development" },
@@ -30,14 +31,6 @@ const MAX_MILESTONES = 10
 
 function createBlankMilestone() {
   return { title: "", amount: "", description: "" }
-}
-
-const formatCurrency = (val: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(val)
 }
 
 export function NewProjectForm() {
@@ -401,7 +394,7 @@ export function NewProjectForm() {
                             name={`milestones[${i}].amount`}
                             type="number"
                             min="0"
-                            placeholder="Amount ($)"
+                            placeholder="Amount (Ksh)"
                             value={milestone.amount}
                             onChange={(e) => updateMilestone(i, 'amount', e.target.value)}
                             className="rounded-lg h-9 text-xs"
@@ -541,7 +534,7 @@ export function NewProjectForm() {
                   <div className="h-full bg-primary rounded-full transition-all duration-300 w-0" />
                 </div>
                 <div className="flex items-center justify-between text-[10px] text-muted-foreground font-semibold mt-1">
-                  <span>$0 funded</span>
+                  <span>Ksh 0 funded</span>
                   <span>0% raised</span>
                 </div>
               </div>

@@ -46,7 +46,7 @@ export default async function ProfilePage() {
     .then((res) => res[0])
 
   const memberSince = dbUser?.createdAt
-    ? new Date(dbUser.createdAt).toLocaleDateString("en-US", {
+    ? new Date(dbUser.createdAt).toLocaleDateString("en-KE", {
         month: "long",
         year: "numeric",
       })

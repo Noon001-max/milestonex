@@ -394,6 +394,12 @@
   
   /* Refined input styling */
   input, textarea, select {
-    @apply rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground;
+    @apply rounded-[1.1rem] border border-border bg-background text-foreground placeholder:text-muted-foreground;
+  }
+
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply border-primary ring-4 ring-primary/10;
   }
 }
