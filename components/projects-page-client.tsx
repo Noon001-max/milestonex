@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { Search, SlidersHorizontal, Sparkles, TrendingUp, X } from "lucide-react"
+import { Search, X } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { ProjectCard } from "@/components/project-card"
@@ -92,71 +92,37 @@ export function ProjectsPageClient({ user, projects, dbUnavailable }: ProjectsPa
     setSortBy("featured")
   }
 
-  const stats = useMemo(() => {
-    const totalRaised = projects.reduce((sum, project) => sum + Number(project.fundedAmount || 0), 0)
-    const activeProjects = projects.filter((project) => normalizeStatus(project.status) !== "draft").length
-    const categoriesInUse = availableCategories.length
-
-    return [
-      { label: "Projects", value: projects.length.toString(), icon: Sparkles },
-      { label: "Active", value: activeProjects.toString(), icon: TrendingUp },
-      { label: "Categories", value: categoriesInUse.toString(), icon: SlidersHorizontal },
-      { label: "Raised", value: `KSh ${totalRaised.toLocaleString()}`, icon: Sparkles },
-    ]
-  }, [availableCategories.length, projects])
-
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <SiteHeader user={user} />
-      <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-        <section className="mb-8 rounded-[2rem] border border-border/60 bg-gradient-to-br from-primary/10 via-background to-background p-6 shadow-sm sm:p-8 lg:p-10">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <p className="mb-3 inline-flex items-center rounded-full border border-primary/20 bg-background/80 px-3 py-1 text-sm font-medium text-primary">
-                <Sparkles className="mr-2 size-4" />
-                Discover impact-driven projects
-              </p>
-              <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-                Browse projects that are changing communities
-              </h1>
-              <p className="mt-3 text-base leading-7 text-muted-foreground sm:text-lg">
-                Search by cause, location, or milestone and fund the work that matters most.
-              </p>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[360px]">
-              {stats.map((stat) => {
-                const Icon = stat.icon
-                return (
-                  <div key={stat.label} className="rounded-2xl border border-border/60 bg-background/90 p-4 shadow-sm">
-                    <div className="mb-2 flex items-center justify-between">
-                      <span className="text-sm font-medium text-muted-foreground">{stat.label}</span>
-                      <Icon className="size-4 text-primary" />
-                    </div>
-                    <p className="text-xl font-semibold text-foreground">{stat.value}</p>
-                  </div>
-                )
-              })}
-            </div>
+      <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
+        <section className="mb-6 rounded-[1.5rem] border border-border/60 bg-card/80 p-5 shadow-sm sm:p-6">
+          <div className="space-y-2">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              Browse projects
+            </h1>
+            <p className="text-sm leading-6 text-muted-foreground sm:text-base">
+              Search by cause, location, or milestone and discover the work that matters most.
+            </p>
           </div>
         </section>
 
         {!dbUnavailable && projects.length > 0 && (
-          <section className="mb-8 rounded-[1.5rem] border border-border/60 bg-card/70 p-4 shadow-sm sm:p-5">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div className="relative flex-1">
-                <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <section className="mb-6 rounded-[1.25rem] border border-border/60 bg-card/70 p-3 shadow-sm sm:p-4">
+            <div className="space-y-3">
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
-                  placeholder="Search by project, cause, or place"
-                  className="w-full rounded-full border border-border bg-background py-3 pl-11 pr-4 text-sm shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  placeholder="Search projects"
+                  className="w-full rounded-full border border-border bg-background py-3 pl-10 pr-4 text-sm shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <label className="flex items-center gap-2 rounded-full border border-border bg-background px-3 py-2 text-sm shadow-sm">
+              <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+                <label className="flex items-center justify-between gap-2 rounded-full border border-border bg-background px-3 py-2 text-sm shadow-sm sm:justify-start">
                   <span className="text-muted-foreground">Category</span>
                   <select
                     value={selectedCategory}
@@ -174,7 +140,7 @@ export function ProjectsPageClient({ user, projects, dbUnavailable }: ProjectsPa
                   </select>
                 </label>
 
-                <label className="flex items-center gap-2 rounded-full border border-border bg-background px-3 py-2 text-sm shadow-sm">
+                <label className="flex items-center justify-between gap-2 rounded-full border border-border bg-background px-3 py-2 text-sm shadow-sm sm:justify-start">
                   <span className="text-muted-foreground">Status</span>
                   <select
                     value={selectedStatus}
@@ -189,7 +155,7 @@ export function ProjectsPageClient({ user, projects, dbUnavailable }: ProjectsPa
                   </select>
                 </label>
 
-                <label className="flex items-center gap-2 rounded-full border border-border bg-background px-3 py-2 text-sm shadow-sm">
+                <label className="flex items-center justify-between gap-2 rounded-full border border-border bg-background px-3 py-2 text-sm shadow-sm sm:justify-start">
                   <span className="text-muted-foreground">Sort</span>
                   <select
                     value={sortBy}
@@ -203,36 +169,36 @@ export function ProjectsPageClient({ user, projects, dbUnavailable }: ProjectsPa
                   </select>
                 </label>
               </div>
-            </div>
 
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-4">
-              <div className="flex flex-wrap items-center gap-2">
-                {selectedCategory !== "all" && (
-                  <Badge variant="secondary" className="rounded-full">
-                    {categoryOptions.find((option) => option.value === selectedCategory)?.label || selectedCategory}
-                  </Badge>
-                )}
-                {selectedStatus !== "all" && (
-                  <Badge variant="outline" className="rounded-full">
-                    {statusOptions.find((option) => option.value === selectedStatus)?.label || selectedStatus}
-                  </Badge>
-                )}
-              </div>
+              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  {selectedCategory !== "all" && (
+                    <Badge variant="secondary" className="rounded-full">
+                      {categoryOptions.find((option) => option.value === selectedCategory)?.label || selectedCategory}
+                    </Badge>
+                  )}
+                  {selectedStatus !== "all" && (
+                    <Badge variant="outline" className="rounded-full">
+                      {statusOptions.find((option) => option.value === selectedStatus)?.label || selectedStatus}
+                    </Badge>
+                  )}
+                </div>
 
-              <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                <span>
-                  Showing <span className="font-semibold text-foreground">{filteredProjects.length}</span> of <span className="font-semibold text-foreground">{projects.length}</span>
-                </span>
-                {(searchTerm || selectedCategory !== "all" || selectedStatus !== "all" || sortBy !== "featured") && (
-                  <button
-                    type="button"
-                    onClick={clearFilters}
-                    className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-3 py-1.5 font-medium text-foreground transition hover:bg-muted"
-                  >
-                    <X className="size-3.5" />
-                    Clear
-                  </button>
-                )}
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <span>
+                    Showing <span className="font-semibold text-foreground">{filteredProjects.length}</span> of <span className="font-semibold text-foreground">{projects.length}</span>
+                  </span>
+                  {(searchTerm || selectedCategory !== "all" || selectedStatus !== "all" || sortBy !== "featured") && (
+                    <button
+                      type="button"
+                      onClick={clearFilters}
+                      className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-3 py-1.5 font-medium text-foreground transition hover:bg-muted"
+                    >
+                      <X className="size-3.5" />
+                      Clear
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </section>
