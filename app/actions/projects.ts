@@ -216,6 +216,8 @@ export async function reviewProject(projectId: number, approve: boolean) {
   }
 
   revalidatePath("/dashboard/admin")
+  revalidatePath("/dashboard/admin/projects")
+  revalidatePath(`/dashboard/admin/projects/${projectId}`)
   revalidatePath("/projects")
   revalidatePath("/dashboard/projects")
 }

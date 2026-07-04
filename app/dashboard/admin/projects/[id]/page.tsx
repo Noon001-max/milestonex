@@ -57,6 +57,7 @@ export default async function AdminProjectDetail({ params }: { params: Promise<{
                 "use server"
                 const id = Number(formData.get("projectId"))
                 await reviewProject(id, true)
+                redirect(`/dashboard/admin/projects/${id}`)
               }}>
                 <input type="hidden" name="projectId" value={project.id} />
                 <button type="submit" className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">Approve project</button>
@@ -66,11 +67,18 @@ export default async function AdminProjectDetail({ params }: { params: Promise<{
                 "use server"
                 const id = Number(formData.get("projectId"))
                 await reviewProject(id, false)
+                redirect(`/dashboard/admin/projects/${id}`)
               }}>
                 <input type="hidden" name="projectId" value={project.id} />
                 <button type="submit" className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted">Reject project</button>
               </form>
             </>
+          )}
+
+          {project.status !== "pending" && project.status !== "funding" && (
+            <div className="rounded-lg border border-border/70 bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
+              Decision finalized: {project.status === "approved" ? "approved" : project.status === "rejected" ? "rejected" : project.status}
+            </div>
           )}
 
           {project.status === "funding" && (
