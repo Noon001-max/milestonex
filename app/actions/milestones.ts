@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { milestones, projects, verifications } from "@/lib/db/schema"
 import { requireRole, requireUser } from "@/lib/session"
 import { notify } from "@/lib/notify"
-import { eq, inArray, desc } from "drizzle-orm"
+import { eq, inArray, desc, and } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
 // Project proposer submits milestone completion + evidence
@@ -158,6 +158,16 @@ export async function decideMilestone(
     .where(eq(milestones.id, milestoneId))
   if (!m) throw new Error("Milestone not found")
 
+  // Ensure the admin approved the parent project before deciding
+  const [parentProject] = await db
+    .select({ id: projects.id, approvedBy: projects.approvedBy })
+    .from(projects)
+    .where(eq(projects.id, m.projectId))
+  if (!parentProject) throw new Error("Parent project not found")
+  if (parentProject.approvedBy !== u.id) {
+    throw new Error("Only the admin who approved this project can decide its milestones")
+  }
+
   await db
     .update(milestones)
     .set({
@@ -188,7 +198,8 @@ export async function decideMilestone(
 }
 
 export async function getAdminMilestoneQueue() {
-  await requireRole(["admin"])
+  const u = await requireRole(["admin"])
+
   return db
     .select({
       id: milestones.id,
@@ -204,11 +215,12 @@ export async function getAdminMilestoneQueue() {
     })
     .from(milestones)
     .innerJoin(projects, eq(projects.id, milestones.projectId))
-    .where(eq(milestones.status, "verifying"))
+    .where(and(eq(milestones.status, "verifying"), eq(projects.approvedBy, u.id)))
 }
 
 export async function getAdminMilestoneHistory() {
-  await requireRole(["admin"])
+  const u = await requireRole(["admin"])
+
   return db
     .select({
       id: milestones.id,
@@ -222,7 +234,7 @@ export async function getAdminMilestoneHistory() {
     })
     .from(milestones)
     .innerJoin(projects, eq(projects.id, milestones.projectId))
-    .where(inArray(milestones.status, ["approved", "rejected"]))
+    .where(and(inArray(milestones.status, ["approved", "rejected"]), eq(projects.approvedBy, u.id)))
 }
 
 // Milestones awaiting verification (for verifier queue)

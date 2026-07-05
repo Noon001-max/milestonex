@@ -86,6 +86,12 @@ export function NewProjectForm() {
         setError("Please write a more detailed description (at least 50 characters)")
         return false
       }
+    } else if (currentStep === 3) {
+      const validMilestones = preview.milestones.filter(m => m.title?.trim() && m.amount)
+      if (validMilestones.length === 0) {
+        setError("Please add at least one milestone with a title and amount")
+        return false
+      }
     }
     return true
   }
@@ -198,7 +204,7 @@ export function NewProjectForm() {
       <div className="lg:col-span-7">
         
         {/* Step Indicator Header */}
-        <div className="mb-8 border border-border/80 bg-card rounded-2xl p-4.5 flex items-center justify-between shadow-sm">
+          <div className="mb-8 border border-border/80 bg-card rounded-2xl p-4.5 flex items-center justify-between shadow-sm">
           <button 
             type="button" 
             onClick={() => step > 1 && setStep(1)}
@@ -236,6 +242,19 @@ export function NewProjectForm() {
               step === 3 ? "bg-primary text-primary-foreground border-primary" : "border-border/80 bg-secondary/50"
             }`}>3</div>
             <span className="hidden sm:inline">Milestones</span>
+          </button>
+          <div className="flex-1 border-t border-dashed border-border mx-3" />
+          <button 
+            type="button" 
+            onClick={() => validateStep(1) && validateStep(2) && validateStep(3) && setStep(4)}
+            className={`flex items-center gap-2 text-xs font-bold transition-all ${
+              step === 4 ? "text-primary" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <div className={`size-6 rounded-full flex items-center justify-center border font-bold text-xs ${
+              step === 4 ? "bg-primary text-primary-foreground border-primary" : "border-border/80 bg-secondary/50"
+            }`}>4</div>
+            <span className="hidden sm:inline">Image</span>
           </button>
         </div>
 
@@ -308,14 +327,7 @@ export function NewProjectForm() {
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <Label className="font-semibold text-xs text-foreground">Project Hero Image</Label>
-                  <ImageUpload 
-                    name="imageUrl" 
-                    className="mt-1" 
-                    onChange={(url) => updateField("imageUrl", url)} 
-                  />
-                </div>
+                {/* image moved to final step */}
               </div>
             )}
 
@@ -431,6 +443,30 @@ export function NewProjectForm() {
               </div>
             )}
 
+            {/* STEP 4: IMAGE & REVIEW */}
+            {step === 4 && (
+              <div className="space-y-5 animate-fade-in">
+                <div className="flex items-center gap-2.5 text-foreground pb-2 border-b border-border/60">
+                  <Info className="size-5 text-primary" />
+                  <h3 className="font-bold">Project Image & Review</h3>
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label className="font-semibold text-xs text-foreground">Project Hero Image</Label>
+                  <ImageUpload 
+                    name="imageUrl" 
+                    className="mt-1" 
+                    onChange={(url) => updateField("imageUrl", url)} 
+                  />
+                </div>
+
+                <div className="rounded-xl border border-border/60 bg-card/70 p-3 text-sm">
+                  <h4 className="font-semibold">Quick review</h4>
+                  <p className="text-xs text-muted-foreground mt-2">Title, summary, description, milestones and image will be submitted together. Please review before submitting.</p>
+                </div>
+              </div>
+            )}
+
             {/* Bottom Actions and Message Alerts */}
             <div className="border-t border-border/80 pt-4.5">
               {error && (
@@ -453,7 +489,7 @@ export function NewProjectForm() {
                   <div />
                 )}
 
-                {step < 3 ? (
+                {step < 4 ? (
                   <button
                     type="button"
                     onClick={handleNext}

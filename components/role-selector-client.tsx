@@ -133,7 +133,7 @@ export default function RoleSelectorClient() {
     <>
       <main className="min-h-svh bg-background flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-5xl">
-          <div className="mb-6 flex items-center justify-between gap-4">
+          <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-3">
               <Link href="/sign-up" className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium hover:bg-muted">
                 <ChevronLeft className="size-4" />
@@ -143,8 +143,8 @@ export default function RoleSelectorClient() {
                 Role selection
               </div>
             </div>
-            <div className="text-right">
-              <h1 className="text-xl font-semibold tracking-tight text-foreground">Finish account setup</h1>
+            <div className="text-left sm:text-right">
+              <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-foreground">Finish account setup</h1>
               <p className="text-sm text-muted-foreground">Choose the role that best matches your goals and permissions.</p>
             </div>
           </div>

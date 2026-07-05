@@ -54,7 +54,7 @@ export default async function AdminUsersPage() {
                           {new Date(u.createdAt).toLocaleDateString()}
                         </td>
                         <td className="p-2">
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-3">
                             {u.role === "suspended" ? (
                               <form action={async function unsuspend(formData: FormData) {
                                 "use server"
@@ -62,7 +62,7 @@ export default async function AdminUsersPage() {
                                 await updateUserRole(id, "donor")
                               }}>
                                 <input type="hidden" name="userId" value={u.id} />
-                                <button type="submit" className="text-sm text-foreground hover:underline">Unsuspend</button>
+                                <button type="submit" className="text-sm rounded-md px-3 py-1 border border-border bg-background text-foreground">Unsuspend</button>
                               </form>
                             ) : (
                               <form action={async function suspend(formData: FormData) {
@@ -71,18 +71,9 @@ export default async function AdminUsersPage() {
                                 await suspendUser(id)
                               }}>
                                 <input type="hidden" name="userId" value={u.id} />
-                                <button type="submit" className="text-sm text-destructive hover:underline">Suspend</button>
+                                <button type="submit" className="text-sm rounded-md px-3 py-1 border border-destructive/30 text-destructive hover:bg-destructive/6">Suspend</button>
                               </form>
                             )}
-
-                            <form action={async function remove(formData: FormData) {
-                              "use server"
-                              const id = String(formData.get("userId"))
-                              await deleteUser(id)
-                            }}>
-                              <input type="hidden" name="userId" value={u.id} />
-                              <button type="submit" className="text-sm text-destructive/80 hover:underline">Delete</button>
-                            </form>
                           </div>
                         </td>
                       </tr>
@@ -132,15 +123,6 @@ export default async function AdminUsersPage() {
                         <button type="submit" className="rounded-md px-3 py-1 text-sm text-destructive border border-destructive/30">Suspend</button>
                       </form>
                     )}
-
-                    <form action={async function deleteMobile(formData: FormData) {
-                      "use server"
-                      const id = String(formData.get("userId"))
-                      await deleteUser(id)
-                    }}>
-                      <input type="hidden" name="userId" value={u.id} />
-                      <button type="submit" className="rounded-md px-3 py-1 text-sm text-destructive bg-destructive/5">Delete</button>
-                    </form>
                   </div>
                 </Card>
               ))}
