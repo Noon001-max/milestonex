@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useMemo, useState } from "react"
+import Link from "next/link"
+
 import { FileText, Plus, Search, Filter, X, PiggyBank, Landmark, CheckCircle2, LayoutGrid, Calendar, ArrowRight } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -199,148 +201,105 @@ export default function OwnerProjectsClient({ projects }: OwnerProjectsClientPro
             <div className="grid gap-6">
               {filteredProjects.map((project) => {
                 const milestones = project.milestones || []
-                const completed = milestones.filter((m: any) =>
-                  ["approved", "released"].includes(m.status),
-                ).length
+                const completed = milestones.filter((m: any) => ["approved", "released"].includes(m.status)).length
                 const total = milestones.length
 
                 return (
-                  <Card key={project.id} className="p-6 border border-border/80 bg-card hover:shadow-md transition-all duration-300 flex flex-col justify-between">
-                    
-                    {/* Project Header Info */}
-                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                      <div className="space-y-1.5 min-w-0">
-                        <div className="flex items-center gap-2.5">
-                          <span className="text-[11px] font-bold text-primary uppercase tracking-widest">{project.category}</span>
-                          <span className="text-xs text-muted-foreground">•</span>
-                          <span className="text-xs text-muted-foreground font-semibold inline-flex items-center gap-1">
-                            <Calendar className="size-3" />
-                            {new Date(project.createdAt).toLocaleDateString()}
-                          </span>
+                  <Link key={project.id} href={`/dashboard/projects/${project.id}/owner`} className="block">
+                    <Card className="p-6 border border-border/80 bg-card hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="space-y-1.5 min-w-0">
+                          <div className="flex items-center gap-2.5">
+                            <span className="text-[11px] font-bold text-primary uppercase tracking-widest">{project.category}</span>
+                            <span className="text-xs text-muted-foreground">•</span>
+                            <span className="text-xs text-muted-foreground font-semibold inline-flex items-center gap-1">
+                              <Calendar className="size-3" />
+                              {new Date(project.createdAt).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <span className="text-xl font-bold text-foreground block truncate">{project.title}</span>
+                          <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{project.summary}</p>
                         </div>
-                        <a
-                          href={`/dashboard/projects/${project.id}/owner`}
-                          className="text-xl font-bold text-foreground hover:text-primary transition-colors duration-200 block truncate"
-                        >
-                          {project.title}
-                        </a>
-                        <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
-                          {project.summary}
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0 self-start">
-                        <StatusBadge status={project.status} />
-                      </div>
-                    </div>
-
-                    {/* Milestone Progress Timeline Node Track */}
-                    {total > 0 && (
-                      <div className="my-6 border-t border-b border-border/50 py-4.5 space-y-3">
-                        <div className="flex items-center justify-between text-xs font-bold text-foreground px-1">
-                          <span>Milestone Pipeline</span>
-                          <span className="text-[11px] text-muted-foreground font-semibold">{completed} of {total} verified</span>
+                        <div className="flex-shrink-0 self-start">
+                          <StatusBadge status={project.status} />
                         </div>
+                      </div>
 
-                        <div className="flex items-center w-full px-4 pt-2 pb-1.5 overflow-x-auto gap-1">
-                          {milestones.map((m: any, idx: number) => {
-                            const isReleased = ["approved", "released"].includes(m.status)
-                            const isUnderReview = m.status === "pending" && m.submittedAt !== null
-                            const isUnlocked = m.status === "pending" && m.submittedAt === null && (idx === 0 || milestones.slice(0, idx).every((p: any) => p.submittedAt !== null))
-                            
-                            let nodeColor = "bg-secondary text-muted-foreground border-border/80"
-                            let statusText = "Locked"
-                            if (isReleased) {
-                              nodeColor = "bg-emerald-500 text-white border-emerald-500 shadow-sm shadow-emerald-500/20"
-                              statusText = "Verified & Released"
-                            } else if (isUnderReview) {
-                              nodeColor = "bg-amber-500 text-white border-amber-500 animate-pulse shadow-sm shadow-amber-500/20"
-                              statusText = "Under Review"
-                            } else if (isUnlocked) {
-                              nodeColor = "bg-primary/10 border-primary text-primary font-bold border-2"
-                              statusText = "Unlocked"
-                            }
+                      {total > 0 && (
+                        <div className="my-6 border-t border-b border-border/50 py-4.5 space-y-3">
+                          <div className="flex items-center justify-between text-xs font-bold text-foreground px-1">
+                            <span>Milestone Pipeline</span>
+                            <span className="text-[11px] text-muted-foreground font-semibold">{completed} of {total} verified</span>
+                          </div>
 
-                            return (
-                              <React.Fragment key={m.id}>
-                                <div className="flex flex-col items-center flex-1 min-w-[70px] relative group">
-                                  <div className={`size-8 rounded-full border flex items-center justify-center text-xs font-bold transition-all ${nodeColor}`} title={`${m.title} - ${statusText}`}>
-                                    {idx + 1}
+                          <div className="flex items-center w-full px-4 pt-2 pb-1.5 overflow-x-auto gap-1">
+                            {milestones.map((m: any, idx: number) => {
+                              const isReleased = ["approved", "released"].includes(m.status)
+                              const isUnderReview = m.status === "pending" && m.submittedAt !== null
+                              const isUnlocked = m.status === "pending" && m.submittedAt === null && (idx === 0 || milestones.slice(0, idx).every((p: any) => p.submittedAt !== null))
+                              let nodeColor = "bg-secondary text-muted-foreground border-border/80"
+                              let statusText = "Locked"
+                              if (isReleased) {
+                                nodeColor = "bg-emerald-500 text-white border-emerald-500 shadow-sm shadow-emerald-500/20"
+                                statusText = "Verified & Released"
+                              } else if (isUnderReview) {
+                                nodeColor = "bg-amber-500 text-white border-amber-500 animate-pulse shadow-sm shadow-amber-500/20"
+                                statusText = "Under Review"
+                              } else if (isUnlocked) {
+                                nodeColor = "bg-primary/10 border-primary text-primary font-bold border-2"
+                                statusText = "Unlocked"
+                              }
+
+                              return (
+                                <React.Fragment key={m.id}>
+                                  <div className="flex flex-col items-center flex-1 min-w-[70px] relative group">
+                                    <div className={`size-8 rounded-full border flex items-center justify-center text-xs font-bold transition-all ${nodeColor}`} title={`${m.title} - ${statusText}`}>
+                                      {idx + 1}
+                                    </div>
+                                    <span className="text-[9px] font-bold text-muted-foreground truncate max-w-[80px] mt-1.5" title={m.title}>{m.title}</span>
                                   </div>
-                                  <span className="text-[9px] font-bold text-muted-foreground truncate max-w-[80px] mt-1.5" title={m.title}>
-                                    {m.title}
-                                  </span>
-                                  {/* Tooltip */}
-                                  <div className="absolute bottom-full mb-2 hidden group-hover:block bg-slate-900 text-white text-[10px] rounded p-2 z-10 w-44 shadow-lg text-center font-medium border border-slate-800">
-                                    <p className="font-bold text-white truncate">{m.title}</p>
-                                    <p className="text-slate-400 mt-0.5">{statusText} ({formatCurrency(m.amount)})</p>
-                                  </div>
-                                </div>
-                                {idx < total - 1 && (
-                                  <div className={`h-0.5 flex-1 min-w-[15px] -mt-5 ${
-                                    isReleased ? "bg-emerald-500" : "bg-border"
-                                  }`} />
-                                )}
-                              </React.Fragment>
-                            )
-                          })}
+                                  {idx < total - 1 && (
+                                    <div className={`h-0.5 flex-1 min-w-[15px] -mt-5 ${isReleased ? "bg-emerald-500" : "bg-border"}`} />
+                                  )}
+                                </React.Fragment>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="grid gap-3 grid-cols-2 sm:grid-cols-4 text-xs">
+                        <div className="rounded-xl bg-secondary/40 p-3.5 border border-border/40">
+                          <span className="text-[10px] text-muted-foreground font-bold block uppercase tracking-wider">Funded Goal</span>
+                          <span className="text-base font-extrabold text-foreground mt-1 block">{formatCurrency(project.fundingGoal)}</span>
+                        </div>
+                        <div className="rounded-xl bg-secondary/40 p-3.5 border border-border/40">
+                          <span className="text-[10px] text-muted-foreground font-bold block uppercase tracking-wider">Total Raised</span>
+                          <span className="text-base font-extrabold text-foreground mt-1 block">{formatCurrency(project.fundedAmount)}</span>
+                        </div>
+                        <div className="rounded-xl bg-primary/5 p-3.5 border border-primary/20">
+                          <span className="text-[10px] text-primary/70 font-bold block uppercase tracking-wider">Escrow Balance</span>
+                          <span className="text-base font-black text-primary mt-1 block">{formatCurrency(project.escrowBalance)}</span>
+                        </div>
+                        <div className="rounded-xl bg-secondary/40 p-3.5 border border-border/40">
+                          <span className="text-[10px] text-muted-foreground font-bold block uppercase tracking-wider">Released Payouts</span>
+                          <span className="text-base font-extrabold text-foreground mt-1 block">{formatCurrency(project.releasedAmount)}</span>
                         </div>
                       </div>
-                    )}
 
-                    {/* Financial Metrics Cards */}
-                    <div className="grid gap-3 grid-cols-2 sm:grid-cols-4 text-xs">
-                      <div className="rounded-xl bg-secondary/40 p-3.5 border border-border/40">
-                        <span className="text-[10px] text-muted-foreground font-bold block uppercase tracking-wider">Funded Goal</span>
-                        <span className="text-base font-extrabold text-foreground mt-1 block">
-                          {formatCurrency(project.fundingGoal)}
-                        </span>
-                      </div>
-                      <div className="rounded-xl bg-secondary/40 p-3.5 border border-border/40">
-                        <span className="text-[10px] text-muted-foreground font-bold block uppercase tracking-wider">Total Raised</span>
-                        <span className="text-base font-extrabold text-foreground mt-1 block">
-                          {formatCurrency(project.fundedAmount)}
-                        </span>
-                      </div>
-                      <div className="rounded-xl bg-primary/5 p-3.5 border border-primary/20">
-                        <span className="text-[10px] text-primary/70 font-bold block uppercase tracking-wider">Escrow Balance</span>
-                        <span className="text-base font-black text-primary mt-1 block">
-                          {formatCurrency(project.escrowBalance)}
-                        </span>
-                      </div>
-                      <div className="rounded-xl bg-secondary/40 p-3.5 border border-border/40">
-                        <span className="text-[10px] text-muted-foreground font-bold block uppercase tracking-wider">Released Payouts</span>
-                        <span className="text-base font-extrabold text-foreground mt-1 block">
-                          {formatCurrency(project.releasedAmount)}
-                        </span>
-                      </div>
-                    </div>
+                      <div className="mt-5 pt-4.5 border-t border-border/60 flex items-center justify-between gap-3 flex-wrap">
+                        <div className="flex gap-2">
+                          <a href={`/dashboard/projects/${project.id}/owner`} className="inline-flex items-center justify-center rounded-xl border border-border bg-card px-4.5 py-2.5 text-xs font-bold hover:bg-secondary hover:scale-[1.01] transition duration-200 shadow-sm">Manage Escrow Milestones</a>
+                          <a href={`/projects/${project.id}`} className="inline-flex items-center justify-center rounded-xl border border-border/80 bg-card px-4.5 py-2.5 text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-secondary transition duration-200">View Public Page</a>
+                        </div>
 
-                    {/* Action Panel Footer */}
-                    <div className="mt-5 pt-4.5 border-t border-border/60 flex items-center justify-between gap-3 flex-wrap">
-                      <div className="flex gap-2">
-                        <a
-                          href={`/dashboard/projects/${project.id}`}
-                          className="inline-flex items-center justify-center rounded-xl border border-border bg-card px-4.5 py-2.5 text-xs font-bold hover:bg-secondary hover:scale-[1.01] transition duration-200 shadow-sm"
-                        >
-                          Manage Escrow Milestones
-                        </a>
-                        <a
-                          href={`/dashboard/projects/${project.id}/owner`}
-                          className="inline-flex items-center justify-center rounded-xl border border-border/80 bg-card px-4.5 py-2.5 text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-secondary transition duration-200"
-                        >
-                          Open project details
+                        <a href={`/dashboard/projects/${project.id}/owner`} className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1 group/link"> 
+                          <span>Milestone operations</span>
+                          <ArrowRight className="size-3.5 group-hover/link:translate-x-0.5 transition-transform" />
                         </a>
                       </div>
-
-                      <a 
-                        href={`/dashboard/projects/${project.id}`} 
-                        className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1 group/link"
-                      >
-                        <span>Milestone operations</span>
-                        <ArrowRight className="size-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                      </a>
-                    </div>
-                  </Card>
+                    </Card>
+                  </Link>
                 )
               })}
             </div>
