@@ -16,7 +16,7 @@ type AdminProjectsPageClientProps = {
 
 export function AdminProjectsPageClient({ projects }: AdminProjectsPageClientProps) {
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectedStatuses, setSelectedStatuses] = useState<ProjectStatus[]>([])
+  const [selectedStatuses, setSelectedStatuses] = useState<ProjectStatus[]>(["pending"])
   const [expandedFilters, setExpandedFilters] = useState(false)
 
   const statusOptions: { value: ProjectStatus; label: string; icon: string }[] = [
