@@ -25,6 +25,11 @@ const CATEGORIES = [
   { value: "healthcare", label: "Healthcare" },
   { value: "infrastructure", label: "Infrastructure" },
   { value: "environment", label: "Environment" },
+  { value: "agriculture", label: "Agriculture" },
+  { value: "technology", label: "Technology & Innovation" },
+  { value: "arts", label: "Arts & Culture" },
+  { value: "women", label: "Women & Youth" },
+  { value: "microenterprise", label: "Microenterprise" },
 ] as const
 
 const MAX_MILESTONES = 10
@@ -151,7 +156,19 @@ export function NewProjectForm() {
       }
 
       const formData = new FormData(formEl)
+      // Ensure controlled values are copied into FormData in case any inputs
+      // are not reflected in the DOM (safer for custom input components).
+      formData.set("title", preview.title)
+      formData.set("summary", preview.summary)
+      formData.set("description", preview.description)
       formData.set("category", category)
+      formData.set("location", preview.location)
+      // Copy milestone fields explicitly
+      preview.milestones.forEach((m, i) => {
+        formData.set(`milestones[${i}].title`, m.title || "")
+        formData.set(`milestones[${i}].description`, m.description || "")
+        formData.set(`milestones[${i}].amount`, String(m.amount || ""))
+      })
       
       if (uploadedUrl) {
         formData.delete("imageUrl")

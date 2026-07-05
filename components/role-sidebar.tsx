@@ -178,7 +178,7 @@ export default function RoleSidebar({
       {/* Bottom Profile and Signout Section */}
       <div className="mt-auto border-t border-border pt-4 pb-3 px-2">
         <div className="flex items-center gap-3 px-2 py-2">
-          <div className="h-8 w-8 rounded-full bg-muted text-foreground flex items-center justify-center font-bold text-xs border border-border overflow-hidden">
+          <div className="h-10 w-10 rounded-full bg-muted text-foreground flex items-center justify-center font-bold text-sm border border-border overflow-hidden">
             {user.image ? (
               <img src={user.image} alt={`${user.name} avatar`} className="h-full w-full object-cover rounded-full" />
             ) : (
@@ -186,7 +186,7 @@ export default function RoleSidebar({
             )}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-foreground truncate leading-tight">{user.name}</p>
+            <p className="text-base font-semibold text-foreground truncate leading-tight">{user.name}</p>
             <p className="text-xs text-muted-foreground truncate capitalize mt-0.5">{user.role}</p>
           </div>
 
@@ -195,7 +195,7 @@ export default function RoleSidebar({
             className="ml-2 inline-flex items-center gap-2 rounded-md px-3 py-1 text-sm font-medium text-destructive/80 hover:text-destructive hover:bg-destructive/8 transition-colors duration-200"
             title="Sign out"
           >
-            <LogOut className="size-[18px]" />
+            <LogOut className="size-[18px] text-destructive" />
             <span className="hidden sm:inline">Sign Out</span>
           </button>
         </div>
@@ -242,7 +242,51 @@ export default function RoleSidebar({
             </div>
 
             <div className="flex-1 overflow-y-auto mt-4">
-              {sidebarContent()}
+              <nav className="flex flex-col gap-1 px-2">
+                {items.map((it) => {
+                  const Icon = it.icon
+                  return (
+                    <Link
+                      key={it.id}
+                      href={it.href}
+                      className={getItemClassName(it.href)}
+                      onClick={() => {
+                        if (isOpen) handleClose()
+                      }}
+                    >
+                      {getActiveIndicator(it.href)}
+                      <Icon className="size-[18px] flex-shrink-0 transition-transform duration-200 group-hover/item:scale-110" />
+                      <span>{it.label}</span>
+                    </Link>
+                  )
+                })}
+              </nav>
+            </div>
+
+            {/* Footer fixed at bottom of drawer so it's always visible on mobile */}
+            <div className="border-t border-border pt-4 pb-6 px-2">
+                <div className="flex items-center gap-3 px-2 py-2">
+                  <div className="h-10 w-10 rounded-full bg-muted text-foreground flex items-center justify-center font-bold text-sm border border-border overflow-hidden">
+                    {user.image ? (
+                      <img src={user.image} alt={`${user.name} avatar`} className="h-full w-full object-cover rounded-full" />
+                    ) : (
+                      <span className="select-none">{initials}</span>
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-base font-semibold text-foreground truncate leading-tight">{user.name}</p>
+                    <p className="text-xs text-muted-foreground truncate capitalize mt-0.5">{user.role}</p>
+                  </div>
+
+                  <button
+                    onClick={handleLogout}
+                    className="ml-2 inline-flex items-center gap-2 rounded-md px-3 py-1 text-sm font-medium text-destructive/80 hover:text-destructive hover:bg-destructive/8 transition-colors duration-200"
+                    title="Sign out"
+                  >
+                    <LogOut className="size-[18px] text-destructive" />
+                    <span className="hidden sm:inline">Sign Out</span>
+                  </button>
+                </div>
             </div>
           </div>
         </div>
