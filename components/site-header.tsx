@@ -199,14 +199,16 @@ export function SiteHeader({
             </div>
           )}
 
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
-            className="inline-flex items-center justify-center rounded-full p-2 text-foreground transition-all duration-200 hover:bg-muted active:scale-95 md:hidden"
-            aria-label="Open navigation menu"
-          >
-            {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
+          {!user && (
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              className="inline-flex items-center justify-center rounded-full p-2 text-foreground transition-all duration-200 hover:bg-muted active:scale-95 md:hidden"
+              aria-label="Open navigation menu"
+            >
+              {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
+          )}
         </div>
       </div>
 
