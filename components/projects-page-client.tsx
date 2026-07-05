@@ -14,14 +14,9 @@ interface ProjectsPageClientProps {
   dbUnavailable: boolean
 }
 
-const categoryOptions = [
-  { value: "community", label: "Community", icon: "👥" },
-  { value: "infrastructure", label: "Infrastructure", icon: "🏗️" },
-  { value: "education", label: "Education", icon: "📚" },
-  { value: "health", label: "Health", icon: "🏥" },
-  { value: "environment", label: "Environment", icon: "🌍" },
-  { value: "technology", label: "Technology", icon: "💻" },
-]
+import { CATEGORIES } from "@/lib/categories"
+
+const categoryOptions = CATEGORIES.map((c) => ({ value: c.value, label: c.label, icon: undefined }))
 
 const statusOptions = [
   { value: "all", label: "All statuses" },

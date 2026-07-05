@@ -154,7 +154,7 @@ export default function RoleSidebar({
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 mt-4 flex flex-col gap-1 px-2">
+      <nav className="flex-1 mt-4 flex flex-col gap-1 px-2 overflow-y-auto pr-2">
         {items.map((it) => {
           const Icon = it.icon
           return (
@@ -176,8 +176,8 @@ export default function RoleSidebar({
       </nav>
 
       {/* Bottom Profile and Signout Section */}
-      <div className="mt-auto border-t border-border pt-4 pb-3 px-2">
-        <div className="flex items-center gap-3 px-2 py-2">
+      <div className="mt-auto border-t border-border pt-4 pb-3 px-2 flex-shrink-0">
+        <div className="flex items-center gap-3 px-2 py-2 min-w-0">
           <div className="h-10 w-10 rounded-full bg-muted text-foreground flex items-center justify-center font-bold text-sm border border-border overflow-hidden">
             {user.image ? (
               <img src={user.image} alt={`${user.name} avatar`} className="h-full w-full object-cover rounded-full" />

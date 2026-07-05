@@ -19,18 +19,7 @@ import { ImageUpload } from "@/components/image-upload"
 import { StatusBadge } from "@/components/status-badge"
 import { formatCurrency } from "@/lib/roles"
 
-const CATEGORIES = [
-  { value: "community", label: "Community Development" },
-  { value: "education", label: "Education" },
-  { value: "healthcare", label: "Healthcare" },
-  { value: "infrastructure", label: "Infrastructure" },
-  { value: "environment", label: "Environment" },
-  { value: "agriculture", label: "Agriculture" },
-  { value: "technology", label: "Technology & Innovation" },
-  { value: "arts", label: "Arts & Culture" },
-  { value: "women", label: "Women & Youth" },
-  { value: "microenterprise", label: "Microenterprise" },
-] as const
+import { CATEGORIES } from "@/lib/categories"
 
 const MAX_MILESTONES = 10
 

@@ -5,6 +5,7 @@ import { ProjectCard } from "@/components/project-card"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Search, Filter, X } from "lucide-react"
+import { CATEGORIES } from "@/lib/categories"
 
 interface DashboardExploreClientProps {
   projects: any[]
@@ -17,13 +18,18 @@ export function DashboardExploreClient({ projects }: DashboardExploreClientProps
 
   const categories = Array.from(new Set(projects.map((p) => p.category).filter(Boolean))) as string[]
 
+  const baseOptions = CATEGORIES.map((c) => ({ value: c.value, label: c.label, icon: "" }))
   const categoryOptions = [
     { value: "community", label: "Community", icon: "👥" },
     { value: "infrastructure", label: "Infrastructure", icon: "🏗️" },
     { value: "education", label: "Education", icon: "📚" },
     { value: "healthcare", label: "Healthcare", icon: "🏥" },
     { value: "environment", label: "Environment", icon: "🌍" },
-  ].filter((cat) => categories.includes(cat.value) || cat.value === "community")
+  ]
+    .concat(
+      baseOptions.filter((b) => !["community", "infrastructure", "education", "healthcare", "environment"].includes(b.value))
+    )
+    .filter((cat) => categories.includes(cat.value) || cat.value === "community")
 
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {
