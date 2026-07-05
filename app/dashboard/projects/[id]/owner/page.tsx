@@ -1,12 +1,11 @@
 import Link from "next/link"
 import Image from "next/image"
 import { notFound, redirect } from "next/navigation"
-import { Edit2, PlusCircle, Users, FileText } from "lucide-react"
+import { Edit2, PlusCircle, FileText } from "lucide-react"
 import { getSession } from "@/lib/session"
 import {
   getProjectById,
   getProjectMilestones,
-  getProjectDonations,
   getProjectTransactions,
 } from "@/lib/queries"
 import { formatCurrency } from "@/lib/roles"
@@ -24,11 +23,10 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
   const projectId = Number(id)
   if (Number.isNaN(projectId)) notFound()
 
-  const [user, project, milestones, donations, transactions] = await Promise.all([
+  const [user, project, milestones, transactions] = await Promise.all([
     getSession(),
     getProjectById(projectId),
     getProjectMilestones(projectId),
-    getProjectDonations(projectId),
     getProjectTransactions(projectId),
   ])
 
@@ -36,18 +34,16 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
   if (!user) redirect(`/sign-in`)
   if (user.id !== project.ownerId) redirect(`/dashboard/projects/${projectId}`)
 
-  const totalDonated = donations.reduce((s, d) => s + d.amount, 0)
-
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <SiteHeader user={user} />
-      <main className="mx-auto w-full max-w-6xl px-4 py-8">
+      <main className="mx-auto w-full max-w-5xl px-4 sm:px-6 py-8">
         <div className="mb-6 flex items-center justify-between gap-4">
           <div className="min-w-0">
             <h1 className="text-3xl font-bold text-foreground">Manage: {project.title}</h1>
             <p className="mt-1 text-sm text-muted-foreground">Owner dashboard for this project — controls and reports are private to you.</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <Link href={`/dashboard/projects/${projectId}/edit`}>
               <Button variant="outline">
                 <Edit2 className="size-4 mr-2" />
@@ -86,36 +82,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
               </div>
             </Card>
 
-            <Card className="p-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold text-foreground">Donations</h2>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Users className="size-4" />
-                  <span>{donations.length} supporters</span>
-                </div>
-              </div>
-
-              {donations.length === 0 ? (
-                <p className="mt-4 text-sm text-muted-foreground">No donations yet.</p>
-              ) : (
-                <ul className="mt-4 divide-y divide-border/60 text-sm">
-                  {donations.map((d) => (
-                    <li key={d.id} className="flex items-center justify-between py-3">
-                      <div className="min-w-0">
-                        <p className="truncate font-semibold text-foreground">{d.donorName || 'Anonymous'}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">{new Date(d.createdAt).toLocaleDateString()}</p>
-                      </div>
-                      <div className="text-sm font-bold text-foreground">{formatCurrency(d.amount)}</div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              <div className="mt-4 flex items-center justify-between border-t border-border/60 pt-4">
-                <div className="text-sm text-muted-foreground">Total donated</div>
-                <div className="text-lg font-bold text-foreground">{formatCurrency(totalDonated)}</div>
-              </div>
-            </Card>
+            {/* Donations removed for owner-first view */}
 
             <Card className="p-6">
               <h2 className="text-lg font-bold text-foreground">Audit Trail</h2>
@@ -150,10 +117,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
                   <dt className="text-xs text-muted-foreground uppercase tracking-wider">Released</dt>
                   <dd className="font-bold text-foreground">{formatCurrency(project.releasedAmount)}</dd>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <dt className="text-xs text-muted-foreground uppercase tracking-wider">Contributors</dt>
-                  <dd className="font-bold text-foreground">{donations.length}</dd>
-                </div>
+                {/* Contributors stat removed for owner-first view */}
                 <div className="flex flex-col gap-1">
                   <dt className="text-xs text-muted-foreground uppercase tracking-wider">Milestones</dt>
                   <dd className="font-bold text-foreground">{milestones.length}</dd>
