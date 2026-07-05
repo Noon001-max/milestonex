@@ -121,14 +121,14 @@ export function SiteHeader({
             <div className="flex items-center gap-2 sm:gap-3">
               <Link
                 href="/dashboard/notifications"
-                className={`relative hidden rounded-full p-2 text-muted-foreground transition-all duration-200 hover:bg-muted hover:text-foreground sm:inline-flex ${
+                className={`relative inline-flex rounded-full p-2 text-muted-foreground transition-all duration-200 hover:bg-muted hover:text-foreground ${
                   unreadCount > 0 ? "animate-wiggle" : ""
                 }`}
                 title="Notifications"
               >
                 <Bell className="size-5" />
                 {unreadCount > 0 && (
-                  <span className="absolute right-0 top-0 flex size-5 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground ring-2 ring-background">
+                  <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1.5 text-[10px] font-bold text-destructive-foreground ring-2 ring-background">
                     {unreadCount > 99 ? "99+" : unreadCount}
                   </span>
                 )}
@@ -136,7 +136,7 @@ export function SiteHeader({
 
               <Link
                 href="/dashboard/profile"
-                className="group hidden items-center gap-2 rounded-full p-1 transition-all duration-200 hover:bg-muted sm:flex"
+                className="group inline-flex items-center gap-2 rounded-full p-1 transition-all duration-200 hover:bg-muted"
                 aria-label="Profile"
               >
                 {user.image ? (
@@ -146,7 +146,7 @@ export function SiteHeader({
                       alt={`${user.name}'s avatar`}
                       width={36}
                       height={36}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover rounded-full"
                     />
                   </div>
                 ) : (

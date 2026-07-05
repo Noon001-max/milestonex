@@ -26,6 +26,7 @@ export function AdminProjectCard({
   fundingGoal,
   status,
   imageUrl,
+  proposerName,
 }: AdminProjectCardProps) {
   const [isLoading, setIsLoading] = useState(false)
 
