@@ -52,8 +52,37 @@ export default function RoleSelectorClient() {
         const signin = await authClient.signIn.email({ email: signupData.email, password: signupData.password })
         console.debug("role-select: signIn result", signin)
         if (signin.error) {
-          // if sign-in fails but signup succeeded, still try to proceed — but surface an error
           setError(signin.error.message || "Failed to sign in after signup")
+          setLoadingRole(null)
+          return
+        }
+
+        // Poll server session endpoint to ensure cookie is visible server-side (Vercel may delay)
+        const maxTries = 6
+        let tries = 0
+        let serverSession = false
+        while (tries < maxTries) {
+          // small delay between polls
+          // eslint-disable-next-line no-await-in-loop
+          await new Promise((r) => setTimeout(r, 400))
+          // eslint-disable-next-line no-await-in-loop
+          try {
+            const resp = await fetch(`/api/session`, { credentials: "include" })
+            if (resp.ok) {
+              const json = await resp.json()
+              if (json?.ok) {
+                serverSession = true
+                break
+              }
+            }
+          } catch (e) {
+            // ignore and retry
+          }
+          tries += 1
+        }
+
+        if (!serverSession) {
+          setError("Could not establish authenticated session with server. Try again or use a different browser.")
           setLoadingRole(null)
           return
         }
