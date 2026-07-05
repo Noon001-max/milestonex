@@ -219,7 +219,7 @@ export default function OwnerProjectsClient({ projects }: OwnerProjectsClientPro
                           </span>
                         </div>
                         <a
-                          href={`/projects/${project.id}`}
+                          href={`/dashboard/projects/${project.id}/owner`}
                           className="text-xl font-bold text-foreground hover:text-primary transition-colors duration-200 block truncate"
                         >
                           {project.title}
@@ -325,10 +325,10 @@ export default function OwnerProjectsClient({ projects }: OwnerProjectsClientPro
                           Manage Escrow Milestones
                         </a>
                         <a
-                          href={`/projects/${project.id}`}
+                          href={`/dashboard/projects/${project.id}/owner`}
                           className="inline-flex items-center justify-center rounded-xl border border-border/80 bg-card px-4.5 py-2.5 text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-secondary transition duration-200"
                         >
-                          View Public Page
+                          Open project details
                         </a>
                       </div>
 
