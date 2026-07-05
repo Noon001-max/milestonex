@@ -38,6 +38,7 @@ export function SiteHeader({
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [remoteUnread, setRemoteUnread] = useState<number>(unreadCount)
   const initials = user?.name
     ? user.name
         .split(" ")
@@ -48,6 +49,28 @@ export function SiteHeader({
 
   useEffect(() => {
     setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    let mounted = true
+
+    async function fetchUnread() {
+      try {
+        const res = await fetch(`/api/notifications/unread-count`)
+        if (!res.ok) return
+        const data = await res.json()
+        if (mounted && typeof data?.unread === "number") setRemoteUnread(data.unread)
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    fetchUnread()
+    const iv = setInterval(fetchUnread, 15000)
+    return () => {
+      mounted = false
+      clearInterval(iv)
+    }
   }, [])
 
   return (
@@ -126,10 +149,10 @@ export function SiteHeader({
                 }`}
                 title="Notifications"
               >
-                <Bell className="size-5" />
-                {unreadCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1.5 text-[10px] font-bold text-destructive-foreground ring-2 ring-background">
-                    {unreadCount > 99 ? "99+" : unreadCount}
+                <Bell className={`size-5 ${remoteUnread > 0 ? "animate-bounce text-amber-500" : ""}`} />
+                {remoteUnread > 0 && (
+                  <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1.5 text-[10px] font-bold text-destructive-foreground ring-2 ring-background animate-pulse">
+                    {remoteUnread > 99 ? "99+" : remoteUnread}
                   </span>
                 )}
               </Link>
