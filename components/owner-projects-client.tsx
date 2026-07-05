@@ -290,7 +290,7 @@ export default function OwnerProjectsClient({ projects }: OwnerProjectsClientPro
                       <div className="mt-5 pt-4.5 border-t border-border/60 flex items-center justify-between gap-3 flex-wrap">
                         <div className="flex gap-2">
                           <a href={`/dashboard/projects/${project.id}/owner`} className="inline-flex items-center justify-center rounded-xl border border-border bg-card px-4.5 py-2.5 text-xs font-bold hover:bg-secondary hover:scale-[1.01] transition duration-200 shadow-sm">Manage Escrow Milestones</a>
-                          <a href={`/projects/${project.id}`} className="inline-flex items-center justify-center rounded-xl border border-border/80 bg-card px-4.5 py-2.5 text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-secondary transition duration-200">View Public Page</a>
+                          {/* View Public Page removed for owner view */}
                         </div>
 
                         <a href={`/dashboard/projects/${project.id}/owner`} className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1 group/link"> 
