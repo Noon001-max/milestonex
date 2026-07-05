@@ -69,11 +69,17 @@ export default function RoleSelectorClient() {
         // ignore
       }
       setSuccess("Account created — finalizing role selection...")
-      // Give a short moment for the user to see success, then navigate
+      // Give a short moment for the user to see success, then navigate.
+      // Use a full-page navigation to ensure auth cookies are sent to the server (Vercel environment).
       setTimeout(() => {
         setLoadingRole(null)
-        router.push(`/sign-up/role/${role}`)
-        router.refresh()
+        try {
+          window.location.href = `/sign-up/role/${role}`
+        } catch (e) {
+          // fallback to router if window is not available
+          router.push(`/sign-up/role/${role}`)
+          router.refresh()
+        }
       }, 700)
     } catch (err) {
       setError((err as Error)?.message || "An unexpected error occurred")
