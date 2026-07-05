@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { ROLES } from "@/lib/roles"
 import { Card } from "@/components/ui/card"
 import { ShieldCheck, Users, Briefcase, CheckCircle2, Banknote } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { authClient } from "@/lib/auth-client"
 
 export default function RoleSelectorClient() {
@@ -13,6 +14,7 @@ export default function RoleSelectorClient() {
   const [signupData, setSignupData] = useState<{ name: string; email: string; password: string } | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loadingRole, setLoadingRole] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
 
   useEffect(() => {
     try {
@@ -44,9 +46,20 @@ export default function RoleSelectorClient() {
         return
       }
 
-      // after signing up, navigate to server-side role setter which requires an authenticated session
-      router.push(`/sign-up/role/${role}`)
-      router.refresh()
+      // Clear temporary signup data and show success briefly
+      try {
+        sessionStorage.removeItem("signupData")
+        sessionStorage.removeItem("signup_temp")
+      } catch (e) {
+        // ignore
+      }
+      setSuccess("Account created — finalizing role selection...")
+      // Give a short moment for the user to see success, then navigate
+      setTimeout(() => {
+        setLoadingRole(null)
+        router.push(`/sign-up/role/${role}`)
+        router.refresh()
+      }, 700)
     } catch (err) {
       setError((err as Error)?.message || "An unexpected error occurred")
       setLoadingRole(null)
@@ -69,6 +82,12 @@ export default function RoleSelectorClient() {
         {error && (
           <div className="rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive mb-4">
             {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="rounded-2xl border border-success/20 bg-success/10 px-4 py-3 text-sm text-success mb-4">
+            {success}
           </div>
         )}
 
@@ -117,4 +136,14 @@ export default function RoleSelectorClient() {
       </div>
     </main>
   )
+      {loadingRole && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60">
+          <div className="rounded-lg bg-card p-6 flex flex-col items-center gap-3">
+            <div className="animate-spin">
+              <Loader2 className="size-6" />
+            </div>
+            <p className="text-sm font-medium text-foreground">Applying role, please wait...</p>
+          </div>
+        </div>
+      )}
 }

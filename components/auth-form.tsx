@@ -42,39 +42,36 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
         setError("Password must be at least 8 characters")
         return
       }
-    }
-    if (isSignUp) {
-      // Save the collected signup fields locally and navigate to role selection
+
       try {
-        const payload = { name, email, password }
-        sessionStorage.setItem("signup_temp", JSON.stringify(payload))
+        const payload = { name: name.trim(), email: email.trim(), password }
+        sessionStorage.setItem("signupData", JSON.stringify(payload))
         setLoading(false)
-        setSuccess("Continue to role selection to complete account setup")
-        if (isSignUp) {
-          // Save signup inputs temporarily and continue to role selection
-          try {
-            const payload = { name: name.trim(), email: email.trim(), password }
-            sessionStorage.setItem("signupData", JSON.stringify(payload))
-            setLoading(false)
-            setSuccess("Proceed to role selection to finish creating your account")
-            router.push("/sign-up/role")
-            return
-          } catch (err) {
-            setLoading(false)
-            setError("Could not save signup data — please try again")
-            return
-          }
-        } else {
-          const result = await authClient.signIn.email({ email, password })
-          setLoading(false)
-          if (result.error) {
-            setError(result.error.message ?? "Something went wrong")
-            return
-          }
-          setSuccess("Signed in — redirecting...")
-          router.push("/dashboard")
-          router.refresh()
-        }
+        setSuccess("Proceed to role selection to finish creating your account")
+        router.push("/sign-up/role")
+        return
+      } catch (err) {
+        setLoading(false)
+        setError("Could not save signup data — please try again")
+        return
+      }
+    }
+
+    // Sign-in flow
+    const result = await authClient.signIn.email({ email, password })
+    setLoading(false)
+    if (result.error) {
+      setError(result.error.message ?? "Something went wrong")
+      return
+    }
+    // Clear any leftover temporary signup data
+    try {
+      sessionStorage.removeItem("signupData")
+      sessionStorage.removeItem("signup_temp")
+    } catch (e) {
+      // ignore
+    }
+    setSuccess("Signed in — redirecting...")
     router.push("/dashboard")
     router.refresh()
   }
