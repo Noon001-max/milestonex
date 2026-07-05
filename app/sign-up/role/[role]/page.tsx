@@ -21,11 +21,23 @@ export default async function RoleSelectionHandler({ params }: RoleParam) {
   const { role } = params
   const currentUser = await getSession()
 
+  // Debug logs to help diagnose why users get redirected back to role selection
+  try {
+    // eslint-disable-next-line no-console
+    console.debug("role-handler: incoming role param:", role)
+    // eslint-disable-next-line no-console
+    console.debug("role-handler: session:", currentUser)
+  } catch (e) {
+    // ignore
+  }
+
   if (!currentUser) {
     redirect("/sign-in")
   }
 
   if (!isAllowedRole(role)) {
+    // eslint-disable-next-line no-console
+    console.debug("role-handler: role not allowed, redirecting back to selector", role)
     redirect("/sign-up/role")
   }
 
@@ -34,5 +46,7 @@ export default async function RoleSelectionHandler({ params }: RoleParam) {
     .set({ role, updatedAt: new Date() })
     .where(eq(userTable.id, currentUser.id))
 
+  // eslint-disable-next-line no-console
+  console.debug("role-handler: role applied, redirecting to /dashboard for user", currentUser?.id)
   redirect("/dashboard")
 }
