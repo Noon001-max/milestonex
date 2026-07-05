@@ -162,6 +162,10 @@ export default function RoleSidebar({
               key={it.id}
               href={it.href}
               className={getItemClassName(it.href)}
+              onClick={() => {
+                // Close mobile sidebar after navigation
+                if (isOpen) handleClose()
+              }}
             >
               {getActiveIndicator(it.href)}
               <Icon className="size-[18px] flex-shrink-0 transition-transform duration-200 group-hover/item:scale-110" />
@@ -172,24 +176,29 @@ export default function RoleSidebar({
       </nav>
 
       {/* Bottom Profile and Signout Section */}
-      <div className="mt-auto border-t border-border pt-4 pb-3 px-2 space-y-3">
+      <div className="mt-auto border-t border-border pt-4 pb-3 px-2">
         <div className="flex items-center gap-3 px-2 py-2">
-          <div className="size-8 rounded-lg bg-muted text-foreground flex items-center justify-center font-bold text-xs border border-border">
-            {initials}
+          <div className="h-8 w-8 rounded-full bg-muted text-foreground flex items-center justify-center font-bold text-xs border border-border overflow-hidden">
+            {user.image ? (
+              <img src={user.image} alt={`${user.name} avatar`} className="h-full w-full object-cover rounded-full" />
+            ) : (
+              <span className="select-none">{initials}</span>
+            )}
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-sm font-medium text-foreground truncate leading-tight">{user.name}</p>
             <p className="text-xs text-muted-foreground truncate capitalize mt-0.5">{user.role}</p>
           </div>
-        </div>
 
-        <button
-          onClick={handleLogout}
-          className="flex w-full items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-destructive/80 hover:text-destructive hover:bg-destructive/8 transition-colors duration-200"
-        >
-          <LogOut className="size-[18px]" />
-          <span>Sign Out</span>
-        </button>
+          <button
+            onClick={handleLogout}
+            className="ml-2 inline-flex items-center gap-2 rounded-md px-3 py-1 text-sm font-medium text-destructive/80 hover:text-destructive hover:bg-destructive/8 transition-colors duration-200"
+            title="Sign out"
+          >
+            <LogOut className="size-[18px]" />
+            <span className="hidden sm:inline">Sign Out</span>
+          </button>
+        </div>
       </div>
     </div>
   )
