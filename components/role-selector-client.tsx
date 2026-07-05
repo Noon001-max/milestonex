@@ -5,8 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ROLES } from "@/lib/roles"
 import { Card } from "@/components/ui/card"
-import { ShieldCheck, Users, Briefcase, CheckCircle2, Banknote } from "lucide-react"
-import { Loader2 } from "lucide-react"
+import { ShieldCheck, Users, Briefcase, CheckCircle2, Banknote, ChevronLeft, XCircle, Loader2 } from "lucide-react"
 import { authClient } from "@/lib/auth-client"
 
 export default function RoleSelectorClient() {
@@ -83,33 +82,41 @@ export default function RoleSelectorClient() {
   }
 
   return (
-    <main className="min-h-svh bg-background flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-5xl">
-        <div className="mb-8 text-center">
-          <div className="inline-flex items-center justify-center rounded-3xl bg-primary/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.35em] text-primary shadow-sm shadow-primary/10">
-            Role selection
+    <>
+      <main className="min-h-svh bg-background flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-5xl">
+          <div className="mb-6 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Link href="/sign-up" className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium hover:bg-muted">
+                <ChevronLeft className="size-4" />
+                Back to signup
+              </Link>
+              <div className="ml-3 inline-flex items-center justify-center rounded-3xl bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary shadow-sm shadow-primary/10">
+                Role selection
+              </div>
+            </div>
+            <div className="text-right">
+              <h1 className="text-xl font-semibold tracking-tight text-foreground">Finish account setup</h1>
+              <p className="text-sm text-muted-foreground">Choose the role that best matches your goals and permissions.</p>
+            </div>
           </div>
-          <h1 className="mt-6 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Finish account setup</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-sm text-muted-foreground sm:text-base">
-            Choose the role that best matches your goals. If you haven't entered your account details yet, you'll see an error below.
-          </p>
-        </div>
 
-        {error && (
-          <div className="rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive mb-4">
-            {error}
-          </div>
-        )}
+          {error && (
+            <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/6 px-4 py-3 text-sm text-destructive flex items-start gap-3">
+              <XCircle className="size-5 mt-0.5 text-destructive" />
+              <div className="font-medium">{error}</div>
+            </div>
+          )}
 
-        {success && (
-          <div className="rounded-2xl border border-success/20 bg-success/10 px-4 py-3 text-sm text-success mb-4">
-            {success}
-          </div>
-        )}
+          {success && (
+            <div className="mb-4 rounded-lg border border-success/20 bg-success/10 px-4 py-3 text-sm text-success">
+              {success}
+            </div>
+          )}
 
-        <div className="grid gap-6 rounded-[2rem] border border-border/70 bg-card p-6 shadow-xl sm:p-8">
-          <div className="grid gap-4 sm:grid-cols-2">
-            {ROLES.filter((r) => r.value !== "suspended").map((role) => {
+          <div className="grid gap-6 rounded-[1.5rem] border border-border/70 bg-card p-6 shadow-xl sm:p-8">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {ROLES.filter((r) => r.value !== "suspended").map((role) => {
               const Icon =
                 role.value === "donor"
                   ? Users
@@ -128,30 +135,31 @@ export default function RoleSelectorClient() {
                   key={role.value}
                   onClick={() => handleSelect(role.value)}
                   disabled={!!loadingRole}
-                  className={`group flex items-start gap-4 rounded-3xl border px-5 py-5 transition-all duration-200 text-left ${
-                    !signupData ? "hover:translate-y-0" : "hover:border-primary/50 hover:bg-primary/5"
+                  className={`group flex flex-col items-start gap-3 rounded-2xl border px-5 py-6 transition-all duration-200 text-left shadow-sm hover:shadow-md ${
+                    !signupData ? "opacity-80" : "hover:border-primary/50 hover:bg-primary/5"
                   } ${busy ? "opacity-60" : ""}`}
                 >
-                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary">
-                    <Icon className="size-5" />
-                  </span>
-                  <div>
-                    <p className="text-base font-semibold text-foreground">{role.label}</p>
-                    <p className="mt-2 text-sm text-muted-foreground">{role.description}</p>
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary">
+                      <Icon className="size-5" />
+                    </span>
+                    <div>
+                      <p className="text-base font-semibold text-foreground">{role.label}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{role.description}</p>
+                    </div>
                   </div>
+                  <div className="mt-3 text-sm text-muted-foreground">Select this role to finalize your account and access the related dashboard.</div>
                 </button>
               )
             })}
           </div>
-
-          <div className="rounded-[1.75rem] border border-border/70 bg-primary/5 p-4 text-sm text-muted-foreground">
-            <p className="font-semibold text-foreground">Tip</p>
-            <p className="mt-2">Complete the account basics first — name, email and password — then select a role to finish account creation.</p>
+            <div className="rounded-md border border-border/60 bg-muted p-4 text-sm text-muted-foreground">
+              Need to change your name, email, or password? Use the Back to signup link above to update your account basics.
+            </div>
           </div>
         </div>
-      </div>
-    </main>
-  )
+      </main>
+
       {loadingRole && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60">
           <div className="rounded-lg bg-card p-6 flex flex-col items-center gap-3">
@@ -162,4 +170,6 @@ export default function RoleSelectorClient() {
           </div>
         </div>
       )}
+    </>
+  )
 }
