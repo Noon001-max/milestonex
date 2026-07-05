@@ -32,7 +32,6 @@ export default function RoleSelectorClient() {
         email: temp.email,
         password: temp.password,
         name: temp.name,
-        role,
       })
 
       if (res.error) {
@@ -41,9 +40,9 @@ export default function RoleSelectorClient() {
         return
       }
 
-      // cleanup and redirect
+      // cleanup and redirect to the server role handler which finalizes the role
       sessionStorage.removeItem("signup_temp")
-      router.push("/dashboard")
+      router.push(`/sign-up/role/${role}`)
       router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))

@@ -1,7 +1,6 @@
-import dynamic from "next/dynamic"
+"use client"
 
-// Render a client-side role selector that will finalize signup when a role is chosen.
-const RoleSelectorClient = dynamic(() => import("./RoleSelectorClient"), { ssr: false })
+import RoleSelectorClient from "./RoleSelectorClient"
 
 export default function RoleSelectionPage() {
   return (
