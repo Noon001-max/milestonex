@@ -9,7 +9,7 @@ import {
   getProjectTransactions,
 } from "@/lib/queries"
 import { formatCurrency } from "@/lib/roles"
-import { SiteHeader } from "@/components/site-header"
+// SiteHeader is provided by the dashboard layout (DashboardShell)
 import { SiteFooter } from "@/components/site-footer"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -35,8 +35,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
   if (user.id !== project.ownerId) redirect(`/dashboard/projects/${projectId}`)
 
   return (
-    <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader user={user} />
+    <div>
       <main className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-6 sm:py-8">
         <div className="mb-6 flex items-center justify-between gap-4">
           <div className="min-w-0">
