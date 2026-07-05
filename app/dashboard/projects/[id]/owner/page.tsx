@@ -35,8 +35,9 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
   if (user.id !== project.ownerId) redirect(`/dashboard/projects/${projectId}`)
 
   return (
-    <div>
-      <main className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-6 sm:py-8">
+    <div className="w-full overflow-x-hidden">
+      <main className="w-full px-4 sm:px-6 py-6 sm:py-8">
+        <div className="mx-auto w-full max-w-3xl">
         <div className="mb-6 flex items-center justify-between gap-4">
           <div className="min-w-0">
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground truncate">Manage: {project.title}</h1>
@@ -66,7 +67,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
 
             <Card className="p-6">
               <h2 className="text-lg font-bold text-foreground mb-3">Overview</h2>
-              <p className="text-sm text-muted-foreground whitespace-pre-line">{project.description}</p>
+              <p className="text-sm text-muted-foreground whitespace-pre-line break-words">{project.description}</p>
             </Card>
 
             <Card className="p-6">
@@ -143,6 +144,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
               </ul>
             </Card>
           </div>
+        </div>
         </div>
       </main>
       <SiteFooter />
