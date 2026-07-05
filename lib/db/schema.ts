@@ -82,6 +82,8 @@ export const projects = pgTable("projects", {
   status: text("status").notNull().default("pending"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+  // user id of the admin who approved the project
+  approvedBy: text("approvedBy").references(() => user.id),
 })
 
 export const milestones = pgTable("milestones", {
@@ -99,6 +101,8 @@ export const milestones = pgTable("milestones", {
   submittedAt: timestamp("submittedAt"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+  // user id of the admin who approved the milestone
+  approvedBy: text("approvedBy").references(() => user.id),
 })
 
 export const donations = pgTable("donations", {

@@ -4,8 +4,8 @@ import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { getAllProjects } from "@/lib/queries"
 import { getAllUsers } from "@/app/actions/admin"
-import { getAdminMilestoneHistory, getAdminMilestoneQueue } from "@/app/actions/milestones"
-import { getReadyToStartProjects } from "@/app/actions/projects"
+import { getAdminMilestoneHistory, getAdminMilestoneQueue, getApprovedMilestonesByAdmin } from "@/app/actions/milestones"
+import { getReadyToStartProjects, getApprovedProjectsByAdmin } from "@/app/actions/projects"
 import { Card } from "@/components/ui/card"
 import { formatCurrency } from "@/lib/roles"
 
@@ -17,12 +17,14 @@ export default async function AdminDashboard() {
   if (!user) return redirect("/sign-in")
   if (user.role !== "admin") return redirect("/dashboard")
 
-  const [projects, allUsers, milestones, readyToStart, milestoneHistory] = await Promise.all([
+  const [projects, allUsers, milestones, readyToStart, milestoneHistory, myApprovedProjects, myApprovedMilestones] = await Promise.all([
     getAllProjects(),
     getAllUsers(),
     getAdminMilestoneQueue(),
     getReadyToStartProjects(),
     getAdminMilestoneHistory(),
+    getApprovedProjectsByAdmin(),
+    getApprovedMilestonesByAdmin(),
   ])
 
   const pendingProjects = projects.filter((project) => project.status === "pending")
@@ -167,6 +169,52 @@ export default async function AdminDashboard() {
                 </Link>
               )
             })}
+          </div>
+        
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <Card className="border border-border/70 bg-card p-4">
+              <h3 className="text-sm font-semibold text-foreground">Projects you approved</h3>
+              <p className="text-sm text-muted-foreground mt-1">Recent projects you approved.</p>
+              <div className="mt-3 space-y-2">
+                {myApprovedProjects.length > 0 ? (
+                  myApprovedProjects.slice(0,5).map((p) => (
+                    <div key={p.id} className="rounded-xl border border-border/60 bg-background p-3 text-sm">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium text-foreground">{p.title}</p>
+                          <p className="text-xs text-muted-foreground">{p.summary}</p>
+                        </div>
+                        <p className="text-xs text-muted-foreground">{new Date(p.updatedAt).toLocaleDateString()}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">You haven't approved any projects yet.</p>
+                )}
+              </div>
+            </Card>
+
+            <Card className="border border-border/70 bg-card p-4">
+              <h3 className="text-sm font-semibold text-foreground">Milestones you approved</h3>
+              <p className="text-sm text-muted-foreground mt-1">Recent milestone approvals you performed.</p>
+              <div className="mt-3 space-y-2">
+                {myApprovedMilestones.length > 0 ? (
+                  myApprovedMilestones.slice(0,5).map((m) => (
+                    <div key={m.id} className="rounded-xl border border-border/60 bg-background p-3 text-sm">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium text-foreground">{m.title}</p>
+                          <p className="text-xs text-muted-foreground">{m.projectTitle}</p>
+                        </div>
+                        <p className="text-xs text-muted-foreground">{new Date(m.updatedAt).toLocaleDateString()}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">You haven't approved any milestones yet.</p>
+                )}
+              </div>
+            </Card>
           </div>
         </div>
 

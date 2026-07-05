@@ -177,13 +177,14 @@ export async function getMyProjects() {
 }
 
 export async function reviewProject(projectId: number, approve: boolean) {
-  await requireRole(["admin"])
+  const u = await requireRole(["admin"])
 
   const [project] = await db
     .update(projects)
     .set({
       status: approve ? "approved" : "rejected",
       updatedAt: new Date(),
+      approvedBy: approve ? u.id : null,
     })
     .where(eq(projects.id, projectId))
     .returning({
@@ -385,8 +386,26 @@ export async function getReadyToStartProjects() {
     .orderBy(desc(projects.updatedAt))
 }
 
+export async function getApprovedProjectsByAdmin() {
+  const u = await requireRole(["admin"])
+
+  return db
+    .select({
+      id: projects.id,
+      ownerId: projects.ownerId,
+      title: projects.title,
+      summary: projects.summary,
+      status: projects.status,
+      approvedBy: projects.approvedBy,
+      updatedAt: projects.updatedAt,
+    })
+    .from(projects)
+    .where(eq(projects.approvedBy, u.id))
+    .orderBy(desc(projects.updatedAt))
+}
+
 export async function approveProjectStart(projectId: number) {
-  await requireRole(["admin"])
+  const u = await requireRole(["admin"])
 
   const [project] = await db
     .select({
@@ -420,7 +439,7 @@ export async function approveProjectStart(projectId: number) {
 
   await db
     .update(milestones)
-    .set({ status: "approved", updatedAt: new Date() })
+    .set({ status: "approved", updatedAt: new Date(), approvedBy: u.id })
     .where(eq(milestones.id, milestone.id))
 
   await db

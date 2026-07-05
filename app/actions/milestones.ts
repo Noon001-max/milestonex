@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { milestones, projects, verifications } from "@/lib/db/schema"
 import { requireRole, requireUser } from "@/lib/session"
 import { notify } from "@/lib/notify"
-import { eq, inArray } from "drizzle-orm"
+import { eq, inArray, desc } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
 // Project proposer submits milestone completion + evidence
@@ -150,7 +150,7 @@ export async function decideMilestone(
   milestoneId: number,
   approve: boolean,
 ) {
-  await requireRole(["admin"])
+  const u = await requireRole(["admin"])
 
   const [m] = await db
     .select()
@@ -163,6 +163,7 @@ export async function decideMilestone(
     .set({
       status: approve ? "approved" : "rejected",
       updatedAt: new Date(),
+      approvedBy: approve ? u.id : null,
     })
     .where(eq(milestones.id, milestoneId))
 
@@ -266,4 +267,24 @@ export async function getCompletedVerifications() {
     .innerJoin(projects, eq(projects.id, verifications.projectId))
     .innerJoin(milestones, eq(milestones.id, verifications.milestoneId))
     .where(eq(verifications.verifierId, user.id))
+}
+
+export async function getApprovedMilestonesByAdmin() {
+  const u = await requireRole(["admin"])
+
+  return db
+    .select({
+      id: milestones.id,
+      projectId: milestones.projectId,
+      title: milestones.title,
+      amount: milestones.amount,
+      status: milestones.status,
+      approvedBy: milestones.approvedBy,
+      updatedAt: milestones.updatedAt,
+      projectTitle: projects.title,
+    })
+    .from(milestones)
+    .innerJoin(projects, eq(projects.id, milestones.projectId))
+    .where(eq(milestones.approvedBy, u.id))
+    .orderBy(desc(milestones.updatedAt))
 }
