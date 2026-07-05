@@ -48,7 +48,7 @@ export default async function ProjectDetailPage({
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <SiteHeader user={user} />
-      <main className="mx-auto w-full max-w-6xl px-4 py-8">
+      <main className="mx-auto w-full max-w-6xl px-4 py-8 overflow-hidden">
         <Link
           href="/projects"
           className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
@@ -74,7 +74,7 @@ export default async function ProjectDetailPage({
               </div>
             </div>
 
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span className="capitalize">{project.category}</span>
                 {project.location && (

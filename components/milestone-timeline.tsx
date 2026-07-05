@@ -42,8 +42,10 @@ function StepIcon({ status }: { status: string }) {
 
 export function MilestoneTimeline({
   milestones,
+  ownerView,
 }: {
   milestones: Milestone[]
+  ownerView?: boolean
 }) {
   if (milestones.length === 0) {
     return (

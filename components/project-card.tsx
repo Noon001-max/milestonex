@@ -43,7 +43,7 @@ export function ProjectCard({ project, hrefPrefix = "/projects" }: ProjectCardPr
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 p-5">
+        <div className="flex flex-col gap-4 p-5 min-w-0">
           {project.location && (
             <div className="inline-flex items-center gap-1 text-sm text-muted-foreground">
               <MapPin className="size-3.5" />
