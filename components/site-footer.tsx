@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { ShieldCheck } from "lucide-react"
 
-export function SiteFooter() {
+export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
   const teamMembers = [
     { name: "PRUDENCE ODHIAMBO", id: "25S01ACPS003" },
     { name: "SALLY MARO", id: "24S01ACPS002" },
@@ -64,18 +64,27 @@ export function SiteFooter() {
           <div className="flex flex-col gap-4">
             <p className="text-sm font-semibold text-foreground">Navigate</p>
             <div className="flex flex-col gap-3 text-sm text-muted-foreground">
-              <a href="/projects" className="transition-colors duration-200 hover:text-primary">
-                Projects
-              </a>
-              <a href="/transparency" className="transition-colors duration-200 hover:text-primary">
-                Transparency
-              </a>
-              <a href="/#how-it-works" className="transition-colors duration-200 hover:text-primary">
-                How it works
-              </a>
-              <a href="/sign-up" className="transition-colors duration-200 hover:text-primary">
-                Start a project
-              </a>
+              {!isLoggedIn ? (
+                <>
+                  <a href="/projects" className="transition-colors duration-200 hover:text-primary">Projects</a>
+                  <a href="/transparency" className="transition-colors duration-200 hover:text-primary">Transparency</a>
+                  <a href="/#how-it-works" className="transition-colors duration-200 hover:text-primary">How it works</a>
+                  <a href="/sign-up" className="transition-colors duration-200 hover:text-primary">Start a project</a>
+                </>
+              ) : (
+                <>
+                  <a href="/dashboard" className="transition-colors duration-200 hover:text-primary">Dashboard</a>
+                  <a href="/dashboard/projects" className="transition-colors duration-200 hover:text-primary">My projects</a>
+                  <a href="/dashboard/settings" className="transition-colors duration-200 hover:text-primary">Account settings</a>
+                  <a href="/dashboard/notifications" className="transition-colors duration-200 hover:text-primary">Notifications</a>
+                </>
+              )}
+
+              {/* Important legal and support pages always shown for logged-in users */}
+              <a href="/privacy" className="transition-colors duration-200 hover:text-primary">Privacy Policy</a>
+              <a href="/cookies" className="transition-colors duration-200 hover:text-primary">Cookie Policy</a>
+              <a href="/terms" className="transition-colors duration-200 hover:text-primary">Terms of Service</a>
+              <a href="/support" className="transition-colors duration-200 hover:text-primary">Support</a>
             </div>
           </div>
         </div>
