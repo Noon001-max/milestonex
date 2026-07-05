@@ -43,27 +43,31 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
         return
       }
     }
+    if (isSignUp) {
+      // Save the collected signup fields locally and navigate to role selection
+      try {
+        const payload = { name, email, password }
+        sessionStorage.setItem("signup_temp", JSON.stringify(payload))
+        setLoading(false)
+        setSuccess("Continue to role selection to complete account setup")
+        router.push("/sign-up/role")
+      } catch (err) {
+        setLoading(false)
+        setError("Failed to continue to role selection")
+      }
+      return
+    }
 
-    const result = isSignUp
-      ? await authClient.signUp.email({
-          email,
-          password,
-          name,
-        })
-      : await authClient.signIn.email({ email, password })
-
+    // Sign in flow
+    const result = await authClient.signIn.email({ email, password })
     setLoading(false)
-
     if (result.error) {
       setError(result.error.message ?? "Something went wrong")
       return
     }
-
-    setSuccess(isSignUp ? "Account created — continue to role selection..." : "Signed in — redirecting...")
-    setTimeout(() => {
-      router.push(isSignUp ? "/sign-up/role" : "/dashboard")
-      router.refresh()
-    }, 700)
+    setSuccess("Signed in — redirecting...")
+    router.push("/dashboard")
+    router.refresh()
   }
 
   return (
