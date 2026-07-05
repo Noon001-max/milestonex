@@ -88,8 +88,10 @@ export default function RoleSidebar({
     admin: [
       { id: "overview", label: "Overview", href: "/dashboard/admin", icon: LayoutDashboard },
       { id: "approve-projects", label: "Approve projects", href: "/dashboard/admin/projects", icon: FileCheck },
+      { id: "approved-projects", label: "Approved projects", href: "/dashboard/admin/approved-projects", icon: CheckCircle2 },
       { id: "ready-to-start", label: "Ready to start", href: "/dashboard/admin/ready-to-start", icon: PlayCircle },
       { id: "approve-milestones", label: "Approve milestones", href: "/dashboard/admin/milestones", icon: CheckSquare },
+      { id: "approved-milestones", label: "Approved milestones", href: "/dashboard/admin/approved-milestones", icon: FileSpreadsheet },
       { id: "users", label: "Manage users", href: "/dashboard/admin/users", icon: Users },
     ],
     auditor: [
