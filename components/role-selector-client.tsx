@@ -98,16 +98,29 @@ export default function RoleSelectorClient() {
         // ignore
       }
       setSuccess("Account created — finalizing role selection...")
-      // Give a short moment for the user to see success, then navigate.
-      // Use a full-page navigation to ensure auth cookies are sent to the server (Vercel environment).
-      setTimeout(() => {
-        setLoadingRole(null)
+      // Give a short moment for the user to see success, then request the server to apply the role.
+      setTimeout(async () => {
         try {
-          window.location.href = `/sign-up/role/${role}`
+          // call server API to set role (includes cookies)
+          const resp = await fetch(`/api/set-role`, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ role }),
+          })
+
+          if (!resp.ok) {
+            const json = await resp.json().catch(() => ({}))
+            setError(json?.error || "Failed to apply role on server")
+            setLoadingRole(null)
+            return
+          }
+
+          // Success — redirect to dashboard
+          window.location.href = "/dashboard"
         } catch (e) {
-          // fallback to router if window is not available
-          router.push(`/sign-up/role/${role}`)
-          router.refresh()
+          setError("Network error while applying role. Try again.")
+          setLoadingRole(null)
         }
       }, 700)
     } catch (err) {
