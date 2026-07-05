@@ -37,21 +37,21 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <SiteHeader user={user} />
-      <main className="mx-auto w-full max-w-5xl px-4 sm:px-6 py-8">
+      <main className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-6 sm:py-8">
         <div className="mb-6 flex items-center justify-between gap-4">
           <div className="min-w-0">
-            <h1 className="text-3xl font-bold text-foreground">Manage: {project.title}</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground truncate">Manage: {project.title}</h1>
             <p className="mt-1 text-sm text-muted-foreground">Owner dashboard for this project — controls and reports are private to you.</p>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            <Link href={`/dashboard/projects/${projectId}/edit`}>
-              <Button variant="outline">
+            <Link href={`/dashboard/projects/${projectId}/edit`} className="w-full sm:w-auto">
+              <Button variant="outline" className="w-full sm:w-auto">
                 <Edit2 className="size-4 mr-2" />
                 Edit project
               </Button>
             </Link>
-            <Link href={`/dashboard/projects/${projectId}/milestones`}>
-              <Button variant="default">
+            <Link href={`/dashboard/projects/${projectId}/milestones`} className="w-full sm:w-auto">
+              <Button variant="default" className="w-full sm:w-auto">
                 <PlusCircle className="size-4 mr-2" />
                 Manage milestones
               </Button>
@@ -59,9 +59,9 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
           </div>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-8 grid-cols-1 lg:grid-cols-3">
           <div className="lg:col-span-2 flex flex-col gap-6">
-            <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-border bg-muted">
+            <div className="relative w-full h-48 sm:aspect-[16/9] overflow-hidden rounded-xl border border-border bg-muted">
               <Image src={project.imageUrl || "/hero-community.png"} alt={project.title} fill className="object-cover" />
             </div>
 
@@ -77,7 +77,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
                   <Button variant="ghost" size="sm">Manage</Button>
                 </Link>
               </div>
-              <div className="mt-4">
+              <div className="mt-4 overflow-x-auto">
                 <MilestoneTimeline milestones={milestones} ownerView />
               </div>
             </Card>
@@ -125,11 +125,11 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
               </dl>
 
               <div className="mt-5 flex flex-col gap-2">
-                <Link href={`/dashboard/projects/${projectId}/settings`}>
-                  <Button variant="outline">Project Settings</Button>
+                <Link href={`/dashboard/projects/${projectId}/settings`} className="w-full">
+                  <Button variant="outline" className="w-full">Project Settings</Button>
                 </Link>
-                <Link href={`/dashboard/projects/${projectId}/payouts`}>
-                  <Button variant="secondary">Payouts</Button>
+                <Link href={`/dashboard/projects/${projectId}/payouts`} className="w-full">
+                  <Button variant="secondary" className="w-full">Payouts</Button>
                 </Link>
               </div>
             </Card>
