@@ -53,6 +53,24 @@ export async function getAllProjects() {
     .orderBy(desc(projects.createdAt))
 }
 
+export async function getPendingProjects() {
+  return db
+    .select({
+      id: projects.id,
+      title: projects.title,
+      summary: projects.summary,
+      fundingGoal: projects.fundingGoal,
+      status: projects.status,
+      ownerId: projects.ownerId,
+      imageUrl: projects.imageUrl,
+      location: projects.location,
+      createdAt: projects.createdAt,
+    })
+    .from(projects)
+    .where(eq(projects.status, "pending"))
+    .orderBy(desc(projects.createdAt))
+}
+
 export async function getProjectById(id: number): Promise<any> {
   // Check whether the `allocationDone` column exists in the deployed DB.
   const colRes = await pool.query(

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"
 import { getSession } from "@/lib/session"
-import { getAllProjects } from "@/lib/queries"
-import { AdminProjectsPageClient } from "@/components/admin-projects-page-client"
+import { getPendingProjects } from "@/lib/queries"
+import { AdminApproveProjectsSimple } from "@/components/admin-approve-projects-client"
 
 export const dynamic = "force-dynamic"
 
@@ -10,8 +10,8 @@ export default async function Page() {
   if (!user) return redirect("/sign-in")
   if (user.role !== "admin") return redirect("/dashboard")
 
-  const projects = await getAllProjects()
+  const projects = await getPendingProjects()
 
-  return <AdminProjectsPageClient projects={projects} />
+  return <AdminApproveProjectsSimple projects={projects} />
 }
 
