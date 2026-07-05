@@ -6,6 +6,7 @@ import { getMyProjects } from "@/app/actions/projects"
 import { getApprovedMilestones } from "@/app/actions/projects"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { formatCurrency } from "@/lib/roles"
 import { StatusBadge } from "@/components/status-badge"
 
@@ -30,13 +31,28 @@ export default async function AuditorDashboard() {
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:py-12">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">
-            Auditor dashboard
-          </h1>
-          <p className="mt-2 text-muted-foreground">
-            Review financial records and release approved milestone funds
-          </p>
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-foreground">
+              Auditor dashboard
+            </h1>
+            <p className="mt-2 text-muted-foreground max-w-xl">
+              Review financial records, inspect project funding, and release approved milestone funds securely.
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link href="/dashboard/release-funds">
+              <Button variant="default" className="shadow-sm">
+                <DollarSign className="size-4 mr-2" />
+                Release funds
+              </Button>
+            </Link>
+            <Link href="/dashboard/notifications">
+              <Button variant="outline">
+                Notifications
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Action Cards */}
@@ -189,6 +205,17 @@ export default async function AuditorDashboard() {
                         {formatCurrency(p.fundingGoal)}
                       </span>
                     </div>
+                  </div>
+                  <div className="mt-4 flex items-center justify-end gap-2">
+                    <Link href={`/projects/${p.id}`}>
+                      <Button variant="ghost" size="sm">View</Button>
+                    </Link>
+                    <Link href="/dashboard/release-funds">
+                      <Button variant="secondary" size="sm" disabled={!(p.escrowBalance > 0)}>
+                        <DollarSign className="size-4 mr-1" />
+                        {p.escrowBalance > 0 ? "Release" : "No escrow"}
+                      </Button>
+                    </Link>
                   </div>
                 </Card>
               ))}
