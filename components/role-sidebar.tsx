@@ -196,7 +196,7 @@ export default function RoleSidebar({
             title="Sign out"
           >
             <LogOut className="size-[18px] text-destructive" />
-            <span className="hidden sm:inline">Sign Out</span>
+            <span className="sr-only">Sign Out</span>
           </button>
         </div>
       </div>
@@ -284,7 +284,7 @@ export default function RoleSidebar({
                     title="Sign out"
                   >
                     <LogOut className="size-[18px] text-destructive" />
-                    <span className="hidden sm:inline">Sign Out</span>
+                    <span className="sr-only">Sign Out</span>
                   </button>
                 </div>
             </div>

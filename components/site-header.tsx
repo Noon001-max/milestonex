@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useTheme } from "next-themes"
+import { usePathname } from "next/navigation"
 import type { SessionUser } from "@/lib/session"
 import { Bell, Menu, Moon, Sun, X } from "lucide-react"
 
@@ -39,6 +40,8 @@ export function SiteHeader({
   const [mounted, setMounted] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [remoteUnread, setRemoteUnread] = useState<number>(unreadCount)
+  const pathname = usePathname()
+  const onNotificationsPage = pathname?.startsWith("/dashboard/notifications")
   const initials = user?.name
     ? user.name
         .split(" ")
@@ -145,13 +148,13 @@ export function SiteHeader({
               <Link
                 href="/dashboard/notifications"
                 className={`relative inline-flex rounded-full p-2 text-muted-foreground transition-all duration-200 hover:bg-muted hover:text-foreground ${
-                  unreadCount > 0 ? "animate-wiggle" : ""
+                  remoteUnread > 0 && !onNotificationsPage ? "animate-wiggle" : ""
                 }`}
                 title="Notifications"
               >
-                <Bell className={`size-5 ${remoteUnread > 0 ? "animate-bounce text-amber-500" : ""}`} />
+                <Bell className={`size-5 ${remoteUnread > 0 && !onNotificationsPage ? "animate-bounce text-amber-500" : ""}`} />
                 {remoteUnread > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1.5 text-[10px] font-bold text-destructive-foreground ring-2 ring-background animate-pulse">
+                  <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1.5 text-[10px] font-bold text-white ring-2 ring-background ${onNotificationsPage ? '' : 'animate-pulse' }">
                     {remoteUnread > 99 ? "99+" : remoteUnread}
                   </span>
                 )}
