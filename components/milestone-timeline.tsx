@@ -79,7 +79,7 @@ export function MilestoneTimeline({
                 <StatusBadge status={m.status} />
               </div>
             </div>
-            <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground max-w-2xl">
+            <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground max-w-full sm:max-w-2xl">
               {m.description}
             </p>
           </div>
