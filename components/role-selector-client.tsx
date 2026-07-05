@@ -48,22 +48,18 @@ export default function RoleSelectorClient() {
         return
       }
 
-      // If signUp didn't return a session, attempt sign-in as a fallback
+      // Ensure session exists by signing in (guarantees server can read the session)
       try {
-        // @ts-ignore
-        const hasSession = !!res.session || !!res.user
-        if (!hasSession) {
-          console.debug("role-select: signUp returned no session, attempting signIn fallback")
-          const signin = await authClient.signIn.email({ email: signupData.email, password: signupData.password })
-          console.debug("role-select: signIn fallback result", signin)
-          if (signin.error) {
-            setError(signin.error.message || "Failed to sign in after signup")
-            setLoadingRole(null)
-            return
-          }
+        const signin = await authClient.signIn.email({ email: signupData.email, password: signupData.password })
+        console.debug("role-select: signIn result", signin)
+        if (signin.error) {
+          // if sign-in fails but signup succeeded, still try to proceed — but surface an error
+          setError(signin.error.message || "Failed to sign in after signup")
+          setLoadingRole(null)
+          return
         }
       } catch (e) {
-        console.debug("role-select: sign-in fallback error", e)
+        console.debug("role-select: sign-in error", e)
       }
 
       // Clear temporary signup data and show success briefly
