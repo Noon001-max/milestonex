@@ -7,6 +7,7 @@ import {
   verifications,
   disputes,
 } from "@/lib/db/schema"
+import { user } from "@/lib/db/schema"
 import { and, desc, eq, sql } from "drizzle-orm"
 
 export async function getPublicProjects() {
@@ -62,11 +63,13 @@ export async function getPendingProjects() {
       fundingGoal: projects.fundingGoal,
       status: projects.status,
       ownerId: projects.ownerId,
+      ownerName: user.name,
       imageUrl: projects.imageUrl,
       location: projects.location,
       createdAt: projects.createdAt,
     })
     .from(projects)
+    .leftJoin(user, eq(projects.ownerId, user.id))
     .where(eq(projects.status, "pending"))
     .orderBy(desc(projects.createdAt))
 }

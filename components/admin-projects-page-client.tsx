@@ -56,7 +56,7 @@ export function AdminProjectsPageClient({ projects }: AdminProjectsPageClientPro
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:py-12">
+      <main className="mx-auto w-full max-w-6xl px-4 py-12">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold tracking-tight text-foreground">
