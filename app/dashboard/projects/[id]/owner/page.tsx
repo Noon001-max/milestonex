@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { notFound, redirect } from "next/navigation"
-import { Edit2, PlusCircle, FileText } from "lucide-react"
+import { ArrowLeft, Edit2, FileText, Lock, PlusCircle, Receipt, Banknote } from "lucide-react"
 import { getSession } from "@/lib/session"
 import {
   getProjectById,
@@ -15,6 +15,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { FundingProgress } from "@/components/funding-progress"
 import { MilestoneTimeline } from "@/components/milestone-timeline"
+import { StatusBadge } from "@/components/status-badge"
 
 export const dynamic = "force-dynamic"
 
@@ -36,118 +37,155 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
 
   return (
     <div className="w-full overflow-x-clip">
-      <main className="w-full py-4 sm:py-8">
-        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <div className="min-w-0">
-              <h1 className="break-words text-2xl font-bold text-foreground sm:text-3xl">Manage: {project.title}</h1>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Owner dashboard for this project — controls and reports are private to you.
-              </p>
+      <main className="mx-auto w-full max-w-6xl overflow-hidden px-4 py-6 sm:px-4 sm:py-8 lg:px-6">
+        <Link
+          href={`/dashboard/projects/${projectId}`}
+          className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="size-4" />
+          Back to project
+        </Link>
+
+        <div className="grid gap-8 lg:grid-cols-3">
+          <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
+            <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-border bg-muted">
+              <Image
+                src={project.imageUrl || "/hero-community.png"}
+                alt={project.title}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 66vw"
+                className="object-cover"
+              />
+              <div className="absolute left-4 top-4">
+                <StatusBadge status={project.status} />
+              </div>
             </div>
 
-            <div className="grid w-full gap-2 sm:w-auto sm:grid-cols-2">
-              <Link href={`/dashboard/projects/${projectId}/edit`} className="w-full sm:w-auto">
-                <Button variant="outline" className="w-full sm:w-auto">
-                  <Edit2 className="size-4 mr-2" />
-                  Edit project
-                </Button>
-              </Link>
-              <Link href={`/dashboard/projects/${projectId}/milestones`} className="w-full sm:w-auto">
-                <Button variant="default" className="w-full sm:w-auto">
-                  <PlusCircle className="size-4 mr-2" />
-                  Manage milestones
-                </Button>
-              </Link>
+            <div className="min-w-0">
+              <p className="text-sm text-muted-foreground">
+                Owner dashboard for this project. Controls and reports are private to you.
+              </p>
+              <h1 className="mt-2 break-words text-balance text-3xl font-semibold tracking-tight text-foreground">
+                {project.title}
+              </h1>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Link href={`/dashboard/projects/${projectId}/edit`}>
+                  <Button variant="outline">
+                    <Edit2 className="mr-2 size-4" />
+                    Edit project
+                  </Button>
+                </Link>
+                <Link href={`/dashboard/projects/${projectId}/milestones`}>
+                  <Button variant="default">
+                    <PlusCircle className="mr-2 size-4" />
+                    Manage milestones
+                  </Button>
+                </Link>
+              </div>
             </div>
+
+            <Card className="border border-border/80 bg-card p-6 shadow-sm">
+              <h2 className="mb-3 text-lg font-bold text-foreground">About this project</h2>
+              <p className="whitespace-pre-line break-words text-sm leading-relaxed text-muted-foreground sm:text-base">
+                {project.description}
+              </p>
+            </Card>
+
+            <Card className="border border-border/80 bg-card p-6 shadow-sm">
+              <div className="mb-5 flex items-center justify-between gap-3">
+                <h2 className="text-lg font-bold text-foreground">Milestones</h2>
+                <Link href={`/dashboard/projects/${projectId}/milestones`}>
+                  <Button variant="ghost" size="sm">Manage</Button>
+                </Link>
+              </div>
+              <MilestoneTimeline milestones={milestones} ownerView />
+            </Card>
+
+            <Card className="border border-border/80 bg-card p-6 shadow-sm">
+              <div className="mb-5 flex items-center gap-2 border-b border-border/60 pb-3">
+                <Receipt className="size-5 text-primary" />
+                <h2 className="text-lg font-bold text-foreground">Audit Trail</h2>
+              </div>
+              {transactions.length === 0 ? (
+                <p className="py-2 text-sm text-muted-foreground">No transactions recorded yet.</p>
+              ) : (
+                <ul className="flex flex-col divide-y divide-border/60">
+                  {transactions.map((t) => {
+                    const isRelease = t.type === "release"
+                    return (
+                      <li key={t.id} className="flex items-center justify-between gap-3 py-3.5">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-foreground">{t.note ?? t.type}</p>
+                          <p className="mt-0.5 text-xs capitalize text-muted-foreground">
+                            {t.type.replace("_", " ")} • {new Date(t.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <span className={`text-sm font-bold ${isRelease ? "text-amber-600 dark:text-amber-400" : "text-emerald-600 dark:text-emerald-400"}`}>
+                          {isRelease ? "-" : "+"}
+                          {formatCurrency(t.amount)}
+                        </span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              )}
+            </Card>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
-              <div className="relative aspect-[4/3] w-full max-w-full overflow-hidden rounded-2xl bg-muted sm:aspect-[16/9]">
-                <Image src={project.imageUrl || "/hero-community.png"} alt={project.title} fill className="object-cover" />
+          <div className="flex flex-col gap-6">
+            <Card className="border border-border/80 bg-card p-6 shadow-sm">
+              <FundingProgress
+                funded={project.fundedAmount}
+                goal={project.fundingGoal}
+                released={project.releasedAmount}
+              />
+              <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-border/60 pt-5 text-sm">
+                <div className="flex flex-col gap-1">
+                  <dt className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <Lock className="size-3.5 text-primary/70" /> Escrow
+                  </dt>
+                  <dd className="mt-0.5 text-base font-bold text-foreground">
+                    {formatCurrency(project.escrowBalance)}
+                  </dd>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <dt className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <Banknote className="size-3.5 text-primary/70" /> Released
+                  </dt>
+                  <dd className="mt-0.5 text-base font-bold text-foreground">
+                    {formatCurrency(project.releasedAmount)}
+                  </dd>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Milestones</dt>
+                  <dd className="mt-0.5 text-base font-bold text-foreground">{milestones.length}</dd>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Status</dt>
+                  <dd className="mt-0.5 text-base font-bold text-foreground capitalize">{project.status}</dd>
+                </div>
+              </dl>
+
+              <div className="mt-5 flex flex-col gap-2">
+                <Link href={`/dashboard/projects/${projectId}/settings`} className="w-full">
+                  <Button variant="outline" className="w-full">Project Settings</Button>
+                </Link>
+                <Link href={`/dashboard/projects/${projectId}/payouts`} className="w-full">
+                  <Button variant="secondary" className="w-full">Payouts</Button>
+                </Link>
               </div>
+            </Card>
 
-              <Card className="p-6">
-                <h2 className="mb-3 text-lg font-bold text-foreground">Overview</h2>
-                <p className="whitespace-pre-line break-words text-sm text-muted-foreground">{project.description}</p>
-              </Card>
-
-              <Card className="min-w-0 p-6">
-                <div className="flex items-start justify-between gap-3">
-                  <h2 className="text-lg font-bold text-foreground">Milestones</h2>
-                  <Link href={`/dashboard/projects/${projectId}/milestones`}>
-                    <Button variant="ghost" size="sm">Manage</Button>
-                  </Link>
-                </div>
-                <div className="mt-4 min-w-0 overflow-x-hidden">
-                  <MilestoneTimeline milestones={milestones} ownerView />
-                </div>
-              </Card>
-
-              {/* Donations removed for owner-first view */}
-
-              <Card className="p-6">
-                <h2 className="text-lg font-bold text-foreground">Audit Trail</h2>
-                {transactions.length === 0 ? (
-                  <p className="mt-3 text-sm text-muted-foreground">No transactions recorded.</p>
-                ) : (
-                  <ul className="mt-3 divide-y divide-border/60 text-sm">
-                    {transactions.map((t) => (
-                      <li key={t.id} className="flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-                        <div className="min-w-0">
-                          <p className="truncate font-semibold text-foreground">{t.note || t.type}</p>
-                          <p className="mt-0.5 text-xs text-muted-foreground">{new Date(t.createdAt).toLocaleDateString()}</p>
-                        </div>
-                        <div className={`font-bold ${t.type === 'release' ? 'text-amber-600' : 'text-emerald-600'}`}>
-                          {(t.type === 'release' ? '-' : '+')}{formatCurrency(t.amount)}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </Card>
-            </div>
-
-            <div className="flex min-w-0 flex-col gap-6">
-              <Card className="p-6 min-w-0">
-                <FundingProgress funded={project.fundedAmount} goal={project.fundingGoal} released={project.releasedAmount} />
-
-                <dl className="mt-5 grid grid-cols-1 gap-4 border-t border-border/60 pt-5 text-sm sm:grid-cols-2">
-                  <div className="flex flex-col gap-1">
-                    <dt className="text-xs uppercase tracking-wider text-muted-foreground">Escrow</dt>
-                    <dd className="font-bold text-foreground">{formatCurrency(project.escrowBalance)}</dd>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <dt className="text-xs uppercase tracking-wider text-muted-foreground">Released</dt>
-                    <dd className="font-bold text-foreground">{formatCurrency(project.releasedAmount)}</dd>
-                  </div>
-                  <div className="flex flex-col gap-1 sm:col-span-2">
-                    <dt className="text-xs uppercase tracking-wider text-muted-foreground">Milestones</dt>
-                    <dd className="font-bold text-foreground">{milestones.length}</dd>
-                  </div>
-                </dl>
-
-                <div className="mt-5 flex flex-col gap-2">
-                  <Link href={`/dashboard/projects/${projectId}/settings`} className="w-full">
-                    <Button variant="outline" className="w-full sm:w-auto">Project Settings</Button>
-                  </Link>
-                  <Link href={`/dashboard/projects/${projectId}/payouts`} className="w-full">
-                    <Button variant="secondary" className="w-full sm:w-auto">Payouts</Button>
-                  </Link>
-                </div>
-              </Card>
-
-              <Card className="p-6 text-sm text-muted-foreground">
-                <FileText className="mb-3 size-6 text-primary/80" />
-                <p className="font-semibold text-foreground">Helpful tips</p>
-                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
-                  <li>Keep milestone descriptions clear and time-bound.</li>
-                  <li>Upload progress evidence to accelerate releases.</li>
-                  <li>Respond to supporter messages promptly.</li>
-                </ul>
-              </Card>
-            </div>
+            <Card className="border border-border/80 bg-card p-6 text-sm text-muted-foreground shadow-sm">
+              <FileText className="mb-3 size-6 text-primary/80" />
+              <p className="font-semibold text-foreground">Helpful tips</p>
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
+                <li>Keep milestone descriptions clear and time-bound.</li>
+                <li>Upload progress evidence to accelerate releases.</li>
+                <li>Respond to supporter messages promptly.</li>
+              </ul>
+            </Card>
           </div>
         </div>
       </main>
