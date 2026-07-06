@@ -36,8 +36,9 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
 
   return (
     <div className="w-full overflow-x-hidden">
-      <main className="w-full px-4 sm:px-6 py-6 sm:py-8">
-        <div className="mx-auto w-full max-w-3xl">
+      <main className="w-full sm:py-8">
+        {/* Mobile-first: full-bleed on small screens, centered max-width on larger */}
+        <div className="w-full mx-0 sm:mx-auto sm:max-w-3xl">
         <div className="mb-6 flex items-center justify-between gap-4">
           <div className="min-w-0">
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground truncate">Manage: {project.title}</h1>
@@ -61,7 +62,8 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
 
         <div className="grid gap-8 grid-cols-1 lg:grid-cols-3">
           <div className="lg:col-span-2 flex flex-col gap-6">
-            <div className="relative w-full h-48 sm:aspect-[16/9] overflow-hidden rounded-xl border border-border bg-muted">
+            <div className="relative w-full h-56 sm:aspect-[16/9] overflow-hidden bg-muted">
+              {/* full-bleed image on mobile */}
               <Image src={project.imageUrl || "/hero-community.png"} alt={project.title} fill className="object-cover" />
             </div>
 
