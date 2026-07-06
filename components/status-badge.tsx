@@ -33,7 +33,7 @@ export function StatusBadge({ status }: { status: string }) {
   return (
     <Badge
       variant="secondary"
-      className={cn("font-medium border-transparent", STATUS_STYLES[status])}
+      className={cn("h-auto max-w-full whitespace-normal text-center leading-tight font-medium border-transparent", STATUS_STYLES[status])}
     >
       {STATUS_LABELS[status] ?? status}
     </Badge>

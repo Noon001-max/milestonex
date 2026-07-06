@@ -60,26 +60,29 @@ export function MilestoneTimeline({
   return (
     <ol className="flex flex-col gap-1">
       {milestones.map((m, i) => (
-        <li key={m.id} className="flex gap-4 group">
-          <div className="flex flex-col items-center">
+        <li key={m.id} className="flex flex-col gap-3 group sm:flex-row sm:gap-4">
+          <div className="flex flex-row items-start gap-3 sm:flex-col sm:items-center sm:gap-0">
             <StepIcon status={m.status} />
             {i < milestones.length - 1 && (
-              <span className="my-1.5 w-[2px] flex-1 bg-border/60 group-hover:bg-primary/20 transition-all duration-300" aria-hidden />
+              <span
+                className="hidden min-h-6 w-[2px] flex-1 bg-border/60 transition-all duration-300 group-hover:bg-primary/20 sm:block"
+                aria-hidden
+              />
             )}
           </div>
-          <div className="flex-1 pb-6 pt-0.5">
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-1.5">
-              <h4 className="font-semibold text-foreground text-sm sm:text-base group-hover:text-primary transition-colors duration-200">
+          <div className="min-w-0 flex-1 pb-6 pt-0.5">
+            <div className="mb-1.5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+              <h4 className="break-words font-semibold text-foreground text-sm transition-colors duration-200 group-hover:text-primary sm:text-base">
                 {m.title}
               </h4>
-              <div className="flex items-center gap-2.5">
+              <div className="flex flex-wrap items-center gap-2.5">
                 <span className="text-xs sm:text-sm font-bold text-foreground bg-secondary/80 px-2 py-0.5 rounded-md border border-border/40">
                   {formatCurrency(m.amount)}
                 </span>
                 <StatusBadge status={m.status} />
               </div>
             </div>
-            <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground max-w-full sm:max-w-2xl">
+            <p className="max-w-full break-words text-xs leading-relaxed text-muted-foreground sm:text-sm sm:max-w-2xl">
               {m.description}
             </p>
           </div>

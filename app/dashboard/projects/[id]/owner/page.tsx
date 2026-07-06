@@ -64,7 +64,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
 
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
-              <div className="relative h-56 w-full overflow-hidden rounded-2xl bg-muted sm:aspect-[16/9] sm:h-auto">
+              <div className="relative aspect-[4/3] w-full max-w-full overflow-hidden rounded-2xl bg-muted sm:aspect-[16/9]">
                 <Image src={project.imageUrl || "/hero-community.png"} alt={project.title} fill className="object-cover" />
               </div>
 
