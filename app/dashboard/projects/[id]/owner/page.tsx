@@ -38,7 +38,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
     <div className="w-full overflow-x-hidden">
       <main className="w-full sm:py-8">
         {/* Mobile-first: full-bleed on small screens, centered max-width on larger */}
-        <div className="w-full mx-0 sm:mx-auto sm:max-w-3xl">
+        <div className="w-full mx-0 sm:mx-auto sm:max-w-4xl lg:max-w-6xl px-4 sm:px-0">
         <div className="mb-6 flex items-center justify-between gap-4">
           <div className="min-w-0">
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground truncate">Manage: {project.title}</h1>
@@ -61,7 +61,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
         </div>
 
         <div className="grid gap-8 grid-cols-1 lg:grid-cols-3">
-          <div className="lg:col-span-2 flex flex-col gap-6">
+          <div className="lg:col-span-2 flex flex-col gap-6 min-w-0">
             <div className="relative w-full h-56 sm:aspect-[16/9] overflow-hidden bg-muted">
               {/* full-bleed image on mobile */}
               <Image src={project.imageUrl || "/hero-community.png"} alt={project.title} fill className="object-cover" />
@@ -72,15 +72,17 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
               <p className="text-sm text-muted-foreground whitespace-pre-line break-words">{project.description}</p>
             </Card>
 
-            <Card className="p-6">
+            <Card className="p-6 min-w-0">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold text-foreground">Milestones</h2>
                 <Link href={`/dashboard/projects/${projectId}/milestones`}>
                   <Button variant="ghost" size="sm">Manage</Button>
                 </Link>
               </div>
-              <div className="mt-4 overflow-x-auto">
-                <MilestoneTimeline milestones={milestones} ownerView />
+              <div className="mt-4 overflow-x-auto min-w-0">
+                <div className="min-w-0">
+                  <MilestoneTimeline milestones={milestones} ownerView />
+                </div>
               </div>
             </Card>
 
@@ -107,7 +109,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
           </div>
 
           <div className="flex flex-col gap-6">
-            <Card className="p-6">
+            <Card className="p-6 min-w-0">
               <FundingProgress funded={project.fundedAmount} goal={project.fundingGoal} released={project.releasedAmount} />
 
               <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-border/60 pt-5 text-sm">
@@ -128,10 +130,10 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
 
               <div className="mt-5 flex flex-col gap-2">
                 <Link href={`/dashboard/projects/${projectId}/settings`} className="w-full">
-                  <Button variant="outline" className="w-full">Project Settings</Button>
+                  <Button variant="outline" className="w-full sm:w-auto">Project Settings</Button>
                 </Link>
                 <Link href={`/dashboard/projects/${projectId}/payouts`} className="w-full">
-                  <Button variant="secondary" className="w-full">Payouts</Button>
+                  <Button variant="secondary" className="w-full sm:w-auto">Payouts</Button>
                 </Link>
               </div>
             </Card>
