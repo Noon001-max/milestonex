@@ -26,7 +26,7 @@ export default function DashboardShell({
         onMenuClick={() => setSidebarOpen(true)}
       />
 
-      <div className="flex w-full">
+      <div className="flex w-full min-w-0 overflow-x-clip">
         <RoleSidebar
           user={user}
           open={sidebarOpen}
@@ -34,7 +34,7 @@ export default function DashboardShell({
           hideToggleButton={true}
         />
 
-        <main className="flex-1 md:pl-72">
+        <main className="min-w-0 flex-1 md:pl-72">
           <div className="border-b border-border" />
           
           <div className="animate-fade-in">

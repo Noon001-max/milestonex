@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { notFound, redirect } from "next/navigation"
-import { ArrowLeft, Edit2, FileText, Lock, PlusCircle, Receipt, Banknote } from "lucide-react"
+import { Edit2, FileText, Lock, PlusCircle, Receipt, Banknote } from "lucide-react"
 import { getSession } from "@/lib/session"
 import {
   getProjectById,
@@ -38,14 +38,6 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
   return (
     <div className="w-full overflow-x-clip">
       <main className="mx-auto w-full max-w-6xl overflow-hidden px-4 py-6 sm:px-4 sm:py-8 lg:px-6">
-        <Link
-          href={`/dashboard/projects/${projectId}`}
-          className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="size-4" />
-          Back to project
-        </Link>
-
         <div className="grid gap-8 lg:grid-cols-3">
           <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
             <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-border bg-muted">
