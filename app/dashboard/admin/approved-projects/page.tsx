@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"
 import { getSession } from "@/lib/session"
 import { getApprovedProjectsByAdmin } from "@/app/actions/projects"
-import { Card } from "@/components/ui/card"
+import { ProposalCard } from "@/components/status-cards"
 
 export const dynamic = "force-dynamic"
 
@@ -25,20 +25,20 @@ export default async function ApprovedProjectsPage() {
         <div className="grid gap-4">
           {projects.length > 0 ? (
             projects.map((p) => (
-              <Card key={p.id} className="p-4 border border-border/70 bg-card">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-foreground">{p.title}</p>
-                    <p className="text-sm text-muted-foreground">{p.summary}</p>
-                  </div>
-                  <div className="text-sm text-muted-foreground">{new Date(p.updatedAt).toLocaleString()}</div>
-                </div>
-              </Card>
+              <ProposalCard
+                key={p.id}
+                id={p.id}
+                title={p.title}
+                subtitle={p.summary}
+                status={"approved"}
+                date={new Date(p.updatedAt).toLocaleString()}
+                href={`/dashboard/admin/projects/${p.id}`}
+              />
             ))
           ) : (
-            <Card className="p-12 text-center">
+            <div className="p-12 text-center">
               <p className="text-muted-foreground">You haven't approved any projects yet.</p>
-            </Card>
+            </div>
           )}
         </div>
       </main>

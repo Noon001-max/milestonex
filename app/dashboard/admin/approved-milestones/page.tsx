@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"
 import { getSession } from "@/lib/session"
 import { getApprovedMilestonesByAdmin } from "@/app/actions/milestones"
-import { Card } from "@/components/ui/card"
+import { MilestoneCard } from "@/components/status-cards"
 
 export const dynamic = "force-dynamic"
 
@@ -25,20 +25,20 @@ export default async function ApprovedMilestonesPage() {
         <div className="grid gap-4">
           {milestones.length > 0 ? (
             milestones.map((m) => (
-              <Card key={m.id} className="p-4 border border-border/70 bg-card">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-foreground">{m.title}</p>
-                    <p className="text-sm text-muted-foreground">{m.projectTitle}</p>
-                  </div>
-                  <div className="text-sm text-muted-foreground">{new Date(m.updatedAt).toLocaleString()}</div>
-                </div>
-              </Card>
+              <MilestoneCard
+                key={m.id}
+                id={m.id}
+                title={m.title}
+                subtitle={m.projectTitle}
+                status={"approved"}
+                date={m.updatedAt ? new Date(m.updatedAt).toLocaleString() : undefined}
+                href={`/dashboard/admin/projects/${m.projectId}`}
+              />
             ))
           ) : (
-            <Card className="p-12 text-center">
+            <div className="p-12 text-center">
               <p className="text-muted-foreground">You haven't approved any milestones yet.</p>
-            </Card>
+            </div>
           )}
         </div>
       </main>
