@@ -56,8 +56,8 @@ export default async function AuditorDashboard() {
                 <Link href="/dashboard/release-funds">
                   <Button className="rounded-xl">Review release queue</Button>
                 </Link>
-                <Link href="/dashboard/admin/projects">
-                  <Button variant="outline" className="rounded-xl">Open project audits</Button>
+                <Link href="/dashboard/auditor/released">
+                  <Button variant="outline" className="rounded-xl">Open release overview</Button>
                 </Link>
               </div>
 
@@ -203,12 +203,12 @@ export default async function AuditorDashboard() {
                 <Card key={p.id} className="p-6 border border-border/80 bg-card hover:shadow-md transition-shadow">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <a
-                        href={`/projects/${p.id}`}
+                      <Link
+                        href={`/dashboard/auditor/projects/${p.id}`}
                         className="text-lg font-bold text-foreground hover:text-primary transition-colors duration-200"
                       >
                         {p.title}
-                      </a>
+                      </Link>
                       <p className="mt-1 text-xs text-muted-foreground font-semibold uppercase tracking-wider">
                         Financial Status Tracking
                       </p>
@@ -242,7 +242,7 @@ export default async function AuditorDashboard() {
                     </div>
                   </div>
                   <div className="mt-4 flex items-center justify-end gap-2">
-                    <Link href={`/projects/${p.id}`}>
+                    <Link href={`/dashboard/auditor/projects/${p.id}`}>
                       <Button variant="ghost" size="sm">View</Button>
                     </Link>
                     <Link href="/dashboard/release-funds">
