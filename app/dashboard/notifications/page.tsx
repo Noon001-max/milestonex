@@ -41,7 +41,7 @@ export default async function NotificationsPage() {
   return (
     <div className="min-h-svh bg-background px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <main className="mx-auto w-full max-w-4xl">
-        <div className="flex flex-col gap-4 rounded-3xl border border-border/70 bg-card p-5 shadow-sm sm:p-6">
+        <div className="flex flex-col gap-4 rounded-[2rem] border border-border/70 bg-card p-5 shadow-sm sm:p-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
@@ -74,23 +74,6 @@ export default async function NotificationsPage() {
             )}
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-3">
-            <Card className="rounded-2xl border border-border/70 bg-secondary/25 p-4 shadow-none">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Total</p>
-              <p className="mt-2 text-2xl font-semibold text-foreground">{notifications.length}</p>
-              <p className="mt-1 text-xs text-muted-foreground">Messages received</p>
-            </Card>
-            <Card className="rounded-2xl border border-border/70 bg-secondary/25 p-4 shadow-none">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Unread</p>
-              <p className="mt-2 text-2xl font-semibold text-foreground">{unreadCount}</p>
-              <p className="mt-1 text-xs text-muted-foreground">Still need attention</p>
-            </Card>
-            <Card className="rounded-2xl border border-border/70 bg-secondary/25 p-4 shadow-none">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Read</p>
-              <p className="mt-2 text-2xl font-semibold text-foreground">{notifications.length - unreadCount}</p>
-              <p className="mt-1 text-xs text-muted-foreground">Already reviewed</p>
-            </Card>
-          </div>
         </div>
 
         <div className="mt-6 space-y-3">
@@ -100,7 +83,7 @@ export default async function NotificationsPage() {
               return (
                 <Card
                   key={n.id}
-                  className={`overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
+                  className={`overflow-hidden rounded-[1.75rem] border border-border/70 bg-card shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
                     !n.read ? "ring-1 ring-primary/15" : ""
                   }`}
                 >
@@ -113,23 +96,25 @@ export default async function NotificationsPage() {
                       </div>
 
                       <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <p className={`text-sm font-semibold text-foreground ${!n.read ? "text-primary" : ""}`}>
-                            {n.title}
-                          </p>
-                          {!n.read && (
-                            <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
-                              New
-                            </span>
-                          )}
-                        </div>
-                        <p className="mt-1 text-sm leading-6 text-muted-foreground">{n.body}</p>
-                        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                          <span className="inline-flex items-center gap-1 rounded-full bg-secondary/60 px-2.5 py-1 font-medium">
-                            <Calendar className="size-3" />
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className={`text-sm font-semibold text-foreground ${!n.read ? "text-primary" : ""}`}>
+                                {n.title}
+                              </p>
+                              {!n.read && (
+                                <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
+                                  New
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          <span className="shrink-0 rounded-full bg-secondary/60 px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
                             {new Date(n.createdAt).toLocaleString()}
                           </span>
                         </div>
+                        <p className="mt-1 text-sm leading-6 text-muted-foreground">{n.body}</p>
                       </div>
                     </div>
 
