@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+import Link from "next/link"
 import { CheckCircle2, DollarSign, TrendingUp, BarChart3, Clock3, BriefcaseBusiness, Sparkles, ArrowRight } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { getReleasedFundsHistory } from "@/app/actions/projects"
@@ -51,12 +52,13 @@ export default async function ReleasedFundsPage() {
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button asChild className="rounded-xl">
-                  <a href="/dashboard/release-funds">
-                    Review release queue
-                    <ArrowRight className="ml-2 size-4" />
-                  </a>
-                </Button>
+                <Link
+                  href="/dashboard/release-funds"
+                  className="inline-flex h-8 items-center justify-center rounded-lg border border-border bg-background px-2.5 text-sm font-medium text-foreground transition-all hover:bg-muted hover:text-foreground rounded-xl"
+                >
+                  Review release queue
+                  <ArrowRight className="ml-2 size-4" />
+                </Link>
               </div>
             </div>
 
