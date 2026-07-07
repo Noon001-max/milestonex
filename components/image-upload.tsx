@@ -65,8 +65,10 @@ export function ImageUpload({ name, defaultValue, className, onChange }: ImageUp
       ) : (
         <label
           htmlFor={inputId}
-          disabled={uploading}
-          className="flex h-48 w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-input bg-muted/30 text-muted-foreground transition-colors hover:bg-muted/50"
+          aria-disabled={uploading}
+          className={`flex h-48 w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-input bg-muted/30 text-muted-foreground transition-colors ${
+            uploading ? "cursor-not-allowed opacity-60" : "cursor-pointer hover:bg-muted/50"
+          }`}
         >
           {uploading ? (
             <>
