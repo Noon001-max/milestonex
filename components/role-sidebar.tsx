@@ -144,6 +144,8 @@ export default function RoleSidebar({
         .slice(0, 2)
     : "MX"
 
+  const roleLabel = ROLE_LABELS[user.role] || user.role
+
   const sidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Role Label */}
@@ -187,7 +189,7 @@ export default function RoleSidebar({
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-base font-semibold text-foreground truncate leading-tight">{user.name}</p>
-            <p className="text-xs text-muted-foreground truncate capitalize mt-0.5">{user.role}</p>
+            <p className="text-xs text-muted-foreground truncate mt-0.5">{roleLabel}</p>
           </div>
 
           <button
@@ -252,7 +254,7 @@ export default function RoleSidebar({
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold text-foreground truncate leading-tight">{user.name}</p>
-                  <p className="text-xs text-muted-foreground truncate capitalize mt-0.5">{user.role}</p>
+                  <p className="text-xs text-muted-foreground truncate mt-0.5">{roleLabel}</p>
                 </div>
 
                 <button
