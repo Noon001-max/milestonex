@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Clock, Users, TrendingUp, GitBranch, Landmark, ArrowRight, Activity } from "lucide-react"
+import { Clock, Users, TrendingUp, GitBranch, Landmark, ArrowRight } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { getAllProjects } from "@/lib/queries"
@@ -103,10 +103,6 @@ export default async function AdminDashboard() {
         
         {/* Header */}
         <div className="mb-6 sm:mb-8">
-          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-primary">
-            <Activity className="size-4" />
-            <span>Operational Console</span>
-          </div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Admin Dashboard
           </h1>
@@ -171,51 +167,6 @@ export default async function AdminDashboard() {
             })}
           </div>
         
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <Card className="border border-border/70 bg-card p-4">
-              <h3 className="text-sm font-semibold text-foreground">Projects you approved</h3>
-              <p className="text-sm text-muted-foreground mt-1">Recent projects you approved.</p>
-              <div className="mt-3 space-y-2">
-                {myApprovedProjects.length > 0 ? (
-                  myApprovedProjects.slice(0,5).map((p) => (
-                    <div key={p.id} className="rounded-xl border border-border/60 bg-background p-3 text-sm">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="font-medium text-foreground">{p.title}</p>
-                          <p className="text-xs text-muted-foreground">{p.summary}</p>
-                        </div>
-                        <p className="text-xs text-muted-foreground">{new Date(p.updatedAt).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-muted-foreground">You haven't approved any projects yet.</p>
-                )}
-              </div>
-            </Card>
-
-            <Card className="border border-border/70 bg-card p-4">
-              <h3 className="text-sm font-semibold text-foreground">Milestones you approved</h3>
-              <p className="text-sm text-muted-foreground mt-1">Recent milestone approvals you performed.</p>
-              <div className="mt-3 space-y-2">
-                {myApprovedMilestones.length > 0 ? (
-                  myApprovedMilestones.slice(0,5).map((m) => (
-                    <div key={m.id} className="rounded-xl border border-border/60 bg-background p-3 text-sm">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="font-medium text-foreground">{m.title}</p>
-                          <p className="text-xs text-muted-foreground">{m.projectTitle}</p>
-                        </div>
-                        <p className="text-xs text-muted-foreground">{new Date(m.updatedAt).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-muted-foreground">You haven't approved any milestones yet.</p>
-                )}
-              </div>
-            </Card>
-          </div>
         </div>
 
       </main>
