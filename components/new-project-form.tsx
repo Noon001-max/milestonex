@@ -141,7 +141,20 @@ export function NewProjectForm() {
       formData.set("location", preview.location)
 
       if (selectedImageFile) {
-        formData.set("imageUrl", selectedImageFile)
+        const uploadForm = new FormData()
+        uploadForm.append("file", selectedImageFile)
+        const res = await fetch("/api/upload", { method: "POST", body: uploadForm })
+        if (!res.ok) {
+          const payload = await res.json().catch(() => ({}))
+          throw new Error(payload?.error || "Image upload failed")
+        }
+
+        const data = await res.json()
+        formData.set("imageUrl", data.url)
+      }
+
+      if (!selectedImageFile && preview.imageUrl && !preview.imageUrl.startsWith("blob:")) {
+        formData.set("imageUrl", preview.imageUrl)
       }
 
       preview.milestones.forEach((milestone, index) => {
