@@ -39,7 +39,6 @@ export async function getAllProjects() {
     .select({
       id: projects.id,
       title: projects.title,
-      summary: projects.summary,
       fundingGoal: projects.fundingGoal,
       status: projects.status,
       ownerId: projects.ownerId,
@@ -88,7 +87,6 @@ export async function getProjectById(id: number): Promise<any> {
         id: projects.id,
         ownerId: projects.ownerId,
         title: projects.title,
-        description: projects.description,
         category: projects.category,
         location: projects.location,
         imageUrl: projects.imageUrl,
@@ -113,7 +111,6 @@ export async function getProjectById(id: number): Promise<any> {
       id: projects.id,
       ownerId: projects.ownerId,
       title: projects.title,
-      description: projects.description,
       category: projects.category,
       location: projects.location,
       imageUrl: projects.imageUrl,

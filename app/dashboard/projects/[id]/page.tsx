@@ -111,7 +111,70 @@ export default async function ProjectDetailPage({
 
             <Card className="border border-border/80 bg-card p-6 shadow-sm">
               <div className="mb-5 flex items-center justify-between gap-3">
-                <h2 className="text-lg font-bold text-foreground">Milestones</h2>
+                <div>
+                  <h2 className="text-lg font-bold text-foreground">Project details</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">All proposal metadata in one place.</p>
+                </div>
+              </div>
+
+              <dl className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Summary</dt>
+                  <dd className="mt-2 text-sm leading-6 text-foreground">{project.summary}</dd>
+                </div>
+                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Category</dt>
+                  <dd className="mt-2 text-sm font-semibold capitalize text-foreground">{project.category}</dd>
+                </div>
+                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Location</dt>
+                  <dd className="mt-2 text-sm font-semibold text-foreground">{project.location || "Not provided"}</dd>
+                </div>
+                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Funding goal</dt>
+                  <dd className="mt-2 text-sm font-semibold text-foreground">{formatCurrency(project.fundingGoal)}</dd>
+                </div>
+                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Funds raised</dt>
+                  <dd className="mt-2 text-sm font-semibold text-foreground">{formatCurrency(project.fundedAmount)}</dd>
+                </div>
+                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Escrow balance</dt>
+                  <dd className="mt-2 text-sm font-semibold text-foreground">{formatCurrency(project.escrowBalance)}</dd>
+                </div>
+                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Released funds</dt>
+                  <dd className="mt-2 text-sm font-semibold text-foreground">{formatCurrency(project.releasedAmount)}</dd>
+                </div>
+                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Created</dt>
+                  <dd className="mt-2 text-sm font-semibold text-foreground">{new Date(project.createdAt).toLocaleDateString()}</dd>
+                </div>
+                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Updated</dt>
+                  <dd className="mt-2 text-sm font-semibold text-foreground">{new Date(project.updatedAt).toLocaleDateString()}</dd>
+                </div>
+                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Owner</dt>
+                  <dd className="mt-2 text-sm font-semibold text-foreground">{ownerName}</dd>
+                </div>
+                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Contributors</dt>
+                  <dd className="mt-2 text-sm font-semibold text-foreground">{donations.length}</dd>
+                </div>
+                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Milestones</dt>
+                  <dd className="mt-2 text-sm font-semibold text-foreground">{milestones.length}</dd>
+                </div>
+              </dl>
+            </Card>
+
+            <Card className="border border-border/80 bg-card p-6 shadow-sm">
+              <div className="mb-5 flex items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-lg font-bold text-foreground">Milestone snapshot</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">Proof work lives on the dedicated proof board.</p>
+                </div>
                 <Link href={`/dashboard/projects/${projectId}/milestones`}>
                   <Button variant="ghost" size="sm">Open proof board</Button>
                 </Link>

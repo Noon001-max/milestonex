@@ -42,7 +42,7 @@ export default async function MilestonesPage({ params }: { params: Promise<{ id:
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:py-12">
         <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card shadow-sm">
           <div className="grid gap-0 lg:grid-cols-[1.35fr_0.9fr]">
-            <div className="relative min-h-[18rem] overflow-hidden">
+            <div className="relative min-h-[18rem] overflow-hidden bg-muted">
               <Image
                 src={project.imageUrl || "/hero-community.png"}
                 alt={project.title}
@@ -51,48 +51,27 @@ export default async function MilestonesPage({ params }: { params: Promise<{ id:
                 sizes="(max-width: 1024px) 100vw, 60vw"
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/60 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
-              <div className="absolute left-0 top-0 h-full w-full p-6 sm:p-8 lg:p-10">
-                <div className="flex h-full flex-col justify-between gap-6 lg:max-w-2xl">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <StatusBadge status={project.status} />
-                    <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-background/90 px-3 py-1 text-xs font-semibold text-muted-foreground shadow-sm backdrop-blur">
-                      <FileText className="size-3.5" />
-                      Proof submission workspace
-                    </span>
-                  </div>
-
-                  <div className="space-y-4">
-                    <p className="max-w-xl text-sm font-medium text-muted-foreground sm:text-base">
-                      Submit proof for the active milestone. The next milestone stays locked until the current one is approved.
-                    </p>
-                    <h1 className="max-w-2xl text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-                      {project.title}
-                    </h1>
-                    <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
-                      {project.summary}
-                    </p>
-                    <div className="flex flex-wrap gap-3">
-                      <Link href={`/dashboard/projects/${projectId}`}>
-                        <Button variant="outline" className="rounded-xl">
-                          View project
-                          <ArrowRight className="ml-2 size-4" />
-                        </Button>
-                      </Link>
-                      <div className="inline-flex items-center gap-2 rounded-xl border border-border/70 bg-background/90 px-4 py-2 text-sm font-semibold text-foreground shadow-sm backdrop-blur">
-                        <Clock3 className="size-4 text-primary" />
-                        {completionCount} of {milestones.length} approved
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div className="absolute left-4 top-4">
+                <StatusBadge status={project.status} />
               </div>
             </div>
 
             <div className="flex flex-col justify-between gap-5 border-t border-border/70 p-6 sm:p-8 lg:border-l lg:border-t-0">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">Milestone progress</p>
+                <div className="space-y-3 border-b border-border/60 pb-4">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-background/90 px-3 py-1 text-xs font-semibold text-muted-foreground shadow-sm backdrop-blur">
+                    <FileText className="size-3.5" />
+                    Proof submission workspace
+                  </span>
+                  <h1 className="text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+                    {project.title}
+                  </h1>
+                  <p className="text-sm leading-6 text-muted-foreground sm:text-base">
+                    {project.summary}
+                  </p>
+                </div>
+
+                <p className="mt-5 text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">Milestone progress</p>
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   <Card className="rounded-2xl border border-border/70 bg-secondary/30 p-4 shadow-sm">
                     <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Unlocked</p>
@@ -126,6 +105,19 @@ export default async function MilestonesPage({ params }: { params: Promise<{ id:
                     The next milestone opens only after approval.
                   </li>
                 </ul>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <Link href={`/dashboard/projects/${projectId}`}>
+                  <Button variant="outline" className="rounded-xl">
+                    View project
+                    <ArrowRight className="ml-2 size-4" />
+                  </Button>
+                </Link>
+                <div className="inline-flex items-center gap-2 rounded-xl border border-border/70 bg-background/90 px-4 py-2 text-sm font-semibold text-foreground shadow-sm backdrop-blur">
+                  <Clock3 className="size-4 text-primary" />
+                  {completionCount} of {milestones.length} approved
+                </div>
               </div>
             </div>
           </div>
