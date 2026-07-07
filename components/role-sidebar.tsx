@@ -176,7 +176,7 @@ export default function RoleSidebar({
       </nav>
 
       {/* Bottom Profile and Signout Section */}
-      <div className="mt-auto border-t border-border pt-4 pb-3 px-2 flex-shrink-0">
+      <div className="mt-6 border-t border-border pt-4 pb-3 px-2 flex-shrink-0 md:mt-auto">
         <div className="flex items-center gap-3 px-2 py-2 min-w-0">
           <div className="h-10 w-10 rounded-full bg-muted text-foreground flex items-center justify-center font-bold text-sm border border-border overflow-hidden">
             {user.image ? (
@@ -241,7 +241,7 @@ export default function RoleSidebar({
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto mt-4">
+            <div className="flex-1 overflow-y-auto mt-4 pb-2">
               <nav className="flex flex-col gap-1 px-2">
                 {items.map((it) => {
                   const Icon = it.icon
@@ -264,7 +264,7 @@ export default function RoleSidebar({
             </div>
 
             {/* Footer fixed at bottom of drawer so it's always visible on mobile */}
-            <div className="border-t border-border pt-4 pb-6 px-2">
+            <div className="border-t border-border pt-3 pb-4 px-2">
                 <div className="flex items-center gap-3 px-2 py-2">
                   <div className="h-10 w-10 rounded-full bg-muted text-foreground flex items-center justify-center font-bold text-sm border border-border overflow-hidden">
                     {user.image ? (
