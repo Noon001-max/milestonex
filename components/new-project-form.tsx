@@ -34,7 +34,6 @@ export function NewProjectForm() {
   const [step, setStep] = React.useState(1)
   const [category, setCategory] = React.useState<string>("community")
   const [submitting, setSubmitting] = React.useState(false)
-  const [uploadingImage, setUploadingImage] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
   
   const [preview, setPreview] = React.useState({
@@ -127,23 +126,6 @@ export function NewProjectForm() {
         throw new Error("Could not submit form")
       }
 
-      // If a local objectUrl exists, we grab the raw file upload to send
-      const fileInput = formEl.querySelector('input[name="imageUrl"]') as HTMLInputElement | null
-      let uploadedUrl: string | null = null
-      if (fileInput?.files?.[0]) {
-        setUploadingImage(true)
-        const uploadForm = new FormData()
-        uploadForm.append("file", fileInput.files[0])
-        const res = await fetch("/api/upload", { method: "POST", body: uploadForm })
-        setUploadingImage(false)
-        if (!res.ok) {
-          const payload = await res.json().catch(() => ({}))
-          throw new Error(payload?.error || "Image upload failed")
-        }
-        const data = await res.json()
-        uploadedUrl = data.url
-      }
-
       const formData = new FormData(formEl)
       // Ensure controlled values are copied into FormData in case any inputs
       // are not reflected in the DOM (safer for custom input components).
@@ -158,13 +140,6 @@ export function NewProjectForm() {
         formData.set(`milestones[${i}].description`, m.description || "")
         formData.set(`milestones[${i}].amount`, String(m.amount || ""))
       })
-      
-      if (uploadedUrl) {
-        formData.delete("imageUrl")
-        formData.set("imageUrl", uploadedUrl)
-      } else if (preview.imageUrl && !preview.imageUrl.startsWith("blob:")) {
-        formData.set("imageUrl", preview.imageUrl)
-      }
 
       await createProject(formData)
       router.push("/dashboard/projects")
@@ -205,18 +180,14 @@ export function NewProjectForm() {
   const totalGoal = preview.milestones.reduce((sum, m) => sum + Number(m.amount || 0), 0)
 
   return (
-    <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-12" aria-busy={submitting || uploadingImage}>
-      {(submitting || uploadingImage) && (
+    <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-12" aria-busy={submitting}>
+      {submitting && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 px-4 backdrop-blur-sm">
           <div className="w-full max-w-sm rounded-2xl border border-border/70 bg-card p-6 text-center shadow-2xl">
             <Loader2 className="mx-auto size-10 animate-spin text-primary" />
-            <h3 className="mt-4 text-lg font-semibold text-foreground">
-              {uploadingImage ? "Uploading image" : "Creating project"}
-            </h3>
+            <h3 className="mt-4 text-lg font-semibold text-foreground">Creating project</h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              {uploadingImage
-                ? "Please wait while the hero image is uploaded."
-                : "Please wait while your proposal and image are being saved."}
+              Please wait while your proposal and image are being saved.
             </p>
           </div>
         </div>
@@ -525,11 +496,11 @@ export function NewProjectForm() {
                 ) : (
                   <button
                     type="submit"
-                    disabled={submitting || uploadingImage}
+                    disabled={submitting}
                     className="inline-flex items-center gap-2 text-xs font-bold text-primary-foreground bg-primary rounded-xl px-6 py-2.5 transition shadow-md shadow-primary/10 disabled:opacity-60 disabled:cursor-not-allowed hover:scale-[1.02] hover:bg-primary/95"
                   >
                     {submitting ? <Loader2 className="size-4 animate-spin" /> : null}
-                    <span>{uploadingImage ? "Uploading Image" : "Submit Proposal"}</span>
+                    <span>Submit Proposal</span>
                   </button>
                 )}
               </div>
