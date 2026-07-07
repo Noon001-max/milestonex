@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { CheckCircle2, Clock, FileText, ShieldCheck, ArrowRight, Layers3 } from "lucide-react"
+import { CheckCircle2, Clock, ShieldCheck, ArrowRight } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { getVerificationQueue } from "@/app/actions/milestones"
@@ -15,7 +15,6 @@ export default async function VerifierDashboard() {
   if (!user) return redirect("/sign-in")
   if (user.role !== "verifier") return redirect("/dashboard")
   const queue = await getVerificationQueue()
-  const projectCount = new Set(queue.map((m) => m.projectId)).size
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
@@ -36,12 +35,6 @@ export default async function VerifierDashboard() {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
-                  href="/dashboard"
-                  className="inline-flex h-9 items-center justify-center rounded-full border border-border bg-background px-4 text-sm font-medium text-foreground transition-all hover:bg-muted"
-                >
-                  Back to dashboard
-                </Link>
-                <Link
                   href="/dashboard/release-funds"
                   className="inline-flex h-9 items-center justify-center rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground transition-all hover:opacity-90"
                 >
@@ -60,17 +53,6 @@ export default async function VerifierDashboard() {
                   </div>
                   <div className="rounded-2xl bg-primary/10 p-3 text-primary">
                     <Clock className="size-5" />
-                  </div>
-                </div>
-              </Card>
-              <Card className="rounded-[1.5rem] border border-border/70 bg-background/80 p-4 shadow-sm">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Projects in queue</p>
-                    <p className="mt-2 text-2xl font-bold text-foreground">{projectCount}</p>
-                  </div>
-                  <div className="rounded-2xl bg-indigo-500/10 p-3 text-indigo-500">
-                    <Layers3 className="size-5" />
                   </div>
                 </div>
               </Card>
