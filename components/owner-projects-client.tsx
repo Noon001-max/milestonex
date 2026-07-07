@@ -193,6 +193,11 @@ export default function OwnerProjectsClient({ projects }: OwnerProjectsClientPro
                 return (
                   <Card key={project.id} className="overflow-hidden rounded-2xl border border-border/70 bg-card p-0 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
                     <div className="p-5 sm:p-6">
+                      {project.status === "completed" && (
+                        <div className="mb-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 px-4 py-3 text-sm font-medium text-foreground">
+                          Completed projects are view-only.
+                        </div>
+                      )}
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                         <div className="min-w-0 space-y-2">
                           <div className="flex flex-wrap items-center gap-2">
@@ -232,20 +237,24 @@ export default function OwnerProjectsClient({ projects }: OwnerProjectsClientPro
                             <FileText className="size-3.5" />
                             <span>View project</span>
                           </Link>
-                          <Link
-                            href={`/dashboard/projects/${project.id}/milestones`}
-                            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-semibold text-foreground transition hover:bg-muted"
-                          >
-                            <ClipboardList className="size-3.5" />
-                            <span>Manage milestones</span>
-                          </Link>
-                          <Link
-                            href={`/dashboard/projects/${project.id}/edit`}
-                            className="inline-flex items-center gap-2 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground transition hover:bg-primary/95"
-                          >
-                            <Edit2 className="size-3.5" />
-                            <span>Edit project</span>
-                          </Link>
+                          {project.status !== "completed" && (
+                            <>
+                              <Link
+                                href={`/dashboard/projects/${project.id}/milestones`}
+                                className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-semibold text-foreground transition hover:bg-muted"
+                              >
+                                <ClipboardList className="size-3.5" />
+                                <span>Manage milestones</span>
+                              </Link>
+                              <Link
+                                href={`/dashboard/projects/${project.id}/edit`}
+                                className="inline-flex items-center gap-2 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground transition hover:bg-primary/95"
+                              >
+                                <Edit2 className="size-3.5" />
+                                <span>Edit project</span>
+                              </Link>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
