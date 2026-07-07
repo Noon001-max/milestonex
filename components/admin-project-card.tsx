@@ -56,13 +56,11 @@ export function AdminProjectCard({
     <Card className="group overflow-hidden rounded-[1.75rem] border border-border/70 bg-card/80 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-start gap-4">
-          {imageUrl ? (
-            <img src={imageUrl} alt={title} className="h-20 w-28 rounded-2xl object-cover ring-1 ring-border/60" />
-          ) : (
-            <div className="flex h-20 w-28 items-center justify-center rounded-2xl bg-secondary/30 text-xs text-muted-foreground ring-1 ring-border/60">
-              No image
-            </div>
-          )}
+          <img
+            src={imageUrl || "/hero-community.png"}
+            alt={title}
+            className="h-20 w-28 rounded-2xl object-cover ring-1 ring-border/60"
+          />
 
           <div className="min-w-0 space-y-2">
             <div className="flex flex-wrap items-center gap-2">
