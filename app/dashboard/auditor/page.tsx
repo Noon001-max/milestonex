@@ -6,6 +6,7 @@ import { getMyProjects } from "@/app/actions/projects"
 import { getApprovedMilestones } from "@/app/actions/projects"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { formatCurrency } from "@/lib/roles"
 import { StatusBadge } from "@/components/status-badge"
 
