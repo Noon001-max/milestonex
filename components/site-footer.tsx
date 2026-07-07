@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { ShieldCheck } from "lucide-react"
 
 export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
@@ -12,35 +12,13 @@ export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
     { name: "SHADRACK KIPTOO", id: "26JO1ACS009" },
   ]
 
-  const scrollerRef = useRef<HTMLDivElement | null>(null)
   const [isPaused, setIsPaused] = useState(false)
-  const scrollSpeed = 0.3
-
-  useEffect(() => {
-    let rafId: number | null = null
-    const el = scrollerRef.current
-    if (!el) return
-
-    const step = () => {
-      if (!el || isPaused) return
-      el.scrollLeft += scrollSpeed
-      if (el.scrollLeft >= el.scrollWidth / 2) {
-        el.scrollLeft = 0
-      }
-      rafId = requestAnimationFrame(step)
-    }
-
-    rafId = requestAnimationFrame(step)
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId)
-    }
-  }, [isPaused, scrollSpeed])
 
   return (
     <footer className="bg-gradient-to-b from-background via-background to-muted/20 shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
-      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-          <section className="rounded-3xl bg-card p-6 shadow-sm sm:p-7">
+      <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+          <section className="rounded-3xl bg-card p-5 shadow-sm sm:p-6">
             <div className="flex items-center gap-3">
               <span className="flex size-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
                 <ShieldCheck className="size-5.5" />
@@ -71,34 +49,34 @@ export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
             </div>
           </section>
 
-          <section className="rounded-3xl bg-card p-6 shadow-sm sm:p-7">
+          <section className="rounded-3xl bg-card p-5 shadow-sm sm:p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Navigate</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="mt-3 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
               {!isLoggedIn ? (
                 <>
-                  <a href="/projects" className="rounded-2xl bg-background px-4 py-3 text-sm font-medium text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">Projects</a>
-                  <a href="/transparency" className="rounded-2xl bg-background px-4 py-3 text-sm font-medium text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">Transparency</a>
-                  <a href="/#how-it-works" className="rounded-2xl bg-background px-4 py-3 text-sm font-medium text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">How it works</a>
-                  <a href="/sign-up" className="rounded-2xl bg-background px-4 py-3 text-sm font-medium text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">Start a project</a>
+                  <a href="/projects" className="transition-colors duration-200 hover:text-primary">Projects</a>
+                  <a href="/transparency" className="transition-colors duration-200 hover:text-primary">Transparency</a>
+                  <a href="/#how-it-works" className="transition-colors duration-200 hover:text-primary">How it works</a>
+                  <a href="/sign-up" className="transition-colors duration-200 hover:text-primary">Start a project</a>
                 </>
               ) : (
                 <>
-                  <a href="/dashboard" className="rounded-2xl bg-background px-4 py-3 text-sm font-medium text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">Dashboard</a>
-                  <a href="/dashboard/projects" className="rounded-2xl bg-background px-4 py-3 text-sm font-medium text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">My projects</a>
-                  <a href="/dashboard/settings" className="rounded-2xl bg-background px-4 py-3 text-sm font-medium text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">Account settings</a>
-                  <a href="/dashboard/notifications" className="rounded-2xl bg-background px-4 py-3 text-sm font-medium text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">Notifications</a>
+                  <a href="/dashboard" className="transition-colors duration-200 hover:text-primary">Dashboard</a>
+                  <a href="/dashboard/projects" className="transition-colors duration-200 hover:text-primary">My projects</a>
+                  <a href="/dashboard/settings" className="transition-colors duration-200 hover:text-primary">Account settings</a>
+                  <a href="/dashboard/notifications" className="transition-colors duration-200 hover:text-primary">Notifications</a>
                 </>
               )}
 
-              <a href="/privacy" className="rounded-2xl bg-background px-4 py-3 text-sm font-medium text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">Privacy Policy</a>
-              <a href="/cookies" className="rounded-2xl bg-background px-4 py-3 text-sm font-medium text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">Cookie Policy</a>
-              <a href="/terms" className="rounded-2xl bg-background px-4 py-3 text-sm font-medium text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">Terms of Service</a>
-              <a href="/support" className="rounded-2xl bg-background px-4 py-3 text-sm font-medium text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">Support</a>
+              <a href="/privacy" className="transition-colors duration-200 hover:text-primary">Privacy Policy</a>
+              <a href="/cookies" className="transition-colors duration-200 hover:text-primary">Cookie Policy</a>
+              <a href="/terms" className="transition-colors duration-200 hover:text-primary">Terms of Service</a>
+              <a href="/support" className="transition-colors duration-200 hover:text-primary">Support</a>
             </div>
           </section>
         </div>
 
-        <section className="mt-6 rounded-3xl bg-card p-5 shadow-sm sm:p-6">
+        <section className="mt-5 rounded-3xl bg-card p-4 shadow-sm sm:p-5">
           <div className="mb-4 flex items-end justify-between gap-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Team Members</p>
@@ -107,19 +85,21 @@ export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
           </div>
 
           <div
-            ref={scrollerRef}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
             onFocusCapture={() => setIsPaused(true)}
             onBlurCapture={() => setIsPaused(false)}
             tabIndex={0}
-            className="overflow-hidden rounded-[1.75rem] bg-gradient-to-b from-background to-muted/20 px-3 py-4 outline-none shadow-inner"
-            style={{
-              WebkitOverflowScrolling: "touch",
-              maskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
-            }}
+            className="overflow-hidden rounded-[1.75rem] bg-gradient-to-b from-background to-muted/20 px-3 py-3.5 outline-none shadow-inner"
+            style={{ WebkitOverflowScrolling: "touch", maskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)" }}
           >
-            <div className="flex w-max gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory">
+            <div
+              className="flex w-max gap-3"
+              style={{
+                animation: "team-marquee 28s linear infinite",
+                animationPlayState: isPaused ? "paused" : "running",
+              }}
+            >
               {teamMembers.concat(teamMembers).map((member, idx) => {
                 const initials = member.name
                   .split(" ")
@@ -151,13 +131,23 @@ export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
           </div>
         </section>
 
-        <div className="mt-6 flex flex-col gap-3 pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-5 flex flex-col gap-3 pt-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Milestone X. All rights reserved.</p>
           <p className="max-w-2xl sm:text-right">
             Designed for communities that need stronger accountability, safer funding, and more meaningful impact.
           </p>
         </div>
       </div>
+      <style jsx>{`
+        @keyframes team-marquee {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+      `}</style>
     </footer>
   )
 }

@@ -77,7 +77,8 @@ export function SiteHeader({
   }, [])
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/20 bg-background/60 dark:bg-background/60 backdrop-blur-xl shadow-sm">
+    <>
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/20 bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-sm">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 px-3 py-2 sm:h-18 sm:px-4">
         <div className="flex min-w-0 items-center">
           {user ? (
@@ -286,5 +287,7 @@ export function SiteHeader({
         </div>
       )}
     </header>
+    <div className="h-16 sm:h-18" aria-hidden="true" />
+    </>
   )
 }
