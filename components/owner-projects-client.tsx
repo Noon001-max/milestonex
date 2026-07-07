@@ -62,88 +62,57 @@ export default function OwnerProjectsClient({ projects }: OwnerProjectsClientPro
 
   const creatorMetrics = [
     { label: "Total Projects", value: totalProjects, icon: LayoutGrid, desc: "Proposed proposals", color: "text-blue-500 bg-blue-500/10" },
-    { label: "Total Funds Raised", value: formatCurrency(totalRaised), icon: PiggyBank, desc: "Across all submissions", color: "text-emerald-500 bg-emerald-500/10" },
-    { label: "Active Escrow Balance", value: formatCurrency(totalEscrow), icon: Landmark, desc: "Funds locked in contracts", color: "text-indigo-500 bg-indigo-500/10" },
-    { label: "Verified Milestones", value: `${verifiedMilestones}/${totalMilestones}`, icon: CheckCircle2, desc: "Milestones approved", color: "text-purple-500 bg-purple-500/10" },
-  ]
+                    <Card className="group overflow-hidden rounded-2xl border border-border/70 bg-card p-0 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
+                      <div className="h-1 bg-gradient-to-r from-primary to-emerald-500" />
 
-  const projectStats = statusOptions.map((stat) => ({
-    ...stat,
-    count: projects.filter((p) => p.status === stat.value).length,
-  }))
+                      <div className="p-5 sm:p-6">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                          <div className="min-w-0 space-y-2">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <StatusBadge status={project.status} />
+                              <span className="inline-flex items-center gap-1 rounded-full bg-secondary/60 px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
+                                <Calendar className="size-3" />
+                                {new Date(project.createdAt).toLocaleDateString()}
+                              </span>
+                            </div>
 
-  return (
-    <div className="flex min-h-svh flex-col bg-background">
-      <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:py-12">
-        
-        <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-border/70 bg-card/80 p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-5">
-          <div>
-            <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Project proposer dashboard</h1>
-            <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
-              Track proposals, review milestone progress, and keep your fundraising activity organized in one place.
-            </p>
-          </div>
-          <a
-            href="/dashboard/projects/new"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4.5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:scale-[1.01] hover:shadow-md"
-          >
-            <Plus className="size-4.5" />
-            <span>Create new proposal</span>
-          </a>
-        </div>
+                            <h2 className="truncate text-lg font-semibold tracking-tight text-foreground sm:text-xl">
+                              {project.title}
+                            </h2>
 
-        <div className="mb-8 grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {creatorMetrics.map((metric) => {
-            const Icon = metric.icon
-            return (
-              <Card key={metric.label} className="flex flex-col justify-between border border-border/70 bg-card p-4 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">{metric.label}</span>
-                  <div className={`rounded-xl p-2 ${metric.color}`}>
-                    <Icon className="size-4.5" />
-                  </div>
-                </div>
-                <div className="mt-3">
-                  <p className="text-xl font-semibold tracking-tight text-foreground">{metric.value}</p>
-                  <p className="mt-1 text-[11px] font-medium text-muted-foreground">{metric.desc}</p>
-                </div>
-              </Card>
-            )
-          })}
-        </div>
+                            <p className="line-clamp-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+                              {project.summary}
+                            </p>
+                          </div>
 
-        {projects.length > 0 ? (
-          <>
-            {/* Filters and Search */}
-            <div className="mb-8 flex flex-col gap-4">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="Search your proposals by name or description..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full rounded-xl border border-border bg-card pl-12 pr-4 py-3.5 text-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 shadow-sm"
-                />
-              </div>
+                          <div className="flex items-center gap-3 rounded-2xl bg-muted/40 px-4 py-3 sm:flex-col sm:items-end sm:text-right">
+                            <div>
+                              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Raised</p>
+                              <p className="mt-1 text-sm font-semibold text-foreground">{formatCurrency(project.fundedAmount || 0)}</p>
+                            </div>
+                            <div className="hidden h-10 w-px bg-border sm:block" />
+                            <div className="sm:hidden h-10 w-px bg-border" />
+                            <div>
+                              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Progress</p>
+                              <p className="mt-1 text-sm font-semibold text-foreground">{progress}% funded</p>
+                            </div>
+                          </div>
+                        </div>
 
-              <div className="flex items-center justify-between">
-                <button
-                  onClick={() => setExpandedFilters(!expandedFilters)}
-                  className="flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-2.5 text-sm font-bold hover:bg-secondary transition shadow-sm hover:scale-102 active:scale-98 duration-200"
-                >
-                  <Filter className="size-4 text-muted-foreground" />
-                  <span>Filter Status</span>
-                  {selectedStatuses.length > 0 && <Badge variant="secondary" className="ml-1">{selectedStatuses.length}</Badge>}
-                </button>
+                        <div className="mt-5 space-y-3 border-t border-border pt-4">
+                          <FundingProgress funded={project.fundedAmount} goal={project.fundingGoal} />
 
-                {(searchTerm || selectedStatuses.length > 0) && (
-                  <button
-                    onClick={handleClearFilters}
-                    className="flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-foreground transition duration-200"
-                  >
-                    <X className="size-4" />
-                    <span>Clear filters</span>
+                          <div className="flex items-center justify-between text-xs text-muted-foreground">
+                            <span>
+                              {completed} of {total} milestones verified
+                            </span>
+                            <span className="inline-flex items-center gap-1 font-medium text-primary transition group-hover:gap-2">
+                              Open project
+                              <ArrowRight className="size-3.5" />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                   </button>
                 )}
               </div>

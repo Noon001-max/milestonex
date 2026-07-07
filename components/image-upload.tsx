@@ -18,6 +18,7 @@ export function ImageUpload({ name, defaultValue, className, onChange }: ImageUp
   const [uploading, setUploading] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
   const inputRef = React.useRef<HTMLInputElement>(null)
+  const inputId = React.useId()
 
   async function handleFiles(files: FileList | null) {
     const file = files?.[0]
@@ -62,11 +63,10 @@ export function ImageUpload({ name, defaultValue, className, onChange }: ImageUp
           </button>
         </div>
       ) : (
-        <button
-          type="button"
-          onClick={() => inputRef.current?.click()}
+        <label
+          htmlFor={inputId}
           disabled={uploading}
-          className="flex h-48 w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-input bg-muted/30 text-muted-foreground transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex h-48 w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-input bg-muted/30 text-muted-foreground transition-colors hover:bg-muted/50"
         >
           {uploading ? (
             <>
@@ -80,11 +80,12 @@ export function ImageUpload({ name, defaultValue, className, onChange }: ImageUp
               <span className="text-xs">PNG or JPG, up to 8MB</span>
             </>
           )}
-        </button>
+        </label>
       )}
 
       <input
         ref={inputRef}
+        id={inputId}
         name={name}
         type="file"
         accept="image/*"
