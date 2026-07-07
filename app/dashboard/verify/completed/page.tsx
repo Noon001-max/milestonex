@@ -57,6 +57,14 @@ export default async function CompletedVerificationsPage() {
                     Reviewed {new Date(review.reviewedAt).toLocaleDateString()}
                   </div>
                 </div>
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                  <span className="rounded-full border border-border bg-secondary/40 px-2.5 py-1">
+                    Verified by {review.verifierName || review.verifierId}
+                  </span>
+                  <span className="rounded-full border border-border bg-secondary/40 px-2.5 py-1">
+                    ID {review.verifierId}
+                  </span>
+                </div>
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                   {review.report}
                 </p>

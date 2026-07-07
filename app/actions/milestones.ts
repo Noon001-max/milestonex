@@ -266,6 +266,7 @@ export async function getCompletedVerifications() {
       id: verifications.id,
       milestoneId: verifications.milestoneId,
       projectId: verifications.projectId,
+      verifierId: verifications.verifierId,
       verifierName: verifications.verifierName,
       decision: verifications.decision,
       report: verifications.report,

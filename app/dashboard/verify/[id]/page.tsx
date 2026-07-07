@@ -1,8 +1,10 @@
 import Image from "next/image"
 import Link from "next/link"
 import { CheckCircle2, XCircle } from "lucide-react"
+import { redirect } from "next/navigation"
 import { getSession } from "@/lib/session"
 import { getProjectById, getProjectMilestones } from "@/lib/queries"
+import { getMilestoneVerifications } from "@/lib/queries"
 import { submitVerification } from "@/app/actions/milestones"
 import { Card } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
@@ -60,6 +62,9 @@ export default async function VerifyMilestonePage({
     )
   }
 
+  const verifications = await getMilestoneVerifications(milestoneId)
+  const latestVerification = verifications[0]
+
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-4xl px-4 py-12">
@@ -94,6 +99,37 @@ export default async function VerifyMilestonePage({
             {formatCurrency(milestone.amount)}
           </p>
         </Card>
+
+        {verifications.length > 0 && latestVerification && (
+          <Card className="mb-6 rounded-[1.75rem] border border-border/70 p-6 shadow-sm">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <h3 className="font-semibold text-foreground">Verification details</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Last reviewed by {latestVerification.verifierName || latestVerification.verifierId}
+                </p>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {new Date(latestVerification.createdAt).toLocaleString()}
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-2xl border border-border/40 bg-secondary/50 p-4 text-sm">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Verifier ID</p>
+                <p className="mt-1 font-medium text-foreground">{latestVerification.verifierId}</p>
+              </div>
+              <div className="rounded-2xl border border-border/40 bg-secondary/50 p-4 text-sm">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Decision</p>
+                <p className="mt-1 font-medium capitalize text-foreground">{latestVerification.decision}</p>
+              </div>
+            </div>
+
+            <p className="mt-4 whitespace-pre-line text-sm leading-7 text-muted-foreground">
+              {latestVerification.report}
+            </p>
+          </Card>
+        )}
 
         {(milestone.evidenceNote || milestone.evidenceUrls) && (
           <Card className="mb-6 rounded-[1.75rem] border border-border/70 p-6 shadow-sm">
@@ -178,4 +214,5 @@ async function submitVerificationForm(formData: FormData) {
   const report = formData.get("report") as string
 
   await submitVerification(milestoneId, decision, report)
+  redirect("/dashboard/verify")
 }
