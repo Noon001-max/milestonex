@@ -44,6 +44,7 @@ export async function getAllProjects() {
       ownerId: projects.ownerId,
       fundedAmount: projects.fundedAmount,
       escrowBalance: projects.escrowBalance,
+      releasedAmount: projects.releasedAmount,
       category: projects.category,
       imageUrl: projects.imageUrl,
       location: projects.location,
