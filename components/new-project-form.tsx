@@ -208,26 +208,6 @@ export function NewProjectForm() {
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
       {/* Left panel - Form Steps */}
       <div className="lg:col-span-7">
-        <div className="mb-5 rounded-2xl border border-border/80 bg-card p-4 shadow-sm">
-          <div className="flex items-center gap-2.5 text-foreground pb-2 border-b border-border/60">
-            <Info className="size-5 text-primary" />
-            <h3 className="font-bold">Project Image</h3>
-          </div>
-
-          <div className="mt-4 space-y-1.5">
-            <Label className="font-semibold text-xs text-foreground">Add an image first</Label>
-            <ImageUpload
-              name="imageUrl"
-              className="mt-1"
-              onChange={(url) => updateField("imageUrl", url)}
-            />
-          </div>
-
-          <p className="mt-3 text-xs text-muted-foreground">
-            Pick the image now, then complete the rest of the proposal and submit everything together.
-          </p>
-        </div>
-        
         {/* Step Indicator Header */}
           <div className="mb-8 border border-border/80 bg-card rounded-2xl p-4.5 flex items-center justify-between shadow-sm">
           <button 
@@ -474,6 +454,18 @@ export function NewProjectForm() {
                 <div className="flex items-center gap-2.5 text-foreground pb-2 border-b border-border/60">
                   <Info className="size-5 text-primary" />
                   <h3 className="font-bold">Project Review</h3>
+                </div>
+
+                <div className="space-y-1.5 rounded-xl border border-border/60 bg-card/70 p-4">
+                  <Label className="font-semibold text-xs text-foreground">Project Hero Image</Label>
+                  <ImageUpload
+                    name="imageUrl"
+                    className="mt-1"
+                    onChange={(url) => updateField("imageUrl", url)}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Add the final hero image here, then click Submit Proposal to upload everything together.
+                  </p>
                 </div>
 
                 <div className="rounded-xl border border-border/60 bg-card/70 p-3 text-sm">
