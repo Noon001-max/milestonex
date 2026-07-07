@@ -40,7 +40,7 @@ export default async function ProjectManagePage({
 
   const isMilestoneUnlocked = (index: number) =>
     index === 0 ||
-    milestones.slice(0, index).every((prev) => prev.submittedAt !== null)
+    milestones.slice(0, index).every((prev) => prev.status === "approved" || prev.status === "released")
 
   if (!project || project.ownerId !== user.id) {
     return (
@@ -93,13 +93,13 @@ export default async function ProjectManagePage({
                       <StatusBadge status={m.status} />
                     </div>
 
-                    {(m.status === "pending" || (m.status === "released" && !m.submittedAt)) && unlocked && (
+                    {(unlocked && (m.status === "pending" || m.status === "rejected")) && (
                       <EvidenceForm milestoneId={m.id} />
                     )}
 
-                    {(m.status === "pending" || (m.status === "released" && !m.submittedAt)) && !unlocked && (
+                    {(m.status === "pending" || m.status === "rejected") && !unlocked && (
                       <div className="mt-4 rounded-lg border border-border bg-muted p-4 text-sm text-muted-foreground">
-                        Milestone {index + 1} will unlock after the previous milestone evidence is submitted.
+                        Milestone {index + 1} will unlock after the previous milestone is approved.
                       </div>
                     )}
 
