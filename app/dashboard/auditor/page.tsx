@@ -94,7 +94,7 @@ export default async function AuditorDashboard() {
                 <p className="mt-2 text-2xl font-extrabold text-foreground">
                   {formatCurrency(totalReleased)}
                 </p>
-                <p className="mt-1 text-xs text-muted-foreground">To project owners</p>
+                <p className="mt-1 text-xs text-muted-foreground">To project proposers</p>
               </div>
               <div className="rounded-xl bg-emerald-500/10 p-2.5">
                 <CheckCircle2 className="size-4.5 text-emerald-500" />

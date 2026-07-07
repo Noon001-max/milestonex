@@ -4,6 +4,7 @@ import { getAllUsers, suspendUser, updateUserRole, deleteUser } from "@/app/acti
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ShieldCheck, Users, UserMinus, UserCog, CalendarDays } from "lucide-react"
+import { ROLE_LABELS } from "@/lib/roles"
 
 export const dynamic = "force-dynamic"
 
@@ -98,8 +99,8 @@ export default async function AdminUsersPage() {
                         <td className="px-6 py-4 font-medium text-foreground">{u.name}</td>
                         <td className="px-6 py-4 text-muted-foreground">{u.email}</td>
                         <td className="px-6 py-4">
-                          <Badge variant="outline" className="capitalize rounded-full px-3 py-1">
-                            {u.role}
+                          <Badge variant="outline" className="rounded-full px-3 py-1">
+                            {ROLE_LABELS[u.role as keyof typeof ROLE_LABELS] || u.role}
                           </Badge>
                         </td>
                         <td className="px-6 py-4 text-muted-foreground">
@@ -151,8 +152,8 @@ export default async function AdminUsersPage() {
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
                           <h3 className="truncate text-sm font-semibold text-foreground">{u.name}</h3>
-                          <Badge variant="outline" className="capitalize rounded-full px-2.5 py-0.5 text-[11px]">
-                            {u.role}
+                          <Badge variant="outline" className="rounded-full px-2.5 py-0.5 text-[11px]">
+                            {ROLE_LABELS[u.role as keyof typeof ROLE_LABELS] || u.role}
                           </Badge>
                         </div>
                         <p className="mt-1 truncate text-xs text-muted-foreground">{u.email}</p>

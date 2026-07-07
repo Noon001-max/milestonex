@@ -27,7 +27,7 @@ export default async function ReleasedFundsPage() {
             Released funds report
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Historical record of all funds released from escrow to project owners
+            Historical record of all funds released from escrow to project proposers
           </p>
         </div>
 
@@ -136,7 +136,7 @@ export default async function ReleasedFundsPage() {
                   <div className="mt-4 pt-4 border-t border-border">
                     <div className="flex items-center gap-2 text-sm">
                       <CheckCircle2 className="size-4 text-emerald-600 dark:text-emerald-400" />
-                      <span className="text-muted-foreground">Successfully released to project owner</span>
+                      <span className="text-muted-foreground">Successfully released to project proposer</span>
                     </div>
                   </div>
                 </Card>

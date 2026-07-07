@@ -26,7 +26,7 @@ export default async function ReleaseFundsPage() {
             Release funds
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Review approved milestones and release secured funds to project owners
+            Review approved milestones and release secured funds to project proposers
           </p>
         </div>
 

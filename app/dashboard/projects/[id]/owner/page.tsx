@@ -56,7 +56,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
 
             <div className="min-w-0">
               <p className="text-sm text-muted-foreground">
-                Owner dashboard for this project. Controls and reports are private to you.
+                Project proposer dashboard for this project. Controls and reports are private to you.
               </p>
               <h1 className="mt-2 break-words text-balance text-3xl font-semibold tracking-tight text-foreground">
                 {project.title}

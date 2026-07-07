@@ -25,7 +25,7 @@ export default async function VerifierDashboard() {
             Verification queue
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Review milestone submissions and verify evidence from project owners
+            Review milestone submissions and verify evidence from project proposers
           </p>
         </div>
 
