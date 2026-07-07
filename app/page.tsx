@@ -30,7 +30,8 @@ export default async function HomePage() {
     redirect("/dashboard")
   }
 
-  const featured = projects.slice(0, 3)
+  const activeProjects = projects.filter((project) => project.status !== "completed")
+  const featured = activeProjects.slice(0, 3)
   const completedProjects = projects
     .filter((project) => project.status === "completed")
     .sort((a, b) => Number(b.releasedAmount || 0) - Number(a.releasedAmount || 0))
@@ -112,8 +113,12 @@ export default async function HomePage() {
       <section className="border-y border-border bg-background py-14">
         <div className="mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-[1.75rem] border border-border/70 bg-card p-6 text-center shadow-sm shadow-primary/5">
-            <p className="text-3xl font-bold text-foreground">{stats.totalProjects}</p>
-            <p className="mt-3 text-sm text-muted-foreground">Active Projects live on the platform</p>
+            <p className="text-3xl font-bold text-foreground">{activeProjects.length}</p>
+            <p className="mt-3 text-sm text-muted-foreground">Active projects live on the platform</p>
+          </div>
+          <div className="rounded-[1.75rem] border border-border/70 bg-card p-6 text-center shadow-sm shadow-primary/5">
+            <p className="text-3xl font-bold text-foreground">{completedProjects.length}</p>
+            <p className="mt-3 text-sm text-muted-foreground">Successfully completed projects</p>
           </div>
           <div className="rounded-[1.75rem] border border-border/70 bg-card p-6 text-center shadow-sm shadow-primary/5">
             <p className="text-3xl font-bold text-foreground">{formatCurrency(stats.totalRaised)}</p>
@@ -122,10 +127,6 @@ export default async function HomePage() {
           <div className="rounded-[1.75rem] border border-border/70 bg-card p-6 text-center shadow-sm shadow-primary/5">
             <p className="text-3xl font-bold text-primary">{formatCurrency(stats.totalEscrow)}</p>
             <p className="mt-3 text-sm text-muted-foreground">Held securely in escrow until milestones clear</p>
-          </div>
-          <div className="rounded-[1.75rem] border border-border/70 bg-card p-6 text-center shadow-sm shadow-primary/5">
-            <p className="text-3xl font-bold text-foreground">{stats.verifiedMilestones}/{stats.totalMilestones}</p>
-            <p className="mt-3 text-sm text-muted-foreground">Milestones verified and approved</p>
           </div>
         </div>
       </section>
@@ -145,6 +146,12 @@ export default async function HomePage() {
             className="inline-flex items-center justify-center rounded-full border border-primary/20 bg-background px-7 py-3 text-sm font-semibold text-primary shadow-sm hover:border-primary hover:bg-primary/5 transition-all duration-200"
           >
             View All Projects
+          </a>
+          <a
+            href="#completed-projects"
+            className="inline-flex items-center justify-center rounded-full border border-border/70 bg-card px-7 py-3 text-sm font-semibold text-foreground shadow-sm transition-all duration-200 hover:border-primary hover:bg-primary/5"
+          >
+            View completed projects
           </a>
         </div>
 
@@ -172,7 +179,7 @@ export default async function HomePage() {
       </section>
 
       {/* Completed Projects */}
-      <section className="mx-auto w-full max-w-6xl px-4 py-20 lg:py-28">
+      <section id="completed-projects" className="mx-auto w-full max-w-6xl px-4 py-20 lg:py-28">
         <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
             <span className="text-sm font-semibold uppercase tracking-[0.32em] text-primary">
