@@ -46,9 +46,9 @@ export default async function ProjectDetailPage({
   const canFund = ["approved", "funding", "started"].includes(project.status)
 
   return (
-    <div className="flex min-h-svh flex-col bg-background">
+    <div className="flex min-h-svh flex-col bg-background overflow-x-clip">
       <SiteHeader user={user} />
-      <main className="mx-auto w-full max-w-6xl overflow-hidden px-4 py-8 sm:py-12">
+      <main className="mx-auto w-full max-w-6xl overflow-x-clip px-4 py-8 sm:py-12">
         <Link
           href="/projects"
           className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
@@ -59,7 +59,7 @@ export default async function ProjectDetailPage({
 
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Main column */}
-          <div className="flex flex-col gap-6 lg:col-span-2">
+          <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
             <div className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-border bg-muted shadow-sm">
               <Image
                 src={project.imageUrl || "/hero-community.png"}
@@ -207,7 +207,7 @@ export default async function ProjectDetailPage({
           </div>
 
           {/* Sidebar */}
-          <div className="flex flex-col gap-6">
+          <div className="flex min-w-0 flex-col gap-6">
             <Card className="p-6 border border-border/80 bg-card shadow-sm">
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
                 <Sparkles className="size-4 text-primary" />
@@ -277,7 +277,7 @@ export default async function ProjectDetailPage({
               </Card>
             )}
 
-            <Card className="flex items-center justify-between gap-3 p-6">
+            <Card className="flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-medium text-foreground">
                   See something wrong?

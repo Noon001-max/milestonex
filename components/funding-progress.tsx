@@ -15,11 +15,11 @@ export function FundingProgress({
   return (
     <div className="flex flex-col gap-2">
       <Progress value={pct} className="h-2" />
-      <div className="flex items-center justify-between text-sm">
-        <span className="font-semibold text-foreground">
+      <div className="flex flex-col gap-1 text-sm sm:flex-row sm:items-center sm:justify-between">
+        <span className="min-w-0 font-semibold text-foreground">
           {formatCurrency(funded)}
         </span>
-        <span className="text-muted-foreground">
+        <span className="min-w-0 text-muted-foreground">
           of {formatCurrency(goal)} ({pct}%)
         </span>
       </div>
