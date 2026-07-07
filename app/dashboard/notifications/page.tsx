@@ -10,12 +10,42 @@ const getNotificationConfig = (title: string, body: string) => {
   if (text.includes("milestone") || text.includes("evidence") || text.includes("verify")) {
     return {
       icon: GitBranch,
-      <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
-        <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card shadow-sm lg:border-white/10 lg:bg-card/70 lg:shadow-2xl lg:shadow-black/10 lg:backdrop-blur-md">
+      bgColor: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/10",
+    }
   }
   if (text.includes("donation") || text.includes("funded") || text.includes("escrow") || text.includes("payout") || text.includes("released")) {
     return {
       icon: Banknote,
+      bgColor: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/10",
+    }
+  }
+  if (text.includes("dispute") || text.includes("rejected") || text.includes("suspend") || text.includes("alert")) {
+    return {
+      icon: AlertCircle,
+      bgColor: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/10",
+    }
+  }
+  return {
+    icon: Bell,
+    bgColor: "bg-primary/10 text-primary border border-primary/10",
+  }
+}
+
+export default async function NotificationsPage() {
+  const user = await getSession()
+  if (!user) return null
+
+  const notifications = await getMyNotifications()
+  const hasUnread = notifications.some((n) => !n.read)
+
+  return (
+    <div className="flex min-h-svh flex-col bg-background lg:bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.08),_transparent_42%),radial-gradient(circle_at_bottom_right,_rgba(16,185,129,0.08),_transparent_32%)]">
+      <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
+        <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card shadow-sm lg:border-white/10 lg:bg-card/70 lg:shadow-2xl lg:shadow-black/10 lg:backdrop-blur-md">
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-emerald-500 to-cyan-500" />
+          <div className="absolute -right-16 -top-16 hidden size-40 rounded-full bg-primary/10 blur-3xl lg:block" />
+          <div className="absolute -left-12 bottom-0 hidden size-32 rounded-full bg-emerald-500/10 blur-3xl lg:block" />
+
           <div className="relative z-10 p-4 sm:p-6 lg:p-8">
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:gap-8">
               <section className="flex flex-col justify-between gap-6 lg:py-2">
@@ -146,36 +176,7 @@ const getNotificationConfig = (title: string, body: string) => {
                   )}
                 </div>
               </section>
-                            action={async function readNotification() {
-                              "use server"
-                              await markNotificationRead(n.id)
-                            }}
-                            className="self-end sm:self-center"
-                          >
-                            <button
-                              type="submit"
-                              title="Mark as read"
-                              className="inline-flex items-center justify-center gap-1.5 rounded-full border border-border/80 bg-card px-4 py-2 text-xs font-bold text-foreground shadow-sm transition-all hover:scale-[1.02] hover:border-primary/20 hover:bg-secondary"
-                            >
-                              <Check className="size-3.5 text-primary" />
-                              <span>Mark read</span>
-                            </button>
-                          </form>
-                        )}
-                      </div>
-                    )
-                  })}
-                </div>
-              </Card>
-            ) : (
-              <Card className="mx-auto max-w-md border border-border/70 bg-background/80 p-16 text-center shadow-xl shadow-black/5 backdrop-blur-sm">
-                <Bell className="mx-auto mb-4 size-12 text-primary opacity-40" />
-                <p className="mb-2 text-lg font-bold text-foreground">No alerts yet</p>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  When projects submit milestones or escrow payments are processed, updates will appear here.
-                </p>
-              </Card>
-            )}
+            </div>
           </div>
         </div>
       </main>

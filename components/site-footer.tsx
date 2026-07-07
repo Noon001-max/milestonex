@@ -14,6 +14,7 @@ export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
 
   const scrollerRef = useRef<HTMLDivElement | null>(null)
   const [isPaused, setIsPaused] = useState(false)
+  const scrollSpeed = 0.3
 
   useEffect(() => {
     let rafId: number | null = null
@@ -22,9 +23,7 @@ export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
 
     const step = () => {
       if (!el || isPaused) return
-      // scroll a fraction of a pixel each frame
-      el.scrollLeft += 0.5
-      // reset when we've scrolled half (since content is duplicated)
+      el.scrollLeft += scrollSpeed
       if (el.scrollLeft >= el.scrollWidth / 2) {
         el.scrollLeft = 0
       }
@@ -35,89 +34,128 @@ export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
     return () => {
       if (rafId) cancelAnimationFrame(rafId)
     }
-  }, [isPaused])
+  }, [isPaused, scrollSpeed])
 
   return (
-    <footer className="border-t border-white/20 dark:border-white/10 glass shadow-lg">
-      <div className="mx-auto w-full max-w-6xl px-4 py-12">
-        <div className="grid gap-8 md:grid-cols-2 mb-8">
-          {/* Branding */}
-          <div className="flex flex-col gap-4">
+    <footer className="border-t border-border/70 bg-gradient-to-b from-background via-background to-muted/20 shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+          <section className="rounded-3xl border border-border/70 bg-card p-6 shadow-sm sm:p-7">
             <div className="flex items-center gap-3">
-              <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm shadow-primary/20">
+              <span className="flex size-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
                 <ShieldCheck className="size-5.5" />
               </span>
-              <div className="text-lg font-bold tracking-tight text-foreground">
-                Milestone X
+              <div>
+                <div className="text-lg font-bold tracking-tight text-foreground">Milestone X</div>
+                <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                  Accountable funding platform
+                </p>
               </div>
             </div>
-            <p className="max-w-md text-sm leading-7 text-muted-foreground">
+
+            <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground">
               Trusted escrow funding, transparent milestone accountability, and a platform built to turn community trust into measurable impact.
             </p>
-            <div className="inline-flex w-fit items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-primary">
-              <span className="h-2.5 w-2.5 rounded-full bg-primary" />
-              Premium funding clarity
-            </div>
-          </div>
 
-          {/* Navigation */}
-          <div className="flex flex-col gap-4">
-            <p className="text-sm font-semibold text-foreground">Navigate</p>
-            <div className="flex flex-col gap-3 text-sm text-muted-foreground">
+            <div className="mt-5 flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-medium text-primary">
+                <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+                Premium funding clarity
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background px-4 py-2 text-sm font-medium text-foreground">
+                Milestone tracking
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background px-4 py-2 text-sm font-medium text-foreground">
+                Escrow oversight
+              </span>
+            </div>
+          </section>
+
+          <section className="rounded-3xl border border-border/70 bg-card p-6 shadow-sm sm:p-7">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Navigate</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {!isLoggedIn ? (
                 <>
-                  <a href="/projects" className="transition-colors duration-200 hover:text-primary">Projects</a>
-                  <a href="/transparency" className="transition-colors duration-200 hover:text-primary">Transparency</a>
-                  <a href="/#how-it-works" className="transition-colors duration-200 hover:text-primary">How it works</a>
-                  <a href="/sign-up" className="transition-colors duration-200 hover:text-primary">Start a project</a>
+                  <a href="/projects" className="rounded-2xl border border-border/70 bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-sm">Projects</a>
+                  <a href="/transparency" className="rounded-2xl border border-border/70 bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-sm">Transparency</a>
+                  <a href="/#how-it-works" className="rounded-2xl border border-border/70 bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-sm">How it works</a>
+                  <a href="/sign-up" className="rounded-2xl border border-border/70 bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-sm">Start a project</a>
                 </>
               ) : (
                 <>
-                  <a href="/dashboard" className="transition-colors duration-200 hover:text-primary">Dashboard</a>
-                  <a href="/dashboard/projects" className="transition-colors duration-200 hover:text-primary">My projects</a>
-                  <a href="/dashboard/settings" className="transition-colors duration-200 hover:text-primary">Account settings</a>
-                  <a href="/dashboard/notifications" className="transition-colors duration-200 hover:text-primary">Notifications</a>
+                  <a href="/dashboard" className="rounded-2xl border border-border/70 bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-sm">Dashboard</a>
+                  <a href="/dashboard/projects" className="rounded-2xl border border-border/70 bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-sm">My projects</a>
+                  <a href="/dashboard/settings" className="rounded-2xl border border-border/70 bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-sm">Account settings</a>
+                  <a href="/dashboard/notifications" className="rounded-2xl border border-border/70 bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-sm">Notifications</a>
                 </>
               )}
 
-              {/* Important legal and support pages always shown for logged-in users */}
-              <a href="/privacy" className="transition-colors duration-200 hover:text-primary">Privacy Policy</a>
-              <a href="/cookies" className="transition-colors duration-200 hover:text-primary">Cookie Policy</a>
-              <a href="/terms" className="transition-colors duration-200 hover:text-primary">Terms of Service</a>
-              <a href="/support" className="transition-colors duration-200 hover:text-primary">Support</a>
+              <a href="/privacy" className="rounded-2xl border border-border/70 bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-sm">Privacy Policy</a>
+              <a href="/cookies" className="rounded-2xl border border-border/70 bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-sm">Cookie Policy</a>
+              <a href="/terms" className="rounded-2xl border border-border/70 bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-sm">Terms of Service</a>
+              <a href="/support" className="rounded-2xl border border-border/70 bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-sm">Support</a>
             </div>
-          </div>
+          </section>
         </div>
 
-        {/* Marquee */}
-        <div className="my-8">
-          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Team Members</p>
+        <section className="mt-6 rounded-3xl border border-border/70 bg-card p-5 shadow-sm sm:p-6">
+          <div className="mb-4 flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Team Members</p>
+              <p className="mt-1 text-sm text-muted-foreground">Scrolling roster of the people behind the project.</p>
+            </div>
+          </div>
+
           <div
             ref={scrollerRef}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
-            className="overflow-hidden w-full rounded-[1.5rem] border border-border bg-card px-3 py-4"
-            style={{ WebkitOverflowScrolling: "touch" }}
+            onFocusCapture={() => setIsPaused(true)}
+            onBlurCapture={() => setIsPaused(false)}
+            tabIndex={0}
+            className="overflow-hidden rounded-[1.75rem] border border-border/70 bg-gradient-to-b from-background to-muted/20 px-3 py-4 outline-none"
+            style={{
+              WebkitOverflowScrolling: "touch",
+              maskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+            }}
           >
             <div className="flex w-max gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory">
-              {teamMembers.concat(teamMembers).map((member, idx) => (
-                <div
-                  key={`${member.id}-${idx}`}
-                  className="snap-start inline-flex flex-col gap-1 rounded-[1.5rem] bg-background/95 px-4 py-3 text-sm text-foreground shadow-sm ring-1 ring-border/50 transition-all duration-200 hover:-translate-y-0.5 flex-shrink-0"
-                  style={{ minWidth: 220 }}
-                >
-                  <div className="font-semibold tracking-tight text-sm text-foreground">{member.name}</div>
-                  <div className="text-xs text-muted-foreground font-mono">{member.id}</div>
-                </div>
-              ))}
+              {teamMembers.concat(teamMembers).map((member, idx) => {
+                const initials = member.name
+                  .split(" ")
+                  .slice(0, 2)
+                  .map((part) => part[0])
+                  .join("")
+
+                return (
+                  <div
+                    key={`${member.id}-${idx}`}
+                    className="snap-start flex-shrink-0 overflow-hidden rounded-2xl border border-border/70 bg-card px-4 py-4 text-foreground shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                    style={{ minWidth: 240 }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-sm font-bold text-primary">
+                        {initials}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="truncate text-sm font-semibold tracking-tight text-foreground">
+                          {member.name}
+                        </div>
+                        <div className="mt-1 text-xs font-mono text-muted-foreground">{member.id}</div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Footer */}
-        <div className="border-t border-border/50 pt-8 flex flex-col items-center justify-between gap-4 text-center text-sm text-muted-foreground sm:flex-row sm:text-left">
+        <div className="mt-6 flex flex-col gap-3 border-t border-border/60 pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Milestone X. All rights reserved.</p>
-          <p className="max-w-md">Designed for communities that need stronger accountability, safer funding, and more meaningful impact.</p>
+          <p className="max-w-2xl sm:text-right">
+            Designed for communities that need stronger accountability, safer funding, and more meaningful impact.
+          </p>
         </div>
       </div>
     </footer>
