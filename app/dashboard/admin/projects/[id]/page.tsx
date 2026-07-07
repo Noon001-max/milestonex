@@ -85,7 +85,7 @@ export default async function AdminProjectDetail({ params }: { params: Promise<{
                 {project.summary || project.description || "No summary has been added yet."}
               </p>
 
-              <div className="mt-5 flex flex-wrap gap-3">
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 {project.status === "pending" && (
                   <>
                     <form action={async function approve(formData: FormData) {
@@ -137,7 +137,7 @@ export default async function AdminProjectDetail({ params }: { params: Promise<{
                 </div>
               </div>
 
-              <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Category</dt>
                   <dd className="mt-1.5 text-sm font-semibold capitalize text-foreground">{project.category}</dd>
@@ -190,7 +190,7 @@ export default async function AdminProjectDetail({ params }: { params: Promise<{
             </Card>
 
             <Card className="border border-border/80 bg-card p-6 shadow-sm">
-              <div className="mb-5 flex items-center justify-between gap-3">
+              <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h2 className="text-lg font-bold text-foreground">Milestones</h2>
                   <p className="mt-1 text-sm text-muted-foreground">Status and proof submissions for each milestone.</p>

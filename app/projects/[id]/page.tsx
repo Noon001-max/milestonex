@@ -111,7 +111,7 @@ export default async function ProjectDetailPage({
                 </div>
               </div>
 
-              <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              <dl className="grid gap-3 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
                 <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Funding goal</dt>
                   <dd className="mt-1.5 text-sm font-semibold text-foreground">{formatCurrency(project.fundingGoal)}</dd>
@@ -213,7 +213,7 @@ export default async function ProjectDetailPage({
                 <Sparkles className="size-4 text-primary" />
                 Project overview
               </div>
-              <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl bg-secondary/30 p-4">
                   <div className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
                     <Users className="size-3.5" /> Supporters
@@ -232,7 +232,7 @@ export default async function ProjectDetailPage({
                 goal={project.fundingGoal}
                 released={project.releasedAmount}
               />
-              <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-border/60 pt-5 text-sm">
+              <dl className="mt-5 grid grid-cols-1 gap-4 border-t border-border/60 pt-5 text-sm sm:grid-cols-2">
                 <div className="flex flex-col gap-1">
                   <dt className="flex items-center gap-1 text-muted-foreground font-semibold text-xs uppercase tracking-wider">
                     <Lock className="size-3.5 text-primary/70" /> Escrow

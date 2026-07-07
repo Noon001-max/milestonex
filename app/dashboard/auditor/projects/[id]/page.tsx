@@ -94,7 +94,7 @@ export default async function AuditorProjectDetail({ params }: { params: Promise
                 </div>
               </div>
 
-              <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Funding goal</dt>
                   <dd className="mt-1.5 text-sm font-semibold text-foreground">{formatCurrency(project.fundingGoal)}</dd>
@@ -193,7 +193,7 @@ export default async function AuditorProjectDetail({ params }: { params: Promise
                 goal={project.fundingGoal}
                 released={project.releasedAmount}
               />
-              <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-border/60 pt-5 text-sm">
+              <dl className="mt-5 grid grid-cols-1 gap-4 border-t border-border/60 pt-5 text-sm sm:grid-cols-2">
                 <div className="flex flex-col gap-1">
                   <dt className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     <Lock className="size-3.5 text-primary/70" /> Escrow

@@ -61,7 +61,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
               <h1 className="mt-2 break-words text-balance text-3xl font-semibold tracking-tight text-foreground">
                 {project.title}
               </h1>
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                 <Link href={`/dashboard/projects/${projectId}/edit`}>
                   <Button variant="outline">
                     <Edit2 className="mr-2 size-4" />
@@ -132,7 +132,7 @@ export default async function OwnerProjectPage({ params }: { params: Promise<{ i
                 goal={project.fundingGoal}
                 released={project.releasedAmount}
               />
-              <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-border/60 pt-5 text-sm">
+              <dl className="mt-5 grid grid-cols-1 gap-4 border-t border-border/60 pt-5 text-sm sm:grid-cols-2">
                 <div className="flex flex-col gap-1">
                   <dt className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     <Lock className="size-3.5 text-primary/70" /> Escrow
