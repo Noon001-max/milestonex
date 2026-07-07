@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import { CheckCircle2, XCircle } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { getProjectById, getProjectMilestones } from "@/lib/queries"
@@ -61,29 +62,32 @@ export default async function VerifyMilestonePage({
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <main className="mx-auto w-full max-w-3xl px-4 py-12">
-        <div className="mb-6">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground mb-2">
+      <main className="mx-auto w-full max-w-4xl px-4 py-12">
+        <div className="mb-6 overflow-hidden rounded-[2rem] border border-border/70 bg-card p-6 shadow-sm sm:p-8">
+          <div className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+            Milestone review
+          </div>
+          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Milestone verification
           </h1>
+          <p className="mt-2 max-w-2xl text-sm leading-7 text-muted-foreground">
+            Confirm the evidence, review the proposer notes, and leave a clear verification report.
+          </p>
         </div>
 
-        <Card className="p-6 mb-6">
-          <div className="flex justify-between">
+        <Card className="mb-6 rounded-[1.75rem] border border-border/70 p-6 shadow-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <a
-                href={`/projects/${project.id}`}
-                className="font-medium text-foreground hover:underline"
-              >
+              <Link href={`/projects/${project.id}`} className="font-medium text-foreground transition hover:text-primary">
                 {project.title}
-              </a>
-              <p className="font-semibold text-lg text-foreground mt-1">
+              </Link>
+              <p className="mt-1 text-lg font-semibold text-foreground">
                 {milestone.title}
               </p>
             </div>
             <StatusBadge status={milestone.status} />
           </div>
-          <p className="mt-3 text-sm text-muted-foreground">
+          <p className="mt-3 text-sm leading-7 text-muted-foreground">
             {milestone.description}
           </p>
           <p className="mt-2 text-sm font-medium text-primary">
@@ -92,15 +96,15 @@ export default async function VerifyMilestonePage({
         </Card>
 
         {(milestone.evidenceNote || milestone.evidenceUrls) && (
-          <Card className="p-6 mb-6">
-            <h3 className="font-semibold text-foreground mb-2">Evidence submitted</h3>
+          <Card className="mb-6 rounded-[1.75rem] border border-border/70 p-6 shadow-sm">
+            <h3 className="mb-2 font-semibold text-foreground">Evidence submitted</h3>
             {milestone.evidenceNote ? (
-              <p className="text-sm text-muted-foreground whitespace-pre-line">
+              <p className="whitespace-pre-line text-sm leading-7 text-muted-foreground">
                 {milestone.evidenceNote}
               </p>
             ) : null}
             {milestone.evidenceUrls ? (
-              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {milestone.evidenceUrls
                   .split(/\s*[\n,]\s*/)
                   .map((u) => u.trim())
@@ -111,14 +115,14 @@ export default async function VerifyMilestonePage({
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="overflow-hidden rounded-lg border border-input"
+                      className="overflow-hidden rounded-[1.25rem] border border-input bg-background"
                     >
                       <Image
                         src={url || "/placeholder.svg"}
                         alt="Milestone proof"
                         width={400}
                         height={300}
-                        className="h-28 w-full object-cover"
+                        className="h-36 w-full object-cover"
                       />
                     </a>
                   ))}
@@ -127,7 +131,7 @@ export default async function VerifyMilestonePage({
           </Card>
         )}
 
-        <form action={submitVerificationForm} className="space-y-4">
+        <form action={submitVerificationForm} className="space-y-4 rounded-[1.75rem] border border-border/70 bg-card p-6 shadow-sm">
           <input type="hidden" name="milestoneId" value={milestoneId} />
 
           <div>
@@ -137,16 +141,16 @@ export default async function VerifyMilestonePage({
               name="report"
               required
               rows={4}
-              placeholder="Describe your inspection findings, evidence observed, and recommendation."
+              placeholder="Summarize what you checked, what evidence supports it, and your recommendation."
             />
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <button
               type="submit"
               name="decision"
               value="approve"
-              className="flex-1 inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+              className="inline-flex flex-1 items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
               <CheckCircle2 className="size-4 mr-2" />
               Recommend approval
@@ -155,7 +159,7 @@ export default async function VerifyMilestonePage({
               type="submit"
               name="decision"
               value="reject"
-              className="flex-1 inline-flex items-center justify-center rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium hover:bg-muted"
+              className="inline-flex flex-1 items-center justify-center rounded-full border border-border bg-background px-4 py-2 text-sm font-medium hover:bg-muted"
             >
               <XCircle className="size-4 mr-2" />
               Raise concerns

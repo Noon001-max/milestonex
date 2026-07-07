@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { CheckCircle2, Clock, FileText } from "lucide-react"
+import { CheckCircle2, Clock, FileText, ShieldCheck, ArrowRight, Layers3 } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { getVerificationQueue } from "@/app/actions/milestones"
@@ -15,84 +15,117 @@ export default async function VerifierDashboard() {
   if (!user) return redirect("/sign-in")
   if (user.role !== "verifier") return redirect("/dashboard")
   const queue = await getVerificationQueue()
+  const projectCount = new Set(queue.map((m) => m.projectId)).size
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:py-12">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">
-            Verification queue
-          </h1>
-          <p className="mt-2 text-muted-foreground">
-            Review milestone submissions and verify evidence from project proposers
-          </p>
+        <div className="mb-8 overflow-hidden rounded-[2rem] border border-border/70 bg-card shadow-sm">
+          <div className="grid gap-0 lg:grid-cols-[1.2fr_0.8fr]">
+            <div className="p-6 sm:p-8">
+              <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                <ShieldCheck className="size-3.5" />
+                Community verifier
+              </div>
+              <h1 className="mt-3 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+                Verification queue
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
+                Review milestone evidence, confirm delivery, and keep the approval flow moving.
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link
+                  href="/dashboard"
+                  className="inline-flex h-9 items-center justify-center rounded-full border border-border bg-background px-4 text-sm font-medium text-foreground transition-all hover:bg-muted"
+                >
+                  Back to dashboard
+                </Link>
+                <Link
+                  href="/dashboard/release-funds"
+                  className="inline-flex h-9 items-center justify-center rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground transition-all hover:opacity-90"
+                >
+                  Release queue
+                  <ArrowRight className="ml-2 size-4" />
+                </Link>
+              </div>
+            </div>
+
+            <div className="grid gap-3 border-t border-border/70 bg-secondary/20 p-6 sm:p-8 lg:border-l lg:border-t-0">
+              <Card className="rounded-[1.5rem] border border-border/70 bg-background/80 p-4 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Pending reviews</p>
+                    <p className="mt-2 text-2xl font-bold text-foreground">{queue.length}</p>
+                  </div>
+                  <div className="rounded-2xl bg-primary/10 p-3 text-primary">
+                    <Clock className="size-5" />
+                  </div>
+                </div>
+              </Card>
+              <Card className="rounded-[1.5rem] border border-border/70 bg-background/80 p-4 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Projects involved</p>
+                    <p className="mt-2 text-2xl font-bold text-foreground">{projectCount}</p>
+                  </div>
+                  <div className="rounded-2xl bg-indigo-500/10 p-3 text-indigo-500">
+                    <Layers3 className="size-5" />
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
         </div>
 
-        {/* Stats */}
         {queue.length > 0 && (
           <div className="mb-8 grid gap-4 sm:grid-cols-2">
-            <Card className="p-5 border border-border/80 border-l-4 border-l-primary/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Pending Verification</p>
-                  <p className="mt-2 text-2xl font-extrabold text-foreground">{queue.length}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">Milestones awaiting review</p>
-                </div>
-                <div className="rounded-xl bg-primary/10 p-2.5">
-                  <Clock className="size-4.5 text-primary" />
-                </div>
-              </div>
+            <Card className="rounded-[1.5rem] border border-border/70 bg-card p-5 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Pending verification</p>
+              <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{queue.length}</p>
+              <p className="mt-1 text-sm text-muted-foreground">Milestones awaiting your review</p>
             </Card>
-
-            <Card className="p-5 border border-border/80 border-l-4 border-l-indigo-500/70 bg-card shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Projects Involved</p>
-                  <p className="mt-2 text-2xl font-extrabold text-foreground font-mono">
-                    {new Set(queue.map((m) => m.projectId)).size}
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">With pending milestones</p>
-                </div>
-                <div className="rounded-xl bg-indigo-500/10 p-2.5">
-                  <FileText className="size-4.5 text-indigo-500" />
-                </div>
-              </div>
+            <Card className="rounded-[1.5rem] border border-border/70 bg-card p-5 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Projects involved</p>
+              <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{projectCount}</p>
+              <p className="mt-1 text-sm text-muted-foreground">With submissions in the queue</p>
             </Card>
           </div>
         )}
 
-        {/* Verification Queue */}
         {queue.length > 0 ? (
           <div>
-            <h2 className="text-lg font-bold text-foreground mb-4">
-              Milestones to review
-            </h2>
+            <div className="mb-4 flex items-end justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-semibold text-foreground">Milestones to review</h2>
+                <p className="mt-1 text-sm text-muted-foreground">Each card shows the evidence, amount, and submission status.</p>
+              </div>
+            </div>
             <div className="grid gap-4">
               {queue.map((m, idx) => (
-                <Card key={m.id} className="p-6 border border-border/80 bg-card hover:shadow-md transition-shadow">
+                <Card key={m.id} className="border border-border/70 bg-card p-6 shadow-sm transition-shadow hover:shadow-md">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="mb-2 flex items-center gap-2">
                         <a
                           href={`/projects/${m.projectId}`}
-                          className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider"
+                          className="text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:text-primary"
                         >
                           {m.projectTitle}
                         </a>
-                        <Badge variant="outline" className="text-[10px] font-bold px-2 py-0.5 bg-secondary/50 border-border/50">
+                        <Badge variant="outline" className="border-border/50 bg-secondary/50 px-2 py-0.5 text-[10px] font-semibold">
                           Milestone {(m as any).orderIndex != null ? (m as any).orderIndex + 1 : idx + 1}
                         </Badge>
                       </div>
-                      <p className="text-lg font-bold text-foreground">
+                      <p className="text-lg font-semibold text-foreground">
                         {m.title}
                       </p>
-                      <p className="mt-2 text-sm text-muted-foreground max-w-2xl leading-relaxed">
+                      <p className="mt-2 max-w-2xl text-sm leading-7 text-muted-foreground">
                         {m.evidenceNote || m.description}
                       </p>
                       {m.evidenceUrls && m.evidenceUrls.length > 0 && (
                         <div className="mt-3.5">
-                          <span className="inline-flex items-center gap-1 text-xs font-bold text-primary bg-primary/5 px-2.5 py-1 rounded-md border border-primary/20">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
                             📎 {m.evidenceUrls.length} file(s) attached
                           </span>
                         </div>
@@ -102,30 +135,30 @@ export default async function VerifierDashboard() {
                   </div>
 
                   <div className="mt-6 grid gap-3 sm:grid-cols-3 text-sm">
-                    <div className="rounded-xl bg-secondary/50 p-4 border border-border/40">
-                      <span className="text-xs text-muted-foreground font-semibold block uppercase tracking-wider">Milestone Amount</span>
-                      <span className="text-base font-extrabold text-foreground mt-1 block">
+                    <div className="rounded-2xl border border-border/40 bg-secondary/50 p-4">
+                      <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Milestone amount</span>
+                      <span className="mt-1 block text-base font-bold text-foreground">
                         {formatCurrency(m.amount)}
                       </span>
                     </div>
-                    <div className="rounded-xl bg-secondary/50 p-4 border border-border/40">
-                      <span className="text-xs text-muted-foreground font-semibold block uppercase tracking-wider">Due Date</span>
-                      <span className="text-base font-extrabold text-foreground mt-1 block">
+                    <div className="rounded-2xl border border-border/40 bg-secondary/50 p-4">
+                      <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Due date</span>
+                      <span className="mt-1 block text-base font-bold text-foreground">
                         {typeof (m as any).dueDate === "string" ? new Date((m as any).dueDate).toLocaleDateString() : "No date"}
                       </span>
                     </div>
-                    <div className="rounded-xl bg-secondary/50 p-4 border border-border/40">
-                      <span className="text-xs text-muted-foreground font-semibold block uppercase tracking-wider">Submitted</span>
-                      <span className="text-base font-extrabold text-foreground mt-1 block">
+                    <div className="rounded-2xl border border-border/40 bg-secondary/50 p-4">
+                      <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Submitted</span>
+                      <span className="mt-1 block text-base font-bold text-foreground">
                         {m.submittedAt ? new Date(m.submittedAt).toLocaleDateString() : "Pending"}
                       </span>
                     </div>
                   </div>
 
-                  <div className="mt-5 pt-5 border-t border-border/60 flex justify-end">
+                  <div className="mt-5 flex justify-end border-t border-border/60 pt-5">
                     <a
                       href={`/dashboard/verify/${m.id}`}
-                      className="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm hover:scale-[1.01] transition duration-200"
+                      className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition duration-200 hover:scale-[1.01]"
                     >
                       Review Milestone
                     </a>
@@ -135,9 +168,9 @@ export default async function VerifierDashboard() {
             </div>
           </div>
         ) : (
-          <Card className="p-12 text-center">
-            <CheckCircle2 className="size-12 text-primary mx-auto mb-4" />
-            <p className="text-lg font-medium text-foreground mb-2">
+          <Card className="rounded-[1.75rem] p-12 text-center">
+            <CheckCircle2 className="mx-auto mb-4 size-12 text-primary" />
+            <p className="mb-2 text-lg font-medium text-foreground">
               All caught up!
             </p>
             <p className="text-muted-foreground">
