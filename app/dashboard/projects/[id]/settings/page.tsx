@@ -14,6 +14,7 @@ export default async function ProjectSettingsPage({ params }: { params: Promise<
   if (!project) notFound()
   if (!user) redirect(`/sign-in`)
   if (user.id !== project.ownerId) redirect(`/dashboard/projects/${projectId}`)
+  if (project.status === "completed") redirect(`/dashboard/projects/${projectId}`)
 
   return (
     <div className="px-4 sm:px-6 py-6">

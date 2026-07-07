@@ -242,6 +242,13 @@ export default async function AdminProjectDetail({ params }: { params: Promise<{
                 <Receipt className="size-5 text-primary" />
                 <h2 className="text-lg font-bold text-foreground">Audit Trail</h2>
               </div>
+              {project.status === "completed" && (
+                <div className="mb-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Overflow balance in escrow</p>
+                  <p className="mt-1 text-lg font-bold text-foreground">{formatCurrency(project.escrowBalance)}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">Remaining escrow for this completed project.</p>
+                </div>
+              )}
               {transactions.length === 0 ? (
                 <p className="py-2 text-sm text-muted-foreground">No transactions recorded yet.</p>
               ) : (

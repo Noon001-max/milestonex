@@ -32,6 +32,8 @@ export default async function ProjectDetailPage({
   const [user, project] = await Promise.all([getSession(), getProjectById(projectId)])
   if (!user) redirect("/sign-in")
   if (!project || project.ownerId !== user.id) notFound()
+  const isCompleted = project.status === "completed"
+  const escrowOverflow = isCompleted ? project.escrowBalance : 0
 
   const [milestones, donations, transactions, ownerName] = await Promise.all([
     getProjectMilestones(projectId),
@@ -87,18 +89,27 @@ export default async function ProjectDetailPage({
               </p>
 
               <div className="mt-5 flex flex-wrap gap-3">
-                <Link href={`/dashboard/projects/${projectId}/edit`}>
-                  <Button variant="outline" className="rounded-xl">
-                    <Edit2 className="mr-2 size-4" />
-                    Edit project
-                  </Button>
-                </Link>
-                <Link href={`/dashboard/projects/${projectId}/milestones`}>
-                  <Button className="rounded-xl">
-                    <ShieldCheck className="mr-2 size-4" />
-                    Open proof board
-                  </Button>
-                </Link>
+                {isCompleted ? (
+                  <div className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-4 py-2 text-sm font-semibold text-foreground">
+                    <ShieldCheck className="size-4 text-emerald-600" />
+                    Completed projects are view-only
+                  </div>
+                ) : (
+                  <>
+                    <Link href={`/dashboard/projects/${projectId}/edit`}>
+                      <Button variant="outline" className="rounded-xl">
+                        <Edit2 className="mr-2 size-4" />
+                        Edit project
+                      </Button>
+                    </Link>
+                    <Link href={`/dashboard/projects/${projectId}/milestones`}>
+                      <Button className="rounded-xl">
+                        <ShieldCheck className="mr-2 size-4" />
+                        Open proof board
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
 
@@ -182,6 +193,13 @@ export default async function ProjectDetailPage({
                 <Receipt className="size-5 text-primary" />
                 <h2 className="text-lg font-bold text-foreground">Audit Trail</h2>
               </div>
+              {isCompleted && (
+                <div className="mb-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Overflow balance in escrow</p>
+                  <p className="mt-1 text-lg font-bold text-foreground">{formatCurrency(escrowOverflow)}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">Remaining escrow for this completed project.</p>
+                </div>
+              )}
               {transactions.length === 0 ? (
                 <p className="py-2 text-sm text-muted-foreground">No transactions recorded yet.</p>
               ) : (
@@ -244,14 +262,20 @@ export default async function ProjectDetailPage({
                 <Sparkles className="size-4 text-primary" />
                 Quick actions
               </div>
-              <div className="mt-4 flex flex-col gap-2">
-                <Link href={`/dashboard/projects/${projectId}/milestones`} className="w-full">
-                  <Button className="w-full rounded-xl">Open proof submission</Button>
-                </Link>
-                <Link href={`/dashboard/projects/${projectId}/edit`} className="w-full">
-                  <Button variant="outline" className="w-full rounded-xl">Edit details</Button>
-                </Link>
-              </div>
+              {isCompleted ? (
+                <p className="mt-4 text-sm text-muted-foreground">
+                  This project is completed and locked to view-only mode.
+                </p>
+              ) : (
+                <div className="mt-4 flex flex-col gap-2">
+                  <Link href={`/dashboard/projects/${projectId}/milestones`} className="w-full">
+                    <Button className="w-full rounded-xl">Open proof submission</Button>
+                  </Link>
+                  <Link href={`/dashboard/projects/${projectId}/edit`} className="w-full">
+                    <Button variant="outline" className="w-full rounded-xl">Edit details</Button>
+                  </Link>
+                </div>
+              )}
             </Card>
 
             <Card className="border border-border/80 bg-card p-6 text-sm text-muted-foreground shadow-sm">

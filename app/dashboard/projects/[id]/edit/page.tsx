@@ -18,6 +18,7 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
 
   if (!user) redirect("/sign-in")
   if (!project || project.ownerId !== user.id) notFound()
+  if (project.status === "completed") redirect(`/dashboard/projects/${projectId}`)
 
   return (
     <div className="flex min-h-svh flex-col bg-background">

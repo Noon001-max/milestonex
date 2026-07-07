@@ -26,6 +26,7 @@ export default async function MilestonesPage({ params }: { params: Promise<{ id:
   if (!project) notFound()
   if (!user) redirect(`/sign-in`)
   if (user.id !== project.ownerId) redirect(`/dashboard/projects/${projectId}`)
+  if (project.status === "completed") redirect(`/dashboard/projects/${projectId}`)
 
   const isUnlocked = (index: number) =>
     index === 0 ||
