@@ -80,7 +80,6 @@ export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
           <div className="mb-4 flex items-end justify-between gap-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Team Members</p>
-              <p className="mt-1 text-sm text-muted-foreground">Scrolling roster of the people behind the project.</p>
             </div>
           </div>
 
