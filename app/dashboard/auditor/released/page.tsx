@@ -5,7 +5,6 @@ import { getSession } from "@/lib/session"
 import { getReleasedFundsHistory } from "@/app/actions/projects"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { formatCurrency } from "@/lib/roles"
 
 export const dynamic = "force-dynamic"
@@ -54,7 +53,7 @@ export default async function ReleasedFundsPage() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/dashboard/release-funds"
-                  className="inline-flex h-8 items-center justify-center rounded-lg border border-border bg-background px-2.5 text-sm font-medium text-foreground transition-all hover:bg-muted hover:text-foreground rounded-xl"
+                  className="inline-flex h-8 items-center justify-center rounded-xl border border-border bg-background px-2.5 text-sm font-medium text-foreground transition-all hover:bg-muted hover:text-foreground"
                 >
                   Review release queue
                   <ArrowRight className="ml-2 size-4" />

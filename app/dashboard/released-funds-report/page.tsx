@@ -3,7 +3,7 @@ import { CheckCircle2, DollarSign, TrendingUp, BarChart3, Clock3, BriefcaseBusin
 import { getSession } from "@/lib/session"
 import { getReleasedFundsHistory } from "@/app/actions/projects"
 import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import { formatCurrency } from "@/lib/roles"
 
 export const dynamic = "force-dynamic"
@@ -49,12 +49,13 @@ export default async function ReleasedFundsReportPage() {
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button asChild className="rounded-xl">
-                  <a href="/dashboard/release-funds">
-                    Review release queue
-                    <ArrowRight className="ml-2 size-4" />
-                  </a>
-                </Button>
+                <Link
+                  href="/dashboard/release-funds"
+                  className="inline-flex h-8 items-center justify-center rounded-xl border border-border bg-background px-2.5 text-sm font-medium text-foreground transition-all hover:bg-muted hover:text-foreground"
+                >
+                  Review release queue
+                  <ArrowRight className="ml-2 size-4" />
+                </Link>
               </div>
             </div>
 
