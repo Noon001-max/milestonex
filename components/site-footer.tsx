@@ -55,6 +55,7 @@ export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
               {!isLoggedIn ? (
                 <>
                   <a href="/projects" className="transition-colors duration-200 hover:text-primary">Projects</a>
+                  <a href="/#completed-projects" className="transition-colors duration-200 hover:text-primary">Completed projects</a>
                   <a href="/transparency" className="transition-colors duration-200 hover:text-primary">Transparency</a>
                   <a href="/#how-it-works" className="transition-colors duration-200 hover:text-primary">How it works</a>
                   <a href="/sign-up" className="transition-colors duration-200 hover:text-primary">Start a project</a>
@@ -63,6 +64,7 @@ export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
                 <>
                   <a href="/dashboard" className="transition-colors duration-200 hover:text-primary">Dashboard</a>
                   <a href="/dashboard/projects" className="transition-colors duration-200 hover:text-primary">My projects</a>
+                  <a href="/#completed-projects" className="transition-colors duration-200 hover:text-primary">Completed projects</a>
                   <a href="/dashboard/settings" className="transition-colors duration-200 hover:text-primary">Account settings</a>
                   <a href="/dashboard/notifications" className="transition-colors duration-200 hover:text-primary">Notifications</a>
                 </>

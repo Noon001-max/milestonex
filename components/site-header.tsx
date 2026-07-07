@@ -114,6 +114,12 @@ export function SiteHeader({
                   Projects
                 </a>
                 <a
+                  href="/#completed-projects"
+                  className="font-medium text-muted-foreground transition-colors duration-200 hover:text-primary"
+                >
+                  Completed projects
+                </a>
+                <a
                   href="/transparency"
                   className="font-medium text-muted-foreground transition-colors duration-200 hover:text-primary"
                 >
@@ -226,6 +232,12 @@ export function SiteHeader({
                   className="rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
                 >
                   Sign in
+                </a>
+                <a
+                  href="/#completed-projects"
+                  className="rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                >
+                  Completed projects
                 </a>
                 <a
                   href="/sign-up"

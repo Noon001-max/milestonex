@@ -147,12 +147,6 @@ export default async function HomePage() {
           >
             View All Projects
           </a>
-          <a
-            href="#completed-projects"
-            className="inline-flex items-center justify-center rounded-full border border-border/70 bg-card px-7 py-3 text-sm font-semibold text-foreground shadow-sm transition-all duration-200 hover:border-primary hover:bg-primary/5"
-          >
-            View completed projects
-          </a>
         </div>
 
         {featured.length > 0 ? (
@@ -190,12 +184,6 @@ export default async function HomePage() {
               Real projects that finished delivery, cleared verification, and released funds successfully.
             </p>
           </div>
-          <a
-            href="/projects"
-            className="inline-flex items-center justify-center rounded-full border border-primary/20 bg-background px-7 py-3 text-sm font-semibold text-primary shadow-sm transition-all duration-200 hover:border-primary hover:bg-primary/5"
-          >
-            Explore all projects
-          </a>
         </div>
 
         {completedProjects.length > 0 ? (
