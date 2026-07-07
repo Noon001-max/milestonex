@@ -68,25 +68,25 @@ export default async function ProjectDetailPage({
               </div>
             </div>
 
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                <span className="capitalize">{project.category}</span>
+            <div className="min-w-0 rounded-2xl border border-border/70 bg-card p-5 shadow-sm sm:p-6">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                <span className="rounded-full bg-secondary/60 px-2.5 py-1 text-foreground/80">{project.category}</span>
                 {project.location && (
-                  <>
-                    <span aria-hidden>•</span>
-                    <span className="inline-flex items-center gap-1">
-                      <MapPin className="size-3.5" />
-                      {project.location}
-                    </span>
-                  </>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-secondary/60 px-2.5 py-1 text-foreground/80">
+                    <MapPin className="size-3.5" />
+                    {project.location}
+                  </span>
                 )}
               </div>
-              <h1 className="mt-2 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+              <h1 className="mt-3 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
                 {project.title}
               </h1>
-              <p className="mt-1 text-sm text-muted-foreground">Owned by {ownerName}</p>
+              <p className="mt-2 text-sm text-muted-foreground">Owned by {ownerName}</p>
+              <p className="mt-4 max-w-3xl whitespace-pre-line text-sm leading-7 text-foreground/80 sm:text-base">
+                {project.summary || project.description || "No summary has been added yet."}
+              </p>
 
-              <div className="mt-4 flex flex-wrap gap-3">
+              <div className="mt-5 flex flex-wrap gap-3">
                 <Link href={`/dashboard/projects/${projectId}/edit`}>
                   <Button variant="outline" className="rounded-xl">
                     <Edit2 className="mr-2 size-4" />
@@ -96,73 +96,73 @@ export default async function ProjectDetailPage({
                 <Link href={`/dashboard/projects/${projectId}/milestones`}>
                   <Button className="rounded-xl">
                     <ShieldCheck className="mr-2 size-4" />
-                    Submit proof
+                    Open proof board
                   </Button>
                 </Link>
               </div>
             </div>
 
             <Card className="border border-border/80 bg-card p-6 shadow-sm">
-              <h2 className="mb-3 text-lg font-bold text-foreground">About this project</h2>
+              <h2 className="mb-3 text-lg font-bold text-foreground">Description</h2>
               <p className="whitespace-pre-line break-words text-sm leading-relaxed text-muted-foreground sm:text-base">
-                {project.description}
+                {project.description || "No detailed description has been added yet."}
               </p>
             </Card>
 
             <Card className="border border-border/80 bg-card p-6 shadow-sm">
-              <div className="mb-5 flex items-center justify-between gap-3">
+              <div className="mb-4 flex items-center justify-between gap-3">
                 <div>
                   <h2 className="text-lg font-bold text-foreground">Project details</h2>
-                  <p className="mt-1 text-sm text-muted-foreground">All proposal metadata in one place.</p>
+                  <p className="mt-1 text-sm text-muted-foreground">Compact project metadata.</p>
                 </div>
               </div>
 
-              <dl className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+              <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Summary</dt>
-                  <dd className="mt-2 text-sm leading-6 text-foreground">{project.summary}</dd>
+                  <dd className="mt-1.5 text-sm leading-6 text-foreground">{project.summary || "Not provided"}</dd>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Category</dt>
                   <dd className="mt-2 text-sm font-semibold capitalize text-foreground">{project.category}</dd>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Location</dt>
                   <dd className="mt-2 text-sm font-semibold text-foreground">{project.location || "Not provided"}</dd>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Funding goal</dt>
                   <dd className="mt-2 text-sm font-semibold text-foreground">{formatCurrency(project.fundingGoal)}</dd>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Funds raised</dt>
                   <dd className="mt-2 text-sm font-semibold text-foreground">{formatCurrency(project.fundedAmount)}</dd>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Escrow balance</dt>
                   <dd className="mt-2 text-sm font-semibold text-foreground">{formatCurrency(project.escrowBalance)}</dd>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Released funds</dt>
                   <dd className="mt-2 text-sm font-semibold text-foreground">{formatCurrency(project.releasedAmount)}</dd>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Created</dt>
                   <dd className="mt-2 text-sm font-semibold text-foreground">{new Date(project.createdAt).toLocaleDateString()}</dd>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Updated</dt>
                   <dd className="mt-2 text-sm font-semibold text-foreground">{new Date(project.updatedAt).toLocaleDateString()}</dd>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Owner</dt>
                   <dd className="mt-2 text-sm font-semibold text-foreground">{ownerName}</dd>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Contributors</dt>
                   <dd className="mt-2 text-sm font-semibold text-foreground">{donations.length}</dd>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-secondary/30 p-4">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Milestones</dt>
                   <dd className="mt-2 text-sm font-semibold text-foreground">{milestones.length}</dd>
                 </div>
