@@ -241,6 +241,31 @@ export default function RoleSidebar({
               </button>
             </div>
 
+            <div className="mx-2 mt-3 rounded-2xl border border-border bg-background px-3 py-3 shadow-sm">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="h-10 w-10 rounded-full bg-muted text-foreground flex items-center justify-center font-bold text-sm border border-border overflow-hidden">
+                  {user.image ? (
+                    <img src={user.image} alt={`${user.name} avatar`} className="h-full w-full object-cover rounded-full" />
+                  ) : (
+                    <span className="select-none">{initials}</span>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-foreground truncate leading-tight">{user.name}</p>
+                  <p className="text-xs text-muted-foreground truncate capitalize mt-0.5">{user.role}</p>
+                </div>
+
+                <button
+                  onClick={handleLogout}
+                  className="ml-2 inline-flex items-center gap-2 rounded-md px-2.5 py-1 text-sm font-medium text-destructive/80 hover:text-destructive hover:bg-destructive/8 transition-colors duration-200"
+                  title="Sign out"
+                >
+                  <LogOut className="size-[18px] text-destructive" />
+                  <span className="sr-only">Sign Out</span>
+                </button>
+              </div>
+            </div>
+
             <div className="flex-1 overflow-y-auto mt-4 pb-2">
               <nav className="flex flex-col gap-1 px-2">
                 {items.map((it) => {
@@ -261,32 +286,6 @@ export default function RoleSidebar({
                   )
                 })}
               </nav>
-            </div>
-
-            {/* Footer fixed at bottom of drawer so it's always visible on mobile */}
-            <div className="border-t border-border pt-3 pb-4 px-2">
-                <div className="flex items-center gap-3 px-2 py-2">
-                  <div className="h-10 w-10 rounded-full bg-muted text-foreground flex items-center justify-center font-bold text-sm border border-border overflow-hidden">
-                    {user.image ? (
-                      <img src={user.image} alt={`${user.name} avatar`} className="h-full w-full object-cover rounded-full" />
-                    ) : (
-                      <span className="select-none">{initials}</span>
-                    )}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-base font-semibold text-foreground truncate leading-tight">{user.name}</p>
-                    <p className="text-xs text-muted-foreground truncate capitalize mt-0.5">{user.role}</p>
-                  </div>
-
-                  <button
-                    onClick={handleLogout}
-                    className="ml-2 inline-flex items-center gap-2 rounded-md px-3 py-1 text-sm font-medium text-destructive/80 hover:text-destructive hover:bg-destructive/8 transition-colors duration-200"
-                    title="Sign out"
-                  >
-                    <LogOut className="size-[18px] text-destructive" />
-                    <span className="sr-only">Sign Out</span>
-                  </button>
-                </div>
             </div>
           </div>
         </div>
