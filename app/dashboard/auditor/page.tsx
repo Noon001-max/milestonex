@@ -56,9 +56,6 @@ export default async function AuditorDashboard() {
                 <Link href="/dashboard/release-funds">
                   <Button className="rounded-xl">Review release queue</Button>
                 </Link>
-                <Link href="/dashboard/auditor/released">
-                  <Button variant="outline" className="rounded-xl">Open release overview</Button>
-                </Link>
               </div>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
