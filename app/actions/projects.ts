@@ -151,6 +151,129 @@ export async function createProject(formData: FormData) {
   }
 }
 
+export async function updateProject(formData: FormData) {
+  try {
+    const u = await requireRole(["owner"])
+    const projectId = Number(formData.get("projectId"))
+    if (!projectId || Number.isNaN(projectId)) {
+      throw new Error("Project id is required")
+    }
+
+    const [existingProject] = await db
+      .select({
+        id: projects.id,
+        ownerId: projects.ownerId,
+        imageUrl: projects.imageUrl,
+      })
+      .from(projects)
+      .where(and(eq(projects.id, projectId), eq(projects.ownerId, u.id)))
+
+    if (!existingProject) {
+      throw new Error("Project not found or access denied")
+    }
+
+    const title = (formData.get("title") as string)?.trim()
+    const summary = (formData.get("summary") as string)?.trim()
+    const description = (formData.get("description") as string)?.trim()
+
+    if (!title) throw new Error("Project title is required")
+    if (!summary) throw new Error("Project summary is required")
+    if (!description) throw new Error("Project description is required")
+
+    const parsedMilestones = [] as MilestoneInput[]
+    for (let i = 0; i < 10; i++) {
+      const milestoneTitle = formData.get(`milestones[${i}].title`) as string
+      const milestoneDescription = formData.get(`milestones[${i}].description`) as string
+      const amount = formData.get(`milestones[${i}].amount`) as string
+      if (milestoneTitle || milestoneDescription || amount) {
+        parsedMilestones.push({
+          title: milestoneTitle || "",
+          description: milestoneDescription || "",
+          amount: Number(amount) || 0,
+        })
+      }
+    }
+
+    if (parsedMilestones.length === 0) {
+      throw new Error("Please add at least one milestone")
+    }
+
+    const fundingGoal = parsedMilestones.reduce((sum, milestone) => sum + (Number(milestone.amount) || 0), 0)
+    if (fundingGoal <= 0) {
+      throw new Error("At least one milestone must have an amount greater than 0")
+    }
+
+    let uploadedImageUrl: string | null = null
+    try {
+      const possibleFile = formData.get("imageUrl") as File | string | null
+      const isFile = possibleFile && typeof (possibleFile as any).size === "number"
+      if (isFile && (possibleFile as any).size) {
+        if (!(possibleFile as File).type.startsWith("image/")) {
+          throw new Error("Only image files are allowed")
+        }
+        if ((possibleFile as File).size > 8 * 1024 * 1024) {
+          throw new Error("Image must be smaller than 8MB")
+        }
+
+        const blob = await put(`projects/${Date.now()}-${(possibleFile as File).name}`, possibleFile as File, {
+          access: "public",
+          addRandomSuffix: true,
+        })
+        uploadedImageUrl = blob.url
+      }
+    } catch (err) {
+      console.error("Image upload failed:", err)
+      uploadedImageUrl = null
+    }
+
+    const nextImageUrl = uploadedImageUrl || (formData.get("imageUrl") as string) || existingProject.imageUrl || null
+
+    await db
+      .update(projects)
+      .set({
+        title,
+        summary,
+        description,
+        category: (formData.get("category") as string) || "community",
+        location: (formData.get("location") as string) || "",
+        imageUrl: nextImageUrl,
+        fundingGoal,
+        updatedAt: new Date(),
+      })
+      .where(and(eq(projects.id, projectId), eq(projects.ownerId, u.id)))
+
+    await db.delete(milestones).where(eq(milestones.projectId, projectId))
+    await db.insert(milestones).values(
+      parsedMilestones.map((milestone, index) => ({
+        projectId,
+        title: milestone.title,
+        description: milestone.description,
+        amount: Number(milestone.amount) || 0,
+        orderIndex: index,
+        status: "pending" as const,
+      })),
+    )
+
+    await notify({
+      userId: u.id,
+      title: "Project updated",
+      body: `Your project "${title}" was updated successfully.`,
+      type: "project",
+    })
+
+    revalidatePath("/dashboard/projects")
+    revalidatePath(`/dashboard/projects/${projectId}`)
+    revalidatePath(`/dashboard/projects/${projectId}/owner`)
+    revalidatePath(`/dashboard/projects/${projectId}/milestones`)
+    revalidatePath(`/dashboard/projects/${projectId}/edit`)
+    revalidatePath("/projects")
+    revalidatePath(`/projects/${projectId}`)
+  } catch (err) {
+    console.error("updateProject error:", err)
+    throw new Error(err instanceof Error ? err.message : "Failed to update project")
+  }
+}
+
 export async function getMyProjects() {
   const u = await requireUser()
   return db

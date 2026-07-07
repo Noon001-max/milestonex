@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import { ArrowLeft, ArrowRight, ClipboardList, Info, Layers, Layout, Loader2, MapPin, Plus, Trash2 } from "lucide-react"
-import { createProject } from "@/app/actions/projects"
+import { createProject, updateProject } from "@/app/actions/projects"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -20,27 +20,65 @@ function createBlankMilestone() {
   return { title: "", amount: "", description: "" }
 }
 
-export function NewProjectForm() {
+type ProjectMilestoneInput = {
+  title: string
+  description: string
+  amount: number | string
+}
+
+type ProjectFormProject = {
+  id: number
+  title: string
+  summary: string
+  description: string
+  category: string
+  location: string | null
+  imageUrl: string | null
+}
+
+type NewProjectFormProps = {
+  mode?: "create" | "edit"
+  projectId?: number
+  initialProject?: ProjectFormProject | null
+  initialMilestones?: ProjectMilestoneInput[]
+}
+
+export function NewProjectForm({
+  mode = "create",
+  projectId,
+  initialProject,
+  initialMilestones,
+}: NewProjectFormProps) {
   const router = useRouter()
   const formRef = React.useRef<HTMLFormElement | null>(null)
+  const isEditMode = mode === "edit"
+
+  const initialMilestoneState =
+    initialMilestones && initialMilestones.length > 0
+      ? initialMilestones.map((milestone) => ({
+          title: milestone.title || "",
+          amount: String(milestone.amount || ""),
+          description: milestone.description || "",
+        }))
+      : [
+          { title: "Initial Setup", amount: "1000", description: "Project prep and launch setup" },
+          createBlankMilestone(),
+          createBlankMilestone(),
+        ]
 
   const [step, setStep] = React.useState(1)
-  const [category, setCategory] = React.useState("community")
+  const [category, setCategory] = React.useState(initialProject?.category || "community")
   const [submitting, setSubmitting] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
   const [selectedImageFile, setSelectedImageFile] = React.useState<File | null>(null)
   const [preview, setPreview] = React.useState({
-    title: "",
-    summary: "",
-    description: "",
-    category: "community",
-    location: "",
-    imageUrl: "",
-    milestones: [
-      { title: "Initial Setup", amount: "1000", description: "Project prep and launch setup" },
-      createBlankMilestone(),
-      createBlankMilestone(),
-    ],
+    title: initialProject?.title || "",
+    summary: initialProject?.summary || "",
+    description: initialProject?.description || "",
+    category: initialProject?.category || "community",
+    location: initialProject?.location || "",
+    imageUrl: initialProject?.imageUrl || "",
+    milestones: initialMilestoneState,
   })
 
   React.useEffect(() => {
@@ -140,6 +178,10 @@ export function NewProjectForm() {
       formData.set("category", category)
       formData.set("location", preview.location)
 
+      if (projectId) {
+        formData.set("projectId", String(projectId))
+      }
+
       if (selectedImageFile) {
         const uploadForm = new FormData()
         uploadForm.append("file", selectedImageFile)
@@ -151,9 +193,7 @@ export function NewProjectForm() {
 
         const data = await res.json()
         formData.set("imageUrl", data.url)
-      }
-
-      if (!selectedImageFile && preview.imageUrl && !preview.imageUrl.startsWith("blob:")) {
+      } else if (preview.imageUrl && !preview.imageUrl.startsWith("blob:")) {
         formData.set("imageUrl", preview.imageUrl)
       }
 
@@ -163,8 +203,14 @@ export function NewProjectForm() {
         formData.set(`milestones[${index}].amount`, String(milestone.amount || ""))
       })
 
-      await createProject(formData)
-      router.push("/dashboard/projects")
+      if (isEditMode) {
+        await updateProject(formData)
+        router.push(`/dashboard/projects/${projectId}`)
+      } else {
+        await createProject(formData)
+        router.push("/dashboard/projects")
+      }
+
       router.refresh()
     } catch (err) {
       const message = err instanceof Error ? err.message : "Something went wrong"
@@ -174,6 +220,11 @@ export function NewProjectForm() {
   }
 
   const totalGoal = preview.milestones.reduce((sum, milestone) => sum + Number(milestone.amount || 0), 0)
+  const submitLabel = isEditMode ? "Save Changes" : "Submit Proposal"
+  const overlayLabel = isEditMode ? "Saving project" : "Creating project"
+  const overlayCopy = isEditMode
+    ? "Please wait while your changes and image are being saved."
+    : "Please wait while your proposal and image are being saved."
 
   return (
     <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-12" aria-busy={submitting}>
@@ -181,8 +232,8 @@ export function NewProjectForm() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 px-4 backdrop-blur-md">
           <div className="w-full max-w-sm rounded-2xl border border-border/70 bg-card p-6 text-center shadow-2xl">
             <Loader2 className="mx-auto size-10 animate-spin text-primary" />
-            <h3 className="mt-4 text-lg font-semibold text-foreground">Creating project</h3>
-            <p className="mt-2 text-sm text-muted-foreground">Please wait while your proposal and image are being saved.</p>
+            <h3 className="mt-4 text-lg font-semibold text-foreground">{overlayLabel}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{overlayCopy}</p>
           </div>
         </div>
       )}
@@ -409,19 +460,20 @@ export function NewProjectForm() {
               <section className="space-y-5 animate-fade-in">
                 <div className="flex items-center gap-2.5 border-b border-border/60 pb-2 text-foreground">
                   <Info className="size-5 text-primary" />
-                  <h3 className="font-bold">Project Review</h3>
+                  <h3 className="font-bold">Project Image</h3>
                 </div>
 
                 <div className="space-y-1.5 rounded-xl border border-border/60 bg-card/70 p-4">
                   <Label className="text-xs font-semibold text-foreground">Project Hero Image</Label>
                   <ImageUpload
                     name="imageUrl"
+                    defaultValue={preview.imageUrl}
                     className="mt-1"
                     onChange={(url) => updateField("imageUrl", url)}
                     onFileChange={setSelectedImageFile}
                   />
                   <p className="text-xs text-muted-foreground">
-                    Pick the image here when you are satisfied, then click Submit Proposal to upload everything together.
+                    Pick the image here when you are satisfied, then continue to the final submission step.
                   </p>
                 </div>
 
@@ -456,16 +508,18 @@ export function NewProjectForm() {
                   </div>
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Category</p>
-                    <p className="mt-1 text-sm font-semibold text-foreground capitalize">{preview.category}</p>
+                    <p className="mt-1 text-sm font-semibold capitalize text-foreground">{preview.category}</p>
                   </div>
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Milestones</p>
-                    <p className="mt-1 text-sm font-semibold text-foreground">{preview.milestones.filter((milestone) => milestone.title.trim() && milestone.amount).length}</p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">
+                      {preview.milestones.filter((milestone) => milestone.title.trim() && milestone.amount).length}
+                    </p>
                   </div>
                 </div>
 
                 <div className="rounded-xl border border-primary/10 bg-primary/5 p-4 text-sm text-muted-foreground">
-                  Review everything above, then click Submit Proposal to upload the project and the selected image together.
+                  Review everything above, then click {submitLabel} to upload the project and the selected image together.
                 </div>
               </section>
             )}
@@ -507,7 +561,7 @@ export function NewProjectForm() {
                     className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-xs font-bold text-primary-foreground shadow-md shadow-primary/10 transition hover:scale-[1.02] hover:bg-primary/95 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {submitting ? <Loader2 className="size-4 animate-spin" /> : null}
-                    <span>Submit Proposal</span>
+                    <span>{submitLabel}</span>
                   </button>
                 )}
               </div>

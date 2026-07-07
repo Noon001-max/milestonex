@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import Link from "next/link"
-import { Calendar, FileText, Filter, LayoutGrid, Plus, Search, X } from "lucide-react"
+import { Calendar, ClipboardList, Edit2, FileText, Filter, LayoutGrid, Plus, Search, X } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { StatusBadge } from "@/components/status-badge"
@@ -191,42 +191,65 @@ export default function OwnerProjectsClient({ projects }: OwnerProjectsClientPro
                   : 0
 
                 return (
-                  <Link key={project.id} href={`/dashboard/projects/${project.id}/owner`} className="block">
-                    <Card className="overflow-hidden rounded-2xl border border-border/70 bg-card p-0 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
-                      <div className="p-5 sm:p-6">
-                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                          <div className="min-w-0 space-y-2">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <StatusBadge status={project.status} />
-                              <span className="inline-flex items-center gap-1 rounded-full bg-secondary/60 px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
-                                <Calendar className="size-3" />
-                                {new Date(project.createdAt).toLocaleDateString()}
-                              </span>
-                            </div>
-
-                            <h2 className="truncate text-lg font-semibold tracking-tight text-foreground sm:text-xl">{project.title}</h2>
-                            <p className="line-clamp-2 max-w-2xl text-sm leading-6 text-muted-foreground">{project.summary}</p>
+                  <Card key={project.id} className="overflow-hidden rounded-2xl border border-border/70 bg-card p-0 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
+                    <div className="p-5 sm:p-6">
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="min-w-0 space-y-2">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <StatusBadge status={project.status} />
+                            <span className="inline-flex items-center gap-1 rounded-full bg-secondary/60 px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
+                              <Calendar className="size-3" />
+                              {new Date(project.createdAt).toLocaleDateString()}
+                            </span>
                           </div>
 
-                          <div className="rounded-2xl bg-muted/40 px-4 py-3 sm:text-right">
-                            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Funding progress</p>
-                            <p className="mt-1 text-sm font-semibold text-foreground">{progress}% funded</p>
-                          </div>
+                          <Link href={`/dashboard/projects/${project.id}`} className="block">
+                            <h2 className="truncate text-lg font-semibold tracking-tight text-foreground transition-colors hover:text-primary sm:text-xl">
+                              {project.title}
+                            </h2>
+                          </Link>
+                          <p className="line-clamp-2 max-w-2xl text-sm leading-6 text-muted-foreground">{project.summary}</p>
                         </div>
 
-                        <div className="mt-4 space-y-3 border-t border-border pt-4">
-                          <FundingProgress funded={project.fundedAmount} goal={project.fundingGoal} />
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">Raised</span>
-                            <span className="font-semibold text-foreground">{formatCurrency(project.fundedAmount || 0)}</span>
-                          </div>
-                          <div className="flex items-center justify-end gap-1 text-xs font-medium text-primary">
-                            <span>Open project</span>
-                          </div>
+                        <div className="rounded-2xl bg-muted/40 px-4 py-3 sm:text-right">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Funding progress</p>
+                          <p className="mt-1 text-sm font-semibold text-foreground">{progress}% funded</p>
                         </div>
                       </div>
-                    </Card>
-                  </Link>
+
+                      <div className="mt-4 space-y-3 border-t border-border pt-4">
+                        <FundingProgress funded={project.fundedAmount} goal={project.fundingGoal} />
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Raised</span>
+                          <span className="font-semibold text-foreground">{formatCurrency(project.fundedAmount || 0)}</span>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-1">
+                          <Link
+                            href={`/dashboard/projects/${project.id}`}
+                            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-semibold text-foreground transition hover:bg-muted"
+                          >
+                            <FileText className="size-3.5" />
+                            <span>View project</span>
+                          </Link>
+                          <Link
+                            href={`/dashboard/projects/${project.id}/milestones`}
+                            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-semibold text-foreground transition hover:bg-muted"
+                          >
+                            <ClipboardList className="size-3.5" />
+                            <span>Manage milestones</span>
+                          </Link>
+                          <Link
+                            href={`/dashboard/projects/${project.id}/edit`}
+                            className="inline-flex items-center gap-2 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground transition hover:bg-primary/95"
+                          >
+                            <Edit2 className="size-3.5" />
+                            <span>Edit project</span>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
                 )
               })}
             </div>
