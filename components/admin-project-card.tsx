@@ -53,43 +53,51 @@ export function AdminProjectCard({
   }
 
   return (
-    <Card className="overflow-hidden border border-border/70 bg-card p-0 shadow-sm transition-all duration-200 hover:shadow-md">
-      <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between">
+    <Card className="group overflow-hidden rounded-[1.75rem] border border-border/70 bg-card/80 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-start gap-4">
           {imageUrl ? (
-            <img src={imageUrl} alt={title} className="h-16 w-24 rounded-md object-cover" />
+            <img src={imageUrl} alt={title} className="h-20 w-28 rounded-2xl object-cover ring-1 ring-border/60" />
           ) : (
-            <div className="h-16 w-24 rounded-md bg-secondary/30 flex items-center justify-center text-xs text-muted-foreground">No image</div>
+            <div className="flex h-20 w-28 items-center justify-center rounded-2xl bg-secondary/30 text-xs text-muted-foreground ring-1 ring-border/60">
+              No image
+            </div>
           )}
 
-          <div className="min-w-0">
-            <div className="mb-2 flex items-center gap-2">
+          <div className="min-w-0 space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
               <StatusBadge status={status} />
-              <span className="text-xs text-muted-foreground">Project review</span>
+              <span className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">Project review</span>
             </div>
             <Link
               href={`/dashboard/admin/projects/${id}`}
-              className="text-base font-semibold text-foreground block truncate transition hover:text-primary"
+              className="block truncate text-lg font-semibold tracking-tight text-foreground transition-colors hover:text-primary"
             >
               {title}
             </Link>
             {proposerName ? (
-              <div className="mt-1 text-sm text-muted-foreground">Proposed by <span className="font-medium text-foreground">{proposerName}</span></div>
+              <div className="text-sm text-muted-foreground">
+                Proposed by <span className="font-medium text-foreground">{proposerName}</span>
+              </div>
             ) : null}
-            <p className="mt-1 text-sm leading-5 text-muted-foreground line-clamp-2 max-w-xl">
+            <p className="max-w-2xl text-sm leading-6 text-muted-foreground line-clamp-2">
               {summary}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="text-sm text-muted-foreground mr-2">Goal: <span className="font-semibold text-foreground">{formatCurrency(fundingGoal)}</span></div>
-          <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col gap-3 lg:items-end">
+          <div className="rounded-2xl bg-muted/40 px-4 py-3 text-sm">
+            <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Funding goal</div>
+            <div className="mt-1 font-semibold text-foreground">{formatCurrency(fundingGoal)}</div>
+          </div>
+
+          <div className="flex flex-wrap gap-2 lg:justify-end">
             <Button
               onClick={handleApprove}
               disabled={isLoading}
               size="sm"
-              className="gap-1"
+              className="gap-1.5 rounded-full px-4"
               variant="default"
             >
               <CheckCircle className="size-4" />
@@ -99,7 +107,7 @@ export function AdminProjectCard({
               onClick={handleReject}
               disabled={isLoading}
               size="sm"
-              className="gap-1"
+              className="gap-1.5 rounded-full px-4"
               variant="outline"
             >
               <XCircle className="size-4" />
