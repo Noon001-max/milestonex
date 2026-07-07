@@ -28,6 +28,7 @@ export function NewProjectForm() {
   const [category, setCategory] = React.useState("community")
   const [submitting, setSubmitting] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
+  const [selectedImageFile, setSelectedImageFile] = React.useState<File | null>(null)
   const [preview, setPreview] = React.useState({
     title: "",
     summary: "",
@@ -138,6 +139,10 @@ export function NewProjectForm() {
       formData.set("description", preview.description)
       formData.set("category", category)
       formData.set("location", preview.location)
+
+      if (selectedImageFile) {
+        formData.set("imageUrl", selectedImageFile)
+      }
 
       preview.milestones.forEach((milestone, index) => {
         formData.set(`milestones[${index}].title`, milestone.title || "")
@@ -400,6 +405,7 @@ export function NewProjectForm() {
                     name="imageUrl"
                     className="mt-1"
                     onChange={(url) => updateField("imageUrl", url)}
+                    onFileChange={setSelectedImageFile}
                   />
                   <p className="text-xs text-muted-foreground">
                     Pick the image here when you are satisfied, then click Submit Proposal to upload everything together.

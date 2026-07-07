@@ -11,9 +11,10 @@ type ImageUploadProps = {
   defaultValue?: string | null
   className?: string
   onChange?: (url: string) => void
+  onFileChange?: (file: File | null) => void
 }
 
-export function ImageUpload({ name, defaultValue, className, onChange }: ImageUploadProps) {
+export function ImageUpload({ name, defaultValue, className, onChange, onFileChange }: ImageUploadProps) {
   const [url, setUrl] = React.useState<string>(defaultValue ?? "")
   const [uploading, setUploading] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
@@ -30,6 +31,7 @@ export function ImageUpload({ name, defaultValue, className, onChange }: ImageUp
     try {
       const objectUrl = URL.createObjectURL(file)
       setUrl(objectUrl)
+      if (onFileChange) onFileChange(file)
       if (onChange) onChange(objectUrl)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load image")
@@ -52,6 +54,7 @@ export function ImageUpload({ name, defaultValue, className, onChange }: ImageUp
             onClick={() => {
               setUrl("")
               if (inputRef.current) inputRef.current.value = ""
+              if (onFileChange) onFileChange(null)
               if (onChange) onChange("")
               // revoke object URL
               try { URL.revokeObjectURL(url) } catch (e) {}
