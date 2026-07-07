@@ -1,8 +1,8 @@
 import Link from "next/link"
-import { CheckCircle2, DollarSign, Lock, TrendingUp, FileText, BarChart3 } from "lucide-react"
+import { CheckCircle2, DollarSign, Lock, TrendingUp, FileText, BarChart3, ShieldCheck, Clock3, Wallet, Activity } from "lucide-react"
 import { getSession } from "@/lib/session"
 import { redirect } from "next/navigation"
-import { getMyProjects } from "@/app/actions/projects"
+import { getAllProjects } from "@/lib/queries"
 import { getApprovedMilestones } from "@/app/actions/projects"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -18,56 +18,141 @@ export default async function AuditorDashboard() {
   if (user.role !== "auditor") return redirect("/dashboard")
   
   const [projects, approvedMilestones] = await Promise.all([
-    getMyProjects(),
+    getAllProjects(),
     getApprovedMilestones(),
   ])
 
+  const totalProjects = projects.length
+  const pendingProjects = projects.filter((p) => p.status === "pending")
+  const approvedProjects = projects.filter((p) => p.status === "approved")
+  const fundingProjects = projects.filter((p) => p.status === "funding")
+  const activeProjects = projects.filter((p) => p.status === "started")
+  const completedProjects = projects.filter((p) => p.status === "completed")
+  const releaseReadyProjects = projects.filter((p) => p.status === "approved" && Number(p.escrowBalance || 0) > 0)
+
   const totalEscrow = projects.reduce((sum, p) => sum + p.escrowBalance, 0)
   const totalReleased = projects.reduce((sum, p) => sum + p.releasedAmount, 0)
-  const fundingProjects = projects.filter((p) => p.status === "funding").length
-  const activeProjects = projects.filter((p) => p.status === "started").length
+  const totalFunded = projects.reduce((sum, p) => sum + p.fundedAmount, 0)
+  const auditCoverage = totalProjects > 0 ? Math.round(((approvedProjects.length + completedProjects.length) / totalProjects) * 100) : 0
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:py-12">
-        <div className="mb-8 rounded-[2rem] border border-border/70 bg-card/80 p-6 shadow-sm backdrop-blur">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Auditor</p>
-              <h1 className="mt-2 text-4xl font-bold tracking-tight text-foreground">
+        <div className="mb-8 overflow-hidden rounded-[2rem] border border-border/70 bg-card shadow-sm">
+          <div className="grid gap-0 lg:grid-cols-[1.2fr_0.8fr]">
+            <div className="p-6 sm:p-8">
+              <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                <ShieldCheck className="size-3.5" />
+                Auditor
+              </div>
+              <h1 className="mt-3 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
                 Auditor dashboard
               </h1>
-              <p className="mt-2 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
-                Review financial records, inspect project funding, and monitor approved milestone releases.
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
+                Monitor platform-wide funding flow, escrow exposure, and milestone approval health from one control surface.
               </p>
+
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link href="/dashboard/release-funds">
+                  <Button className="rounded-xl">Review release queue</Button>
+                </Link>
+                <Link href="/dashboard/admin/projects">
+                  <Button variant="outline" className="rounded-xl">Open project audits</Button>
+                </Link>
+              </div>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                <Card className="rounded-2xl border border-border/70 bg-secondary/25 p-4 shadow-none">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Audit coverage</p>
+                  <p className="mt-2 text-2xl font-bold text-foreground">{auditCoverage}%</p>
+                  <p className="mt-1 text-xs text-muted-foreground">Projects approved or completed</p>
+                </Card>
+                <Card className="rounded-2xl border border-border/70 bg-secondary/25 p-4 shadow-none">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Release-ready</p>
+                  <p className="mt-2 text-2xl font-bold text-foreground">{releaseReadyProjects.length}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">Approved with escrow balance</p>
+                </Card>
+                <Card className="rounded-2xl border border-border/70 bg-secondary/25 p-4 shadow-none">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Approved milestones</p>
+                  <p className="mt-2 text-2xl font-bold text-foreground">{approvedMilestones.length}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">Waiting for release review</p>
+                </Card>
+              </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-3 lg:min-w-[540px] lg:flex-1 lg:max-w-3xl">
+            <div className="grid gap-3 border-t border-border/70 bg-secondary/20 p-6 sm:p-8 lg:border-l lg:border-t-0">
               <Card className="rounded-2xl border border-border/70 bg-background/80 p-4 shadow-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">In escrow</p>
-                <p className="mt-2 text-2xl font-bold text-foreground">{formatCurrency(totalEscrow)}</p>
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">In escrow</p>
+                    <p className="mt-2 text-2xl font-bold text-foreground">{formatCurrency(totalEscrow)}</p>
+                  </div>
+                  <div className="rounded-2xl bg-blue-500/10 p-3 text-blue-600 dark:text-blue-400">
+                    <Wallet className="size-5" />
+                  </div>
+                </div>
               </Card>
               <Card className="rounded-2xl border border-border/70 bg-background/80 p-4 shadow-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Released</p>
-                <p className="mt-2 text-2xl font-bold text-foreground">{formatCurrency(totalReleased)}</p>
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Released</p>
+                    <p className="mt-2 text-2xl font-bold text-foreground">{formatCurrency(totalReleased)}</p>
+                  </div>
+                  <div className="rounded-2xl bg-emerald-500/10 p-3 text-emerald-600 dark:text-emerald-400">
+                    <CheckCircle2 className="size-5" />
+                  </div>
+                </div>
               </Card>
               <Card className="rounded-2xl border border-border/70 bg-background/80 p-4 shadow-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Approved</p>
-                <p className="mt-2 text-2xl font-bold text-foreground">{approvedMilestones.length}</p>
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Total funded</p>
+                    <p className="mt-2 text-2xl font-bold text-foreground">{formatCurrency(totalFunded)}</p>
+                  </div>
+                  <div className="rounded-2xl bg-primary/10 p-3 text-primary">
+                    <Activity className="size-5" />
+                  </div>
+                </div>
               </Card>
             </div>
           </div>
         </div>
 
-        <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Card className="rounded-[1.75rem] border border-border/70 bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Active projects</p>
-                <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{activeProjects}</p>
-                <p className="mt-1 text-sm text-muted-foreground">Currently in delivery</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Pending review</p>
+                <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{pendingProjects.length}</p>
+                <p className="mt-1 text-sm text-muted-foreground">Needs audit attention</p>
               </div>
-              <div className="rounded-2xl bg-purple-500/10 p-3 text-purple-600 dark:text-purple-400">
+              <div className="rounded-2xl bg-amber-500/10 p-3 text-amber-600 dark:text-amber-400">
+                <Clock3 className="size-5" />
+              </div>
+            </div>
+          </Card>
+
+          <Card className="rounded-[1.75rem] border border-border/70 bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Approved projects</p>
+                <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{approvedProjects.length}</p>
+                <p className="mt-1 text-sm text-muted-foreground">Live and operating</p>
+              </div>
+              <div className="rounded-2xl bg-emerald-500/10 p-3 text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 className="size-5" />
+              </div>
+            </div>
+          </Card>
+
+          <Card className="rounded-[1.75rem] border border-border/70 bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Funding projects</p>
+                <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{fundingProjects.length}</p>
+                <p className="mt-1 text-sm text-muted-foreground">Still collecting support</p>
+              </div>
+              <div className="rounded-2xl bg-blue-500/10 p-3 text-blue-600 dark:text-blue-400">
                 <TrendingUp className="size-5" />
               </div>
             </div>
@@ -76,27 +161,32 @@ export default async function AuditorDashboard() {
           <Card className="rounded-[1.75rem] border border-border/70 bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Fundraising projects</p>
-                <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{fundingProjects}</p>
-                <p className="mt-1 text-sm text-muted-foreground">Still collecting support</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Active projects</p>
+                <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{activeProjects.length}</p>
+                <p className="mt-1 text-sm text-muted-foreground">Currently in delivery</p>
               </div>
-              <div className="rounded-2xl bg-blue-500/10 p-3 text-blue-600 dark:text-blue-400">
-                <Lock className="size-5" />
+              <div className="rounded-2xl bg-purple-500/10 p-3 text-purple-600 dark:text-purple-400">
+                <BarChart3 className="size-5" />
               </div>
             </div>
           </Card>
 
-          <Card className="rounded-[1.75rem] border border-border/70 bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
-            <div className="flex items-start justify-between gap-4">
+          <Card className="rounded-[1.75rem] border border-border/70 bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md sm:col-span-2 lg:col-span-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Total funded</p>
-                <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
-                  {formatCurrency(projects.reduce((sum, p) => sum + p.fundedAmount, 0))}
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">Across all monitored projects</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Completed projects</p>
+                <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{completedProjects.length}</p>
+                <p className="mt-1 text-sm text-muted-foreground">Projects fully delivered and closed</p>
               </div>
-              <div className="rounded-2xl bg-emerald-500/10 p-3 text-emerald-600 dark:text-emerald-400">
-                <BarChart3 className="size-5" />
+              <div className="grid gap-2 text-sm text-muted-foreground sm:text-right">
+                <span className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 font-medium">
+                  <ShieldCheck className="size-3.5 text-primary" />
+                  {releaseReadyProjects.length} release-ready
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full bg-secondary/60 px-3 py-1 font-medium">
+                  <DollarSign className="size-3.5 text-emerald-500" />
+                  {approvedMilestones.length} approved milestones
+                </span>
               </div>
             </div>
           </Card>
