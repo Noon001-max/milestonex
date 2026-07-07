@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ArrowLeft, MapPin, Lock, Banknote, Receipt } from "lucide-react"
+import { ArrowLeft, Banknote, Calendar, Lock, MapPin, Receipt, Sparkles, Users } from "lucide-react"
 import { getSession } from "@/lib/session"
 import {
   getProjectById,
@@ -48,7 +48,7 @@ export default async function ProjectDetailPage({
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <SiteHeader user={user} />
-      <main className="mx-auto w-full max-w-6xl px-4 py-8 overflow-hidden">
+      <main className="mx-auto w-full max-w-6xl overflow-hidden px-4 py-8 sm:py-12">
         <Link
           href="/projects"
           className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
@@ -60,7 +60,7 @@ export default async function ProjectDetailPage({
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Main column */}
           <div className="flex flex-col gap-6 lg:col-span-2">
-            <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-border">
+            <div className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-border bg-muted shadow-sm">
               <Image
                 src={project.imageUrl || "/hero-community.png"}
                 alt={project.title}
@@ -69,43 +69,90 @@ export default async function ProjectDetailPage({
                 sizes="(max-width: 1024px) 100vw, 66vw"
                 className="object-cover"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/35 via-transparent to-transparent" />
               <div className="absolute left-4 top-4">
                 <StatusBadge status={project.status} />
               </div>
             </div>
 
-            <div className="min-w-0">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span className="capitalize">{project.category}</span>
+            <div className="min-w-0 rounded-2xl border border-border/70 bg-card p-5 shadow-sm sm:p-6">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                <span className="rounded-full bg-secondary/60 px-2.5 py-1 text-foreground/80 capitalize">{project.category}</span>
                 {project.location && (
-                  <>
-                    <span aria-hidden>•</span>
-                    <span className="inline-flex items-center gap-1">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-secondary/60 px-2.5 py-1 text-foreground/80">
                       <MapPin className="size-3.5" />
                       {project.location}
                     </span>
-                  </>
                 )}
               </div>
-              <h1 className="mt-2 text-balance text-3xl font-semibold tracking-tight text-foreground">
+              <h1 className="mt-3 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
                 {project.title}
               </h1>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="mt-2 text-sm text-muted-foreground">
                 by {ownerName}
+              </p>
+              <p className="mt-4 max-w-3xl whitespace-pre-line text-sm leading-7 text-foreground/80 sm:text-base">
+                {project.summary || project.description || "No summary has been added yet."}
               </p>
             </div>
 
-            <Card className="p-6 border border-border/80 bg-card shadow-sm">
-              <h2 className="mb-3 text-lg font-bold text-foreground">
-                About this project
-              </h2>
-              <p className="whitespace-pre-line leading-relaxed text-muted-foreground text-sm sm:text-base">
-                {project.description}
+            <Card className="border border-border/80 bg-card p-6 shadow-sm">
+              <h2 className="mb-3 text-lg font-bold text-foreground">Description</h2>
+              <p className="whitespace-pre-line break-words text-sm leading-relaxed text-muted-foreground sm:text-base">
+                {project.description || "No detailed description has been added yet."}
               </p>
             </Card>
 
+            <Card className="border border-border/80 bg-card p-6 shadow-sm">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-lg font-bold text-foreground">Project details</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">All the key facts in one compact view.</p>
+                </div>
+              </div>
+
+              <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Funding goal</dt>
+                  <dd className="mt-1.5 text-sm font-semibold text-foreground">{formatCurrency(project.fundingGoal)}</dd>
+                </div>
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Funds raised</dt>
+                  <dd className="mt-1.5 text-sm font-semibold text-foreground">{formatCurrency(project.fundedAmount)}</dd>
+                </div>
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Escrow balance</dt>
+                  <dd className="mt-1.5 text-sm font-semibold text-foreground">{formatCurrency(project.escrowBalance)}</dd>
+                </div>
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Released funds</dt>
+                  <dd className="mt-1.5 text-sm font-semibold text-foreground">{formatCurrency(project.releasedAmount)}</dd>
+                </div>
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Contributors</dt>
+                  <dd className="mt-1.5 text-sm font-semibold text-foreground">{donations.length}</dd>
+                </div>
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Milestones</dt>
+                  <dd className="mt-1.5 text-sm font-semibold text-foreground">{milestones.length}</dd>
+                </div>
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Created</dt>
+                  <dd className="mt-1.5 text-sm font-semibold text-foreground">{new Date(project.createdAt).toLocaleDateString()}</dd>
+                </div>
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Updated</dt>
+                  <dd className="mt-1.5 text-sm font-semibold text-foreground">{new Date(project.updatedAt).toLocaleDateString()}</dd>
+                </div>
+                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Owner</dt>
+                  <dd className="mt-1.5 text-sm font-semibold text-foreground">{ownerName}</dd>
+                </div>
+              </dl>
+            </Card>
+
             <Card className="p-6 border border-border/80 bg-card shadow-sm">
-              <h2 className="mb-5 text-lg font-bold text-foreground">
+              <h2 className="mb-3 text-lg font-bold text-foreground">
                 Milestones
               </h2>
               <MilestoneTimeline milestones={milestones} />
@@ -162,6 +209,24 @@ export default async function ProjectDetailPage({
           {/* Sidebar */}
           <div className="flex flex-col gap-6">
             <Card className="p-6 border border-border/80 bg-card shadow-sm">
+              <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                <Sparkles className="size-4 text-primary" />
+                Project overview
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <div className="rounded-2xl bg-secondary/30 p-4">
+                  <div className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                    <Users className="size-3.5" /> Supporters
+                  </div>
+                  <div className="mt-2 text-2xl font-semibold text-foreground">{donations.length}</div>
+                </div>
+                <div className="rounded-2xl bg-secondary/30 p-4">
+                  <div className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                    <Calendar className="size-3.5" /> Milestones
+                  </div>
+                  <div className="mt-2 text-2xl font-semibold text-foreground">{milestones.length}</div>
+                </div>
+              </div>
               <FundingProgress
                 funded={project.fundedAmount}
                 goal={project.fundingGoal}
