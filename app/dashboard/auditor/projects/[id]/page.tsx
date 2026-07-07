@@ -26,6 +26,7 @@ export default async function AuditorProjectDetail({ params }: { params: Promise
 
   const project = await getProjectById(projectId)
   if (!project) notFound()
+  const isCompleted = project.status === "completed"
 
   const [milestones, donations, transactions, ownerName] = await Promise.all([
     getProjectMilestones(projectId),
