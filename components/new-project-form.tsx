@@ -86,7 +86,7 @@ export function NewProjectForm() {
 
   function handleNext() {
     if (validateStep(step)) {
-      setStep((current) => current + 1)
+      setStep((current) => Math.min(current + 1, 5))
     }
   }
 
@@ -160,7 +160,7 @@ export function NewProjectForm() {
   return (
     <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-12" aria-busy={submitting}>
       {submitting && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 px-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 px-4 backdrop-blur-md">
           <div className="w-full max-w-sm rounded-2xl border border-border/70 bg-card p-6 text-center shadow-2xl">
             <Loader2 className="mx-auto size-10 animate-spin text-primary" />
             <h3 className="mt-4 text-lg font-semibold text-foreground">Creating project</h3>
@@ -172,7 +172,7 @@ export function NewProjectForm() {
       <div className="lg:col-span-7">
         <div className="mb-8 rounded-2xl border border-border/80 bg-card p-4 shadow-sm">
           <div className="flex items-center justify-between gap-3">
-            {[1, 2, 3, 4].map((number) => (
+            {[1, 2, 3, 4, 5].map((number) => (
               <React.Fragment key={number}>
                 {number > 1 && <div className="mx-3 flex-1 border-t border-dashed border-border" />}
                 <button
@@ -182,6 +182,7 @@ export function NewProjectForm() {
                     if (number === 2 && validateStep(1)) return setStep(2)
                     if (number === 3 && validateStep(1) && validateStep(2)) return setStep(3)
                     if (number === 4 && validateStep(1) && validateStep(2) && validateStep(3)) return setStep(4)
+                    if (number === 5 && validateStep(1) && validateStep(2) && validateStep(3)) return setStep(5)
                   }}
                   className={`flex items-center gap-2 text-xs font-bold transition-all ${
                     step === number ? "text-primary" : "text-muted-foreground hover:text-foreground"
@@ -197,7 +198,15 @@ export function NewProjectForm() {
                     {number}
                   </div>
                   <span className="hidden sm:inline">
-                    {number === 1 ? "Basics" : number === 2 ? "Narrative" : number === 3 ? "Milestones" : "Image"}
+                    {number === 1
+                      ? "Basics"
+                      : number === 2
+                        ? "Narrative"
+                        : number === 3
+                          ? "Milestones"
+                          : number === 4
+                            ? "Image"
+                            : "Submit"}
                   </span>
                 </button>
               </React.Fragment>
@@ -244,10 +253,10 @@ export function NewProjectForm() {
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="category-select" className="text-xs font-semibold text-foreground">Category</Label>
                     <Select value={category} onValueChange={(value) => value && setCategory(value)}>
-                      <SelectTrigger id="category-select" className="w-full rounded-xl">
+                      <SelectTrigger id="category-select" className="w-full rounded-xl border-border bg-background shadow-sm">
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="border-border bg-background shadow-xl">
                         {CATEGORIES.map((item) => (
                           <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>
                         ))}
@@ -410,6 +419,38 @@ export function NewProjectForm() {
               </section>
             )}
 
+            {step === 5 && (
+              <section className="space-y-5 animate-fade-in">
+                <div className="flex items-center gap-2.5 border-b border-border/60 pb-2 text-foreground">
+                  <Info className="size-5 text-primary" />
+                  <h3 className="font-bold">Submission</h3>
+                </div>
+
+                <div className="grid gap-4 rounded-xl border border-border/60 bg-card/70 p-4 sm:grid-cols-2">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Title</p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">{preview.title || "Untitled Project Proposal"}</p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Funding Goal</p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">{formatCurrency(totalGoal)}</p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Category</p>
+                    <p className="mt-1 text-sm font-semibold text-foreground capitalize">{preview.category}</p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Milestones</p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">{preview.milestones.filter((milestone) => milestone.title.trim() && milestone.amount).length}</p>
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-primary/10 bg-primary/5 p-4 text-sm text-muted-foreground">
+                  Review everything above, then click Submit Proposal to upload the project and the selected image together.
+                </div>
+              </section>
+            )}
+
             <div className="border-t border-border/80 pt-4.5">
               {error && (
                 <p className="mb-4 rounded-xl border border-destructive/20 bg-destructive/10 p-3 text-xs font-bold text-destructive animate-pulse">
@@ -431,7 +472,7 @@ export function NewProjectForm() {
                   <div />
                 )}
 
-                {step < 4 ? (
+                {step < 5 ? (
                   <button
                     type="button"
                     onClick={handleNext}
