@@ -205,7 +205,23 @@ export function NewProjectForm() {
   const totalGoal = preview.milestones.reduce((sum, m) => sum + Number(m.amount || 0), 0)
 
   return (
-    <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+    <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-12" aria-busy={submitting || uploadingImage}>
+      {(submitting || uploadingImage) && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl border border-border/70 bg-card p-6 text-center shadow-2xl">
+            <Loader2 className="mx-auto size-10 animate-spin text-primary" />
+            <h3 className="mt-4 text-lg font-semibold text-foreground">
+              {uploadingImage ? "Uploading image" : "Creating project"}
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {uploadingImage
+                ? "Please wait while the hero image is uploaded."
+                : "Please wait while your proposal and image are being saved."}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Left panel - Form Steps */}
       <div className="lg:col-span-7">
         {/* Step Indicator Header */}
@@ -513,7 +529,7 @@ export function NewProjectForm() {
                     className="inline-flex items-center gap-2 text-xs font-bold text-primary-foreground bg-primary rounded-xl px-6 py-2.5 transition shadow-md shadow-primary/10 disabled:opacity-60 disabled:cursor-not-allowed hover:scale-[1.02] hover:bg-primary/95"
                   >
                     {submitting ? <Loader2 className="size-4 animate-spin" /> : null}
-                    <span>Submit Proposal</span>
+                    <span>{uploadingImage ? "Uploading Image" : "Submit Proposal"}</span>
                   </button>
                 )}
               </div>
