@@ -113,15 +113,10 @@ export default async function ProjectDetailPage({
               <div className="mb-4 flex items-center justify-between gap-3">
                 <div>
                   <h2 className="text-lg font-bold text-foreground">Project details</h2>
-                  <p className="mt-1 text-sm text-muted-foreground">Compact project metadata.</p>
                 </div>
               </div>
 
               <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
-                  <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Summary</dt>
-                  <dd className="mt-1.5 text-sm leading-6 text-foreground">{project.summary || "Not provided"}</dd>
-                </div>
                 <div className="rounded-xl border border-border/70 bg-secondary/25 p-3.5">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Category</dt>
                   <dd className="mt-2 text-sm font-semibold capitalize text-foreground">{project.category}</dd>
