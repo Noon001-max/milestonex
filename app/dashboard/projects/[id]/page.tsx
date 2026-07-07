@@ -1,154 +1,214 @@
-import Link from "next/link"
 import Image from "next/image"
+import Link from "next/link"
+import { notFound, redirect } from "next/navigation"
+import { ArrowLeft, Banknote, Edit2, FileText, Lock, MapPin, Receipt, ShieldCheck, Sparkles } from "lucide-react"
 import { getSession } from "@/lib/session"
-import { getProjectById, getProjectMilestones } from "@/lib/queries"
-import { Card } from "@/components/ui/card"
+import { getOwnerName } from "@/app/actions/projects"
+import {
+  getProjectById,
+  getProjectMilestones,
+  getProjectDonations,
+  getProjectTransactions,
+} from "@/lib/queries"
 import { formatCurrency } from "@/lib/roles"
+import { SiteFooter } from "@/components/site-footer"
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { FundingProgress } from "@/components/funding-progress"
+import { MilestoneTimeline } from "@/components/milestone-timeline"
 import { StatusBadge } from "@/components/status-badge"
-import { EvidenceForm } from "@/components/evidence-form"
 
 export const dynamic = "force-dynamic"
 
-export default async function ProjectManagePage({
+export default async function ProjectDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
   const projectId = Number(id)
-  const user = await getSession()
+  if (Number.isNaN(projectId)) notFound()
 
-  if (!user) {
-    return (
-      <div className="flex min-h-svh flex-col bg-background">
-        <main className="mx-auto w-full max-w-6xl px-4 py-16">
-          <p className="text-muted-foreground">
-            <Link href="/sign-in" className="text-primary hover:underline">
-              Sign in
-            </Link>{" "}
-            to manage projects.
-          </p>
-        </main>
-      </div>
-    )
-  }
+  const [user, project] = await Promise.all([getSession(), getProjectById(projectId)])
+  if (!user) redirect("/sign-in")
+  if (!project || project.ownerId !== user.id) notFound()
 
-  const [project, milestones] = await Promise.all([
-    getProjectById(projectId),
+  const [milestones, donations, transactions, ownerName] = await Promise.all([
     getProjectMilestones(projectId),
+    getProjectDonations(projectId),
+    getProjectTransactions(projectId),
+    getOwnerName(project.ownerId),
   ])
-
-  const isMilestoneUnlocked = (index: number) =>
-    index === 0 ||
-    milestones.slice(0, index).every((prev) => prev.status === "approved" || prev.status === "released")
-
-  if (!project || project.ownerId !== user.id) {
-    return (
-      <div className="flex min-h-svh flex-col bg-background">
-        <main className="mx-auto w-full max-w-6xl px-4 py-16">
-          <p className="text-muted-foreground">Project not found or access denied.</p>
-        </main>
-      </div>
-    )
-  }
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <main className="mx-auto w-full max-w-6xl px-4 py-12">
-        <div className="mb-6">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-            {project.title}
-          </h1>
-          <div className="mt-1 flex items-center gap-2">
-            <StatusBadge status={project.status} />
-            <span className="text-sm text-muted-foreground">
-              {formatCurrency(project.fundedAmount)} raised
-            </span>
+      <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:py-12 overflow-hidden">
+        <Link
+          href="/dashboard/projects"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground"
+        >
+          <ArrowLeft className="size-4" />
+          Back to my proposals
+        </Link>
+
+        <div className="grid gap-8 lg:grid-cols-3">
+          <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
+            <div className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-border bg-muted">
+              <Image
+                src={project.imageUrl || "/hero-community.png"}
+                alt={project.title}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 66vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/45 via-transparent to-transparent" />
+              <div className="absolute left-4 top-4">
+                <StatusBadge status={project.status} />
+              </div>
+            </div>
+
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                <span className="capitalize">{project.category}</span>
+                {project.location && (
+                  <>
+                    <span aria-hidden>•</span>
+                    <span className="inline-flex items-center gap-1">
+                      <MapPin className="size-3.5" />
+                      {project.location}
+                    </span>
+                  </>
+                )}
+              </div>
+              <h1 className="mt-2 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+                {project.title}
+              </h1>
+              <p className="mt-1 text-sm text-muted-foreground">Owned by {ownerName}</p>
+
+              <div className="mt-4 flex flex-wrap gap-3">
+                <Link href={`/dashboard/projects/${projectId}/edit`}>
+                  <Button variant="outline" className="rounded-xl">
+                    <Edit2 className="mr-2 size-4" />
+                    Edit project
+                  </Button>
+                </Link>
+                <Link href={`/dashboard/projects/${projectId}/milestones`}>
+                  <Button className="rounded-xl">
+                    <ShieldCheck className="mr-2 size-4" />
+                    Submit proof
+                  </Button>
+                </Link>
+              </div>
+            </div>
+
+            <Card className="border border-border/80 bg-card p-6 shadow-sm">
+              <h2 className="mb-3 text-lg font-bold text-foreground">About this project</h2>
+              <p className="whitespace-pre-line break-words text-sm leading-relaxed text-muted-foreground sm:text-base">
+                {project.description}
+              </p>
+            </Card>
+
+            <Card className="border border-border/80 bg-card p-6 shadow-sm">
+              <div className="mb-5 flex items-center justify-between gap-3">
+                <h2 className="text-lg font-bold text-foreground">Milestones</h2>
+                <Link href={`/dashboard/projects/${projectId}/milestones`}>
+                  <Button variant="ghost" size="sm">Open proof board</Button>
+                </Link>
+              </div>
+              <MilestoneTimeline milestones={milestones} ownerView />
+            </Card>
+
+            <Card className="border border-border/80 bg-card p-6 shadow-sm">
+              <div className="mb-5 flex items-center gap-2 border-b border-border/60 pb-3">
+                <Receipt className="size-5 text-primary" />
+                <h2 className="text-lg font-bold text-foreground">Audit Trail</h2>
+              </div>
+              {transactions.length === 0 ? (
+                <p className="py-2 text-sm text-muted-foreground">No transactions recorded yet.</p>
+              ) : (
+                <ul className="flex flex-col divide-y divide-border/60">
+                  {transactions.map((t) => {
+                    const isRelease = t.type === "release"
+                    return (
+                      <li key={t.id} className="flex items-center justify-between gap-3 py-3.5">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-foreground">{t.note ?? t.type}</p>
+                          <p className="mt-0.5 text-xs capitalize text-muted-foreground">
+                            {t.type.replace("_", " ")} • {new Date(t.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <span className={`text-sm font-bold ${isRelease ? "text-amber-600 dark:text-amber-400" : "text-emerald-600 dark:text-emerald-400"}`}>
+                          {isRelease ? "-" : "+"}
+                          {formatCurrency(t.amount)}
+                        </span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              )}
+            </Card>
+          </div>
+
+          <div className="flex flex-col gap-6">
+            <Card className="border border-border/80 bg-card p-6 shadow-sm">
+              <FundingProgress
+                funded={project.fundedAmount}
+                goal={project.fundingGoal}
+                released={project.releasedAmount}
+              />
+              <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-border/60 pt-5 text-sm">
+                <div className="flex flex-col gap-1">
+                  <dt className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <Lock className="size-3.5 text-primary/70" /> Escrow
+                  </dt>
+                  <dd className="mt-0.5 text-base font-bold text-foreground">{formatCurrency(project.escrowBalance)}</dd>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <dt className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <Banknote className="size-3.5 text-primary/70" /> Released
+                  </dt>
+                  <dd className="mt-0.5 text-base font-bold text-foreground">{formatCurrency(project.releasedAmount)}</dd>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Contributors</dt>
+                  <dd className="mt-0.5 text-base font-bold text-foreground">{donations.length}</dd>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Milestones</dt>
+                  <dd className="mt-0.5 text-base font-bold text-foreground">{milestones.length}</dd>
+                </div>
+              </dl>
+            </Card>
+
+            <Card className="border border-border/80 bg-card p-6 shadow-sm">
+              <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                <Sparkles className="size-4 text-primary" />
+                Quick actions
+              </div>
+              <div className="mt-4 flex flex-col gap-2">
+                <Link href={`/dashboard/projects/${projectId}/milestones`} className="w-full">
+                  <Button className="w-full rounded-xl">Open proof submission</Button>
+                </Link>
+                <Link href={`/dashboard/projects/${projectId}/edit`} className="w-full">
+                  <Button variant="outline" className="w-full rounded-xl">Edit details</Button>
+                </Link>
+              </div>
+            </Card>
+
+            <Card className="border border-border/80 bg-card p-6 text-sm text-muted-foreground shadow-sm">
+              <FileText className="mb-3 size-6 text-primary/80" />
+              <p className="font-semibold text-foreground">Helpful tips</p>
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
+                <li>Keep milestone evidence specific and date-based.</li>
+                <li>Use the proof board to submit work for the unlocked milestone.</li>
+                <li>Review your project details before the next approval cycle.</li>
+              </ul>
+            </Card>
           </div>
         </div>
-
-        <div className="grid gap-6">
-          <h2 className="text-lg font-semibold text-foreground">Milestones</h2>
-          {milestones.length ? (
-            <div className="space-y-4">
-              {milestones.map((m, index) => {
-                const unlocked = isMilestoneUnlocked(index)
-                return (
-                  <Card
-                    key={m.id}
-                    className={`p-5 ${
-                      m.status === "pending" && !unlocked
-                        ? "opacity-80 ring-1 ring-border bg-muted"
-                        : ""
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">{m.title}</p>
-                        <p className="text-sm text-muted-foreground">{m.description}</p>
-                        <p className="mt-1 text-sm font-medium text-primary">
-                          {formatCurrency(m.amount)}
-                        </p>
-                      </div>
-                      <StatusBadge status={m.status} />
-                    </div>
-
-                    {(unlocked && (m.status === "pending" || m.status === "rejected")) && (
-                      <EvidenceForm milestoneId={m.id} />
-                    )}
-
-                    {(m.status === "pending" || m.status === "rejected") && !unlocked && (
-                      <div className="mt-4 rounded-lg border border-border bg-muted p-4 text-sm text-muted-foreground">
-                        Milestone {index + 1} will unlock after the previous milestone is approved.
-                      </div>
-                    )}
-
-                    {m.status !== "pending" && (m.evidenceNote || m.evidenceUrls) && (
-                      <div className="mt-4 space-y-3 border-t border-border pt-4">
-                        <p className="text-sm font-medium text-foreground">Submitted proof</p>
-                        {m.evidenceNote ? (
-                          <p className="text-sm leading-relaxed text-muted-foreground">
-                            {m.evidenceNote}
-                          </p>
-                        ) : null}
-                        {m.evidenceUrls ? (
-                          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                            {m.evidenceUrls
-                              .split(/\s*[\n,]\s*/)
-                              .map((u) => u.trim())
-                              .filter(Boolean)
-                              .map((url) => (
-                                <a
-                                  key={url}
-                                  href={url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="overflow-hidden rounded-lg border border-input"
-                                >
-                                  <Image
-                                    src={url || "/placeholder.svg"}
-                                    alt="Milestone proof"
-                                    width={400}
-                                    height={300}
-                                    className="h-28 w-full object-cover"
-                                  />
-                                </a>
-                              ))}
-                          </div>
-                        ) : null}
-                      </div>
-                    )}
-                  </Card>
-                )
-              })}
-            </div>
-          ) : (
-            <Card className="p-6">
-              <p className="text-muted-foreground">No milestones defined.</p>
-            </Card>
-          )}
-        </div>
       </main>
+      <SiteFooter />
     </div>
   )
 }
