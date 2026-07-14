@@ -6,7 +6,7 @@ import { requireRole, requireUser } from "@/lib/session"
 import { notify } from "@/lib/notify"
 import { eq, inArray, desc, and } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
-import { assignVerifiersForMilestone, evaluateVerificationLocation, recordVerificationSubmission, updateVerifierReputation } from "@/lib/verification"
+import { assignVerifiersForMilestone, evaluateVerificationLocation, insertVerificationRecord, recordVerificationSubmission, updateVerifierReputation } from "@/lib/verification"
 
 // Project proposer submits milestone completion + evidence
 export async function submitMilestoneEvidence(
@@ -134,7 +134,7 @@ export async function submitVerification(
       )
     }
 
-    await db.insert(verifications).values({
+    await insertVerificationRecord({
       milestoneId,
       projectId: m.projectId,
       verifierId: u.id,

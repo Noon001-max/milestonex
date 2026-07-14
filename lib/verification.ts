@@ -1,11 +1,26 @@
-import { db } from "@/lib/db"
-import { milestones, projects, user, verificationAssignments, verifications } from "@/lib/db/schema"
+import { db, pool } from "@/lib/db"
+import { milestones, user, verificationAssignments, verifications } from "@/lib/db/schema"
 import { and, eq, sql } from "drizzle-orm"
 
 function getRequiredConsensus(amount: number) {
   if (amount >= 50000) return 2
   if (amount >= 20000) return 2
   return 1
+}
+
+async function hasTable(tableName: string) {
+  const result = await pool.query("select to_regclass($1) as table_name", [`public.${tableName}`])
+  return Boolean(result.rows[0]?.table_name)
+}
+
+async function hasColumns(tableName: string, columnNames: string[]) {
+  const placeholders = columnNames.map((_, index) => `$${index + 2}`).join(", ")
+  const result = await pool.query(
+    `select column_name from information_schema.columns where table_schema = 'public' and table_name = $1 and column_name in (${placeholders})`,
+    [tableName, ...columnNames],
+  )
+  const found = new Set(result.rows.map((row) => row.column_name))
+  return columnNames.every((columnName) => found.has(columnName))
 }
 
 export function calculateDistanceMeters(
@@ -41,7 +56,62 @@ export function evaluateVerificationLocation(
   return { distanceMeters, locationMatch: distanceMeters <= 50 }
 }
 
+export async function getProjectLocation(projectId: number) {
+  if (!(await hasTable("projects"))) {
+    return { latitude: null, longitude: null, available: false }
+  }
+
+  if (!(await hasColumns("projects", ["latitude", "longitude"]))) {
+    return { latitude: null, longitude: null, available: false }
+  }
+
+  const result = await pool.query("select latitude, longitude from projects where id = $1", [projectId])
+  const row = result.rows[0] ?? {}
+  return {
+    latitude: typeof row.latitude === "number" ? row.latitude : null,
+    longitude: typeof row.longitude === "number" ? row.longitude : null,
+    available: true,
+  }
+}
+
+export async function insertVerificationRecord(input: {
+  milestoneId: number
+  projectId: number
+  verifierId: string
+  verifierName: string | null
+  decision: "approve" | "reject"
+  report: string
+  verifierLatitude?: number | null
+  verifierLongitude?: number | null
+  locationDistanceMeters?: number | null
+  locationMatch?: boolean
+}) {
+  const hasGeoColumns = await hasColumns("verifications", ["verifierLatitude", "verifierLongitude", "locationDistanceMeters", "locationMatch"])
+  const latitude = Number.isFinite(input.verifierLatitude ?? NaN) ? input.verifierLatitude : null
+  const longitude = Number.isFinite(input.verifierLongitude ?? NaN) ? input.verifierLongitude : null
+  const distance = Number.isFinite(input.locationDistanceMeters ?? NaN) ? input.locationDistanceMeters : null
+  const match = input.locationMatch ?? false
+
+  if (hasGeoColumns) {
+    await pool.query(
+      `insert into verifications (milestoneId, projectId, verifierId, verifierName, decision, report, verifierLatitude, verifierLongitude, locationDistanceMeters, locationMatch, createdAt)
+       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, now())`,
+      [input.milestoneId, input.projectId, input.verifierId, input.verifierName, input.decision, input.report, latitude, longitude, distance, match],
+    )
+  } else {
+    await pool.query(
+      `insert into verifications (milestoneId, projectId, verifierId, verifierName, decision, report, createdAt)
+       values ($1, $2, $3, $4, $5, $6, now())`,
+      [input.milestoneId, input.projectId, input.verifierId, input.verifierName, input.decision, input.report],
+    )
+  }
+}
+
 export async function assignVerifiersForMilestone(milestoneId: number, projectId: number, amount: number) {
+  if (!(await hasTable("verification_assignments"))) {
+    return []
+  }
+
   const requiredConsensus = getRequiredConsensus(amount)
   const verifierCandidates = await db
     .select({
@@ -69,7 +139,7 @@ export async function assignVerifiersForMilestone(milestoneId: number, projectId
       projectId,
       assignedVerifierId: verifier.id,
       assignedVerifierName: verifier.name,
-      requiredConsensus: amount >= 50000 ? 2 : amount >= 20000 ? 2 : 1,
+      requiredConsensus,
       status: "assigned",
     })),
   )
@@ -89,6 +159,14 @@ export async function recordVerificationSubmission(
   decision: "approve" | "reject",
   report: string,
 ) {
+  if (!(await hasTable("verification_assignments"))) {
+    await db
+      .update(milestones)
+      .set({ status: "verifying", updatedAt: new Date() })
+      .where(eq(milestones.id, milestoneId))
+    return { updated: true, consensusReached: true, reviewCount: 1 }
+  }
+
   const [assignment] = await db
     .select()
     .from(verificationAssignments)
@@ -130,6 +208,10 @@ export async function recordVerificationSubmission(
 }
 
 export async function updateVerifierReputation(verifierId: string, decision: "approve" | "reject") {
+  if (!(await hasColumns("user", ["verifierReputationScore", "verifierApprovedReviews", "verifierRejectedReviews"]))) {
+    return
+  }
+
   const [current] = await db.select({ id: user.id, reputation: user.verifierReputationScore, approved: user.verifierApprovedReviews, rejected: user.verifierRejectedReviews }).from(user).where(eq(user.id, verifierId))
   if (!current) return
 
