@@ -1,5 +1,3 @@
-"use server"
-
 import { db } from "@/lib/db"
 import { milestones, projects, user, verificationAssignments, verifications } from "@/lib/db/schema"
 import { and, eq, sql } from "drizzle-orm"
