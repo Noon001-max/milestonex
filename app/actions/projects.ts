@@ -28,10 +28,20 @@ export async function createProject(formData: FormData) {
     const title = (formData.get("title") as string)?.trim()
     const summary = (formData.get("summary") as string)?.trim()
     const description = (formData.get("description") as string)?.trim()
+    const location = (formData.get("location") as string)?.trim()
+    const latitudeValue = Number(formData.get("latitude"))
+    const longitudeValue = Number(formData.get("longitude"))
     
     if (!title) throw new Error("Project title is required")
     if (!summary) throw new Error("Project summary is required")
     if (!description) throw new Error("Project description is required")
+    if (!location) throw new Error("Project location is required")
+    if (!Number.isFinite(latitudeValue) || !Number.isFinite(longitudeValue)) {
+      throw new Error("Project coordinates are required for verifier site checks")
+    }
+    if (latitudeValue < -90 || latitudeValue > 90 || longitudeValue < -180 || longitudeValue > 180) {
+      throw new Error("Coordinates must be valid latitude and longitude values")
+    }
 
     const parsedMilestones = [] as MilestoneInput[]
 
@@ -99,7 +109,9 @@ export async function createProject(formData: FormData) {
         summary: summary,
         description: description,
         category: (formData.get("category") as string) || "community",
-        location: (formData.get("location") as string) || "",
+        location,
+        latitude: latitudeValue,
+        longitude: longitudeValue,
         imageUrl: uploadedImageUrl || (formData.get("imageUrl") as string) || null,
         fundingGoal,
         status: "pending",
@@ -175,10 +187,20 @@ export async function updateProject(formData: FormData) {
     const title = (formData.get("title") as string)?.trim()
     const summary = (formData.get("summary") as string)?.trim()
     const description = (formData.get("description") as string)?.trim()
+    const location = (formData.get("location") as string)?.trim()
+    const latitudeValue = Number(formData.get("latitude"))
+    const longitudeValue = Number(formData.get("longitude"))
 
     if (!title) throw new Error("Project title is required")
     if (!summary) throw new Error("Project summary is required")
     if (!description) throw new Error("Project description is required")
+    if (!location) throw new Error("Project location is required")
+    if (!Number.isFinite(latitudeValue) || !Number.isFinite(longitudeValue)) {
+      throw new Error("Project coordinates are required for verifier site checks")
+    }
+    if (latitudeValue < -90 || latitudeValue > 90 || longitudeValue < -180 || longitudeValue > 180) {
+      throw new Error("Coordinates must be valid latitude and longitude values")
+    }
 
     const parsedMilestones = [] as MilestoneInput[]
     for (let i = 0; i < 10; i++) {
@@ -235,7 +257,9 @@ export async function updateProject(formData: FormData) {
         summary,
         description,
         category: (formData.get("category") as string) || "community",
-        location: (formData.get("location") as string) || "",
+        location,
+        latitude: latitudeValue,
+        longitude: longitudeValue,
         imageUrl: nextImageUrl,
         fundingGoal,
         updatedAt: new Date(),

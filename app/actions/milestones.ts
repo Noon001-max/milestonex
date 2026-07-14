@@ -1,11 +1,12 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { milestones, projects, verifications } from "@/lib/db/schema"
+import { milestones, projects, verifications, verificationAssignments } from "@/lib/db/schema"
 import { requireRole, requireUser } from "@/lib/session"
 import { notify } from "@/lib/notify"
 import { eq, inArray, desc, and } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
+import { assignVerifiersForMilestone, evaluateVerificationLocation, recordVerificationSubmission, updateVerifierReputation } from "@/lib/verification"
 
 // Project proposer submits milestone completion + evidence
 export async function submitMilestoneEvidence(
@@ -71,6 +72,8 @@ export async function submitMilestoneEvidence(
     })
     .where(eq(milestones.id, milestoneId))
 
+  await assignVerifiersForMilestone(milestoneId, m.projectId, m.amount)
+
   await notify({
     userId: u.id,
     title: "Milestone submitted",
@@ -88,6 +91,8 @@ export async function submitVerification(
   milestoneId: number,
   decision: "approve" | "reject",
   report: string,
+  verifierLatitude?: number | null,
+  verifierLongitude?: number | null,
 ) {
   const u = await requireRole(["verifier", "admin"])
 
@@ -97,19 +102,62 @@ export async function submitVerification(
     .where(eq(milestones.id, milestoneId))
   if (!m) throw new Error("Milestone not found")
 
-  await db.insert(verifications).values({
-    milestoneId,
-    projectId: m.projectId,
-    verifierId: u.id,
-    verifierName: u.name,
-    decision,
-    report,
-  })
+  if (u.role === "verifier") {
+    const [assignment] = await db
+      .select()
+      .from(verificationAssignments)
+      .where(and(eq(verificationAssignments.milestoneId, milestoneId), eq(verificationAssignments.assignedVerifierId, u.id)))
 
-  await db
-    .update(milestones)
-    .set({ status: "verifying", updatedAt: new Date() })
-    .where(eq(milestones.id, milestoneId))
+    if (!assignment) {
+      throw new Error("You are not assigned to verify this milestone")
+    }
+
+    const [projectLocation] = await db
+      .select({ latitude: projects.latitude, longitude: projects.longitude })
+      .from(projects)
+      .where(eq(projects.id, m.projectId))
+
+    const parsedLatitude = Number(verifierLatitude)
+    const parsedLongitude = Number(verifierLongitude)
+    const locationCheck = evaluateVerificationLocation(
+      projectLocation?.latitude ?? null,
+      projectLocation?.longitude ?? null,
+      Number.isFinite(parsedLatitude) ? parsedLatitude : null,
+      Number.isFinite(parsedLongitude) ? parsedLongitude : null,
+    )
+
+    if (!locationCheck.locationMatch) {
+      throw new Error(
+        locationCheck.distanceMeters == null
+          ? "Project coordinates are missing. The proposer must add site coordinates before verification can proceed."
+          : `Verification location is outside the 50m radius. Your submitted coordinates were ${locationCheck.distanceMeters}m away from the project site.`,
+      )
+    }
+
+    await db.insert(verifications).values({
+      milestoneId,
+      projectId: m.projectId,
+      verifierId: u.id,
+      verifierName: u.name,
+      decision,
+      report,
+      verifierLatitude: parsedLatitude,
+      verifierLongitude: parsedLongitude,
+      locationDistanceMeters: locationCheck.distanceMeters,
+      locationMatch: true,
+    })
+
+    const assignmentResult = await recordVerificationSubmission(milestoneId, u.id, u.name, decision, report)
+    if (!assignmentResult.updated) {
+      throw new Error("You are not assigned to verify this milestone")
+    }
+    await updateVerifierReputation(u.id, decision)
+  } else {
+    await db
+      .update(milestones)
+      .set({ status: "verifying", updatedAt: new Date() })
+      .where(eq(milestones.id, milestoneId))
+  }
 
   const [project] = await db
     .select({
@@ -239,7 +287,36 @@ export async function getAdminMilestoneHistory() {
 
 // Milestones awaiting verification (for verifier queue)
 export async function getVerificationQueue() {
-  await requireRole(["verifier", "admin"])
+  const actor = await requireRole(["verifier", "admin"])
+
+  if (actor.role === "verifier") {
+    const assignments = await db
+      .select({ milestoneId: verificationAssignments.milestoneId })
+      .from(verificationAssignments)
+      .where(eq(verificationAssignments.assignedVerifierId, actor.id))
+
+    if (assignments.length === 0) return []
+
+    const milestoneIds = assignments.map((item) => item.milestoneId)
+
+    return db
+      .select({
+        id: milestones.id,
+        title: milestones.title,
+        description: milestones.description,
+        amount: milestones.amount,
+        status: milestones.status,
+        evidenceNote: milestones.evidenceNote,
+        evidenceUrls: milestones.evidenceUrls,
+        submittedAt: milestones.submittedAt,
+        projectId: milestones.projectId,
+        projectTitle: projects.title,
+      })
+      .from(milestones)
+      .innerJoin(projects, eq(projects.id, milestones.projectId))
+      .where(and(inArray(milestones.id, milestoneIds), eq(milestones.status, "submitted")))
+  }
+
   return db
     .select({
       id: milestones.id,

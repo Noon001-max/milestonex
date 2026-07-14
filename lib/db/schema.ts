@@ -5,6 +5,7 @@ import {
   boolean,
   serial,
   integer,
+  doublePrecision,
 } from "drizzle-orm/pg-core"
 
 // ----------------------------------------------------------------------------
@@ -17,6 +18,10 @@ export const user = pgTable("user", {
   emailVerified: boolean("emailVerified").notNull().default(false),
   image: text("image"),
   role: text("role").notNull().default("donor"),
+  verifierReputationScore: integer("verifierReputationScore").notNull().default(100),
+  verifierApprovedReviews: integer("verifierApprovedReviews").notNull().default(0),
+  verifierRejectedReviews: integer("verifierRejectedReviews").notNull().default(0),
+  verifierIsBanned: boolean("verifierIsBanned").notNull().default(false),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
 })
@@ -72,6 +77,8 @@ export const projects = pgTable("projects", {
   description: text("description").notNull(),
   category: text("category").notNull().default("community"),
   location: text("location"),
+  latitude: doublePrecision("latitude"),
+  longitude: doublePrecision("longitude"),
   imageUrl: text("imageUrl"),
   fundingGoal: integer("fundingGoal").notNull().default(0),
   fundedAmount: integer("fundedAmount").notNull().default(0),
@@ -125,7 +132,29 @@ export const verifications = pgTable("verifications", {
   // approve | reject
   decision: text("decision").notNull(),
   report: text("report").notNull(),
+  verifierLatitude: doublePrecision("verifierLatitude"),
+  verifierLongitude: doublePrecision("verifierLongitude"),
+  locationDistanceMeters: integer("locationDistanceMeters"),
+  locationMatch: boolean("locationMatch").notNull().default(false),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
+})
+
+export const verificationAssignments = pgTable("verification_assignments", {
+  id: serial("id").primaryKey(),
+  milestoneId: integer("milestoneId").notNull(),
+  projectId: integer("projectId").notNull(),
+  assignedVerifierId: text("assignedVerifierId").notNull(),
+  assignedVerifierName: text("assignedVerifierName"),
+  // assigned | submitted | completed
+  status: text("status").notNull().default("assigned"),
+  decision: text("decision"),
+  report: text("report"),
+  requiredConsensus: integer("requiredConsensus").notNull().default(1),
+  consensusReached: boolean("consensusReached").notNull().default(false),
+  assignedAt: timestamp("assignedAt").notNull().defaultNow(),
+  reviewedAt: timestamp("reviewedAt"),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
 })
 
 export const transactions = pgTable("transactions", {

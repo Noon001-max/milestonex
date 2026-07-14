@@ -3,7 +3,7 @@ import Link from "next/link"
 import { CheckCircle2, XCircle } from "lucide-react"
 import { redirect } from "next/navigation"
 import { getSession } from "@/lib/session"
-import { getProjectById, getProjectMilestones } from "@/lib/queries"
+import { getProjectById } from "@/lib/queries"
 import { getMilestoneVerifications } from "@/lib/queries"
 import { submitVerification } from "@/app/actions/milestones"
 import { Card } from "@/components/ui/card"
@@ -64,6 +64,9 @@ export default async function VerifyMilestonePage({
 
   const verifications = await getMilestoneVerifications(milestoneId)
   const latestVerification = verifications[0]
+  const { verificationAssignments: assignmentTable } = await import("@/lib/db/schema")
+  const assignmentRows = await db.select().from(assignmentTable).where(eq(assignmentTable.milestoneId, milestoneId))
+  const assignment = assignmentRows[0]
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
@@ -78,6 +81,14 @@ export default async function VerifyMilestonePage({
           <p className="mt-2 max-w-2xl text-sm leading-7 text-muted-foreground">
             Confirm the evidence, review the proposer notes, and leave a clear verification report.
           </p>
+          {assignment && (
+            <div className="mt-4 inline-flex flex-wrap items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+              Assigned verifier: {assignment.assignedVerifierName || assignment.assignedVerifierId}
+              <span className="rounded-full bg-background px-2 py-0.5 text-[10px] uppercase tracking-[0.24em]">
+                {assignment.requiredConsensus} of {assignment.requiredConsensus} required
+              </span>
+            </div>
+          )}
         </div>
 
         <Card className="mb-6 rounded-[1.75rem] border border-border/70 p-6 shadow-sm">
@@ -181,6 +192,37 @@ export default async function VerifyMilestonePage({
             />
           </div>
 
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="verifierLatitude">Verifier latitude</Label>
+              <input
+                id="verifierLatitude"
+                name="verifierLatitude"
+                type="number"
+                step="any"
+                required
+                className="mt-1 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm"
+                placeholder="-1.2864"
+              />
+            </div>
+            <div>
+              <Label htmlFor="verifierLongitude">Verifier longitude</Label>
+              <input
+                id="verifierLongitude"
+                name="verifierLongitude"
+                type="number"
+                step="any"
+                required
+                className="mt-1 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm"
+                placeholder="36.8172"
+              />
+            </div>
+          </div>
+
+          <p className="text-xs text-muted-foreground">
+            These coordinates are checked against the project site within a 50-meter radius before the verification can be accepted.
+          </p>
+
           <div className="flex flex-col gap-2 sm:flex-row">
             <button
               type="submit"
@@ -212,7 +254,9 @@ async function submitVerificationForm(formData: FormData) {
   const milestoneId = Number(formData.get("milestoneId"))
   const decision = formData.get("decision") as "approve" | "reject"
   const report = formData.get("report") as string
+  const verifierLatitude = Number(formData.get("verifierLatitude"))
+  const verifierLongitude = Number(formData.get("verifierLongitude"))
 
-  await submitVerification(milestoneId, decision, report)
+  await submitVerification(milestoneId, decision, report, verifierLatitude, verifierLongitude)
   redirect("/dashboard/verify")
 }

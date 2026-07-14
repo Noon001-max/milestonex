@@ -33,6 +33,8 @@ type ProjectFormProject = {
   description: string
   category: string
   location: string | null
+  latitude?: number | string | null
+  longitude?: number | string | null
   imageUrl: string | null
 }
 
@@ -77,6 +79,8 @@ export function NewProjectForm({
     description: initialProject?.description || "",
     category: initialProject?.category || "community",
     location: initialProject?.location || "",
+    latitude: initialProject?.latitude != null ? String(initialProject.latitude) : "",
+    longitude: initialProject?.longitude != null ? String(initialProject.longitude) : "",
     imageUrl: initialProject?.imageUrl || "",
     milestones: initialMilestoneState,
   })
@@ -104,6 +108,14 @@ export function NewProjectForm({
       if (!preview.title.trim()) return setError("Please enter a project title"), false
       if (!preview.summary.trim()) return setError("Please enter a project summary"), false
       if (!preview.location.trim()) return setError("Please enter a project location"), false
+      const latitude = Number(preview.latitude)
+      const longitude = Number(preview.longitude)
+      if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+        return setError("Please enter project coordinates for verifier site checks"), false
+      }
+      if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
+        return setError("Project coordinates must be valid latitude and longitude values"), false
+      }
     }
 
     if (currentStep === 2) {
@@ -177,6 +189,8 @@ export function NewProjectForm({
       formData.set("description", preview.description)
       formData.set("category", category)
       formData.set("location", preview.location)
+      formData.set("latitude", String(preview.latitude))
+      formData.set("longitude", String(preview.longitude))
 
       if (projectId) {
         formData.set("projectId", String(projectId))
@@ -346,6 +360,41 @@ export function NewProjectForm({
                       className="rounded-xl"
                     />
                   </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="latitude" className="text-xs font-semibold text-foreground">Latitude</Label>
+                    <Input
+                      id="latitude"
+                      name="latitude"
+                      required
+                      type="number"
+                      step="any"
+                      value={preview.latitude}
+                      onChange={(e) => updateField("latitude", e.target.value)}
+                      placeholder="-1.2864"
+                      className="rounded-xl"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="longitude" className="text-xs font-semibold text-foreground">Longitude</Label>
+                    <Input
+                      id="longitude"
+                      name="longitude"
+                      required
+                      type="number"
+                      step="any"
+                      value={preview.longitude}
+                      onChange={(e) => updateField("longitude", e.target.value)}
+                      placeholder="36.8172"
+                      className="rounded-xl"
+                    />
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-primary/10 bg-primary/5 p-3 text-xs text-muted-foreground">
+                  These coordinates are required so community verifiers can validate the project site and confirm the inspection location.
                 </div>
               </section>
             )}
