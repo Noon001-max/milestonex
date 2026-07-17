@@ -4,7 +4,7 @@ import { getAllUsers, suspendUser, updateUserRole, deleteUser } from "@/app/acti
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ShieldCheck, Users, UserMinus, UserCog, CalendarDays } from "lucide-react"
-import { ROLE_LABELS } from "@/lib/roles"
+import { ROLE_LABELS, ROLES } from "@/lib/roles"
 
 export const dynamic = "force-dynamic"
 
@@ -99,9 +99,26 @@ export default async function AdminUsersPage() {
                         <td className="px-6 py-4 font-medium text-foreground">{u.name}</td>
                         <td className="px-6 py-4 text-muted-foreground">{u.email}</td>
                         <td className="px-6 py-4">
-                          <Badge variant="outline" className="rounded-full px-3 py-1">
-                            {ROLE_LABELS[u.role as keyof typeof ROLE_LABELS] || u.role}
-                          </Badge>
+                          <form action={async function changeRole(formData: FormData) {
+                            "use server"
+                            const id = String(formData.get("userId"))
+                            const role = String(formData.get("role")) as any
+                            await updateUserRole(id, role)
+                          }}>
+                            <input type="hidden" name="userId" value={u.id} />
+                            <div className="flex items-center gap-2">
+                              <select name="role" defaultValue={u.role} className="rounded-md border border-border/70 bg-background px-3 py-1 text-sm" aria-label={`Change role for ${u.name}`} disabled={u.id === user.id}>
+                                {ROLES.map((r) => (
+                                  <option key={r.value} value={r.value}>
+                                    {r.label}
+                                  </option>
+                                ))}
+                              </select>
+                              <button type="submit" className="rounded-full border border-border/60 px-3 py-1 text-sm font-medium text-foreground transition-colors hover:bg-muted" disabled={u.id === user.id}>
+                                Save
+                              </button>
+                            </div>
+                          </form>
                         </td>
                         <td className="px-6 py-4 text-muted-foreground">
                           {new Date(u.createdAt).toLocaleDateString()}
@@ -145,7 +162,7 @@ export default async function AdminUsersPage() {
               {users.map((u) => (
                 <Card key={u.id} className="rounded-[1.75rem] border border-border/70 bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
                   <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0 flex items-start gap-3">
+                        <div className="min-w-0 flex items-start gap-3">
                       <div className="flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-sm font-bold text-primary">
                         {getInitials(u.name)}
                       </div>
@@ -166,6 +183,26 @@ export default async function AdminUsersPage() {
                   </div>
 
                   <div className="mt-4 flex items-center justify-end gap-2">
+                    <form action={async function changeRoleMobile(formData: FormData) {
+                      "use server"
+                      const id = String(formData.get("userId"))
+                      const role = String(formData.get("role")) as any
+                      await updateUserRole(id, role)
+                    }}>
+                      <input type="hidden" name="userId" value={u.id} />
+                      <div className="flex items-center gap-2">
+                        <select name="role" defaultValue={u.role} className="rounded-md border border-border/70 bg-background px-3 py-1 text-sm" disabled={u.id === user.id} aria-label={`Change role for ${u.name}`}>
+                          {ROLES.map((r) => (
+                            <option key={r.value} value={r.value}>
+                              {r.label}
+                            </option>
+                          ))}
+                        </select>
+                        <button type="submit" className="rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted" disabled={u.id === user.id}>
+                          Save
+                        </button>
+                      </div>
+                    </form>
                     {u.role === "suspended" ? (
                       <form action={async function unsuspendMobile(formData: FormData) {
                         "use server"
