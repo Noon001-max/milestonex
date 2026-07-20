@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { StatusBadge } from "@/components/status-badge"
 import { formatCurrency } from "@/lib/roles"
+import { isMilestoneUnlockedForSubmission } from "@/lib/milestone-access"
 
 export const dynamic = "force-dynamic"
 
@@ -28,9 +29,7 @@ export default async function MilestonesPage({ params }: { params: Promise<{ id:
   if (user.id !== project.ownerId) redirect(`/dashboard/projects/${projectId}`)
   if (project.status === "completed") redirect(`/dashboard/projects/${projectId}`)
 
-  const isUnlocked = (index: number) =>
-    index === 0 ||
-    milestones.slice(0, index).every((prev) => prev.status === "approved" || prev.status === "released")
+  const isUnlocked = (index: number) => isMilestoneUnlockedForSubmission(milestones, index)
 
   const unlockedCount = milestones.filter((milestone, index) => isUnlocked(index)).length
   const nextReadyIndex = milestones.findIndex((milestone, index) => isUnlocked(index) && (milestone.status === "pending" || milestone.status === "rejected"))

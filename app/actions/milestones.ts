@@ -7,6 +7,7 @@ import { notify } from "@/lib/notify"
 import { eq, inArray, desc, and } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { assignVerifiersForMilestone, evaluateVerificationLocation, insertVerificationRecord, recordVerificationSubmission, updateVerifierReputation } from "@/lib/verification"
+import { isMilestoneUnlockedForSubmission } from "@/lib/milestone-access"
 
 // Project proposer submits milestone completion + evidence
 export async function submitMilestoneEvidence(
@@ -59,6 +60,20 @@ export async function submitMilestoneEvidence(
   if (!project) throw new Error("Project not found")
   if (project.ownerId !== u.id && u.role !== "admin") {
     throw new Error("Only the project proposer can submit evidence")
+  }
+
+  const allProjectMilestones = await db
+    .select({ status: milestones.status })
+    .from(milestones)
+    .where(eq(milestones.projectId, m.projectId))
+    .orderBy(milestones.orderIndex)
+
+  const currentIndex = allProjectMilestones.findIndex((item) => item.status === m.status && item.status !== "approved" && item.status !== "released")
+  const milestoneOrderIndex = m.orderIndex ?? currentIndex
+  const isUnlocked = isMilestoneUnlockedForSubmission(allProjectMilestones, milestoneOrderIndex)
+
+  if (!isUnlocked) {
+    throw new Error("This milestone is locked until the previous milestone is approved.")
   }
 
   await db

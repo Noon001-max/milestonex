@@ -71,7 +71,7 @@ export default async function HomePage() {
             <div className="space-y-4">
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-primary">Escrow-secured transparency</p>
             <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl leading-tight">
-              Empower communities with funding that unlocks only after verified progress.
+              A Transparent Funding Management System for Community Development Projects
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
               Support projects with escrow-backed safety, milestone-based release, and open progress tracking so every investment is visible, accountable, and meaningful.
