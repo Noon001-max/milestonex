@@ -16,10 +16,15 @@ export const dynamic = "force-dynamic"
 
 export default async function VerifyMilestonePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>
+  searchParams?: Promise<{ error?: string; success?: string } | undefined>
 }) {
   const { id } = await params
+  const resolvedSearchParams = await searchParams
+  const errorMessage = resolvedSearchParams?.error ? decodeURIComponent(resolvedSearchParams.error) : null
+  const successMessage = resolvedSearchParams?.success ? decodeURIComponent(resolvedSearchParams.success) : null
   const milestoneId = Number(id)
   const user = await getSession()
 
@@ -81,6 +86,16 @@ export default async function VerifyMilestonePage({
           <p className="mt-2 max-w-2xl text-sm leading-7 text-muted-foreground">
             Confirm the evidence, review the proposer notes, and leave a clear verification report.
           </p>
+          {errorMessage ? (
+            <div className="mt-4 rounded-2xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+              {errorMessage}
+            </div>
+          ) : null}
+          {successMessage ? (
+            <div className="mt-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-700">
+              {successMessage}
+            </div>
+          ) : null}
           {assignment && (
             <div className="mt-4 inline-flex flex-wrap items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
               Assigned verifier: {assignment.assignedVerifierName || assignment.assignedVerifierId}
@@ -257,6 +272,11 @@ async function submitVerificationForm(formData: FormData) {
   const verifierLatitude = Number(formData.get("verifierLatitude"))
   const verifierLongitude = Number(formData.get("verifierLongitude"))
 
-  await submitVerification(milestoneId, decision, report, verifierLatitude, verifierLongitude)
-  redirect("/dashboard/verify")
+  try {
+    await submitVerification(milestoneId, decision, report, verifierLatitude, verifierLongitude)
+    redirect(`/dashboard/verify/${milestoneId}?success=${encodeURIComponent("Verification report submitted successfully.")}`)
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unable to submit the verification report."
+    redirect(`/dashboard/verify/${milestoneId}?error=${encodeURIComponent(message)}`)
+  }
 }
