@@ -231,6 +231,11 @@ export async function decideMilestone(
     throw new Error("Only the admin who approved this project can decide its milestones")
   }
 
+  const hasEvidence = Boolean((m.evidenceNote || "").trim() || (m.evidenceUrls || "").trim())
+  if (approve && !hasEvidence) {
+    throw new Error("Proof of work is required before this milestone can be approved.")
+  }
+
   await db
     .update(milestones)
     .set({

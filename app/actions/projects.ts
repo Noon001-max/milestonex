@@ -586,7 +586,7 @@ export async function approveProjectStart(projectId: number) {
 
   await db
     .update(milestones)
-    .set({ status: "approved", updatedAt: new Date(), approvedBy: u.id })
+    .set({ status: "pending", updatedAt: new Date(), approvedBy: null })
     .where(eq(milestones.id, milestone.id))
 
   await db
@@ -597,7 +597,7 @@ export async function approveProjectStart(projectId: number) {
   await notify({
     userId: project.ownerId,
     title: "Project ready to start",
-    body: `Your project "${project.title}" has been approved to start. Milestone 1 is now ready for release.`,
+    body: `Your project "${project.title}" has been approved to start. Milestone 1 is now waiting for proof submission before it can be approved.`,
     type: "project",
   })
 
