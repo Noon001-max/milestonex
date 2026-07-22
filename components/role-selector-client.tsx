@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { ROLES } from "@/lib/roles"
+import { SIGNUP_ROLES } from "@/lib/roles"
 import { Card } from "@/components/ui/card"
 import { ShieldCheck, Users, Briefcase, CheckCircle2, Banknote, ChevronLeft, XCircle, Loader2 } from "lucide-react"
 import { authClient } from "@/lib/auth-client"
@@ -164,7 +164,7 @@ export default function RoleSelectorClient() {
 
           <div className="grid gap-6 rounded-[1.5rem] border border-border/70 bg-card p-6 shadow-xl sm:p-8">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {ROLES.filter((r) => r.value !== "suspended").map((role) => {
+              {SIGNUP_ROLES.map((role) => {
               const Icon =
                 role.value === "donor"
                   ? Users

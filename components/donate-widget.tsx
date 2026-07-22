@@ -20,6 +20,8 @@ export function DonateWidget({
   const router = useRouter()
   const [amount, setAmount] = useState<number>(50)
   const [kind, setKind] = useState<"donation" | "investment">("donation")
+  const [displayMode, setDisplayMode] = useState<"name" | "anonymous" | "custom">("name")
+  const [customName, setCustomName] = useState("")
   const [isPending, startTransition] = useTransition()
 
   function handleContribute() {
@@ -31,9 +33,16 @@ export function DonateWidget({
       toast.error("Enter a valid amount")
       return
     }
+    if (displayMode === "custom" && !customName.trim()) {
+      toast.error("Enter a display name or company name")
+      return
+    }
     startTransition(async () => {
       try {
-        await contribute(projectId, amount, kind)
+        await contribute(projectId, amount, kind, {
+          displayMode,
+          displayName: customName.trim(),
+        })
         toast.success("Contribution secured in escrow")
         router.refresh()
       } catch (e) {
@@ -95,6 +104,50 @@ export function DonateWidget({
           value={amount}
           onChange={(e) => setAmount(Number(e.target.value))}
         />
+      </div>
+
+      <div className="rounded-lg border border-border/70 bg-muted/50 p-3">
+        <Label className="text-sm font-medium">How should your name appear?</Label>
+        <div className="mt-2 space-y-2 text-sm text-foreground">
+          <label className="flex items-center gap-2">
+            <input
+              type="radio"
+              name="display-mode"
+              checked={displayMode === "name"}
+              onChange={() => setDisplayMode("name")}
+            />
+            <span>Show my full name</span>
+          </label>
+          <label className="flex items-center gap-2">
+            <input
+              type="radio"
+              name="display-mode"
+              checked={displayMode === "anonymous"}
+              onChange={() => setDisplayMode("anonymous")}
+            />
+            <span>Stay anonymous</span>
+          </label>
+          <label className="flex items-center gap-2">
+            <input
+              type="radio"
+              name="display-mode"
+              checked={displayMode === "custom"}
+              onChange={() => setDisplayMode("custom")}
+            />
+            <span>Use a custom name or company</span>
+          </label>
+          {displayMode === "custom" && (
+            <div className="flex flex-col gap-2 pt-1">
+              <Label htmlFor="display-name">Display name or company</Label>
+              <Input
+                id="display-name"
+                value={customName}
+                onChange={(e) => setCustomName(e.target.value)}
+                placeholder="e.g. Bright Future Ltd"
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       <button

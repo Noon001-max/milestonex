@@ -37,6 +37,8 @@ export const ROLES: {
   },
 ]
 
+export const SIGNUP_ROLES = ROLES.filter((role) => ["donor", "owner", "verifier"].includes(role.value))
+
 export const ROLE_LABELS: Record<Role, string> = {
   donor: "Donor / Investor",
   owner: "Project Proposer",

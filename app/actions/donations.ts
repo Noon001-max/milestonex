@@ -11,9 +11,22 @@ export async function contribute(
   projectId: number,
   amount: number,
   kind: "donation" | "investment",
+  options?: {
+    displayMode?: "name" | "anonymous" | "custom"
+    displayName?: string
+  },
 ) {
   const u = await requireUser()
   if (!amount || amount <= 0) throw new Error("Enter a valid amount")
+
+  const displayMode = options?.displayMode ?? "name"
+  const trimmedDisplayName = options?.displayName?.trim()
+  const donorName =
+    displayMode === "anonymous"
+      ? null
+      : displayMode === "custom" && trimmedDisplayName
+        ? trimmedDisplayName
+        : u.name
 
   const [project] = await db
     .select({
@@ -43,7 +56,7 @@ export async function contribute(
   await db.insert(donations).values({
     projectId,
     donorId: u.id,
-    donorName: u.name,
+    donorName,
     amount,
     kind,
   })
@@ -65,7 +78,7 @@ export async function contribute(
       type: "contribution",
       amount,
       actorId: u.id,
-      note: `${kind === "investment" ? "Investment" : "Donation"} from ${u.name}`,
+      note: `${kind === "investment" ? "Investment" : "Donation"} from ${donorName ?? "Anonymous"}`,
     },
     {
       projectId,
@@ -85,7 +98,7 @@ export async function contribute(
   await notify({
     userId: project.ownerId,
     title: "New contribution received",
-    body: `${u.name} contributed ${amount} to "${project.title}".`,
+    body: `${donorName ?? "Anonymous"} contributed ${amount} to "${project.title}".`,
     type: "donation",
   })
 
