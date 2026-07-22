@@ -6,6 +6,7 @@ import { ShieldCheck } from "lucide-react"
 export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
   const teamMembers = [
     { name: "PRUDENCE ODHIAMBO", id: "25S01ACPS003" },
+    { name: "ESTHER SASI", id: "26J01APS002" },
     { name: "SALLY MARO", id: "24S01ACPS002" },
     { name: "IMAI MICKEN AKISA", id: "25M01ABA011" },
     { name: "DANIELLA WANGARI", id: "26J01AXRM007" },
@@ -79,9 +80,13 @@ export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
         </div>
 
         <section className="mt-5 rounded-3xl bg-card p-4 shadow-sm sm:p-5">
-          <div className="mb-4 flex items-end justify-between gap-3">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Team Members</p>
+            </div>
+            <div className="flex flex-wrap gap-2 text-xs font-medium text-muted-foreground">
+              <span className="rounded-full bg-background px-3 py-1 shadow-sm">ENT: Social Entrepreneurship and Innovation</span>
+              <span className="rounded-full bg-background px-3 py-1 shadow-sm">Lecturer: Dennis Simiyu</span>
             </div>
           </div>
 
