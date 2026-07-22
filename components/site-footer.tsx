@@ -139,9 +139,6 @@ export function SiteFooter({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
 
         <div className="mt-5 flex flex-col gap-3 pt-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Milestone X. All rights reserved.</p>
-          <p className="max-w-2xl sm:text-right">
-            Designed for communities that need stronger accountability, safer funding, and more meaningful impact.
-          </p>
         </div>
       </div>
       <style jsx>{`
