@@ -1,8 +1,7 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useEffect, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { contribute } from "@/app/actions/donations"
@@ -23,6 +22,25 @@ export function DonateWidget({
   const [displayMode, setDisplayMode] = useState<"name" | "anonymous" | "custom">("name")
   const [customName, setCustomName] = useState("")
   const [isPending, startTransition] = useTransition()
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [processingStep, setProcessingStep] = useState(0)
+
+  const paymentSteps = [
+    "Preparing your secure payment",
+    "Checking escrow and milestone safety",
+    "Payment made to Milestone X",
+    "Finalizing contribution",
+  ]
+
+  useEffect(() => {
+    if (!isProcessing) return
+
+    const interval = window.setInterval(() => {
+      setProcessingStep((prev) => (prev < paymentSteps.length - 1 ? prev + 1 : prev))
+    }, 950)
+
+    return () => window.clearInterval(interval)
+  }, [isProcessing, paymentSteps.length])
 
   function handleContribute() {
     if (!isAuthed) {
@@ -38,14 +56,22 @@ export function DonateWidget({
       return
     }
     startTransition(async () => {
+      setIsProcessing(true)
+      setProcessingStep(0)
+
       try {
         await contribute(projectId, amount, kind, {
           displayMode,
           displayName: customName.trim(),
         })
-        toast.success("Contribution secured in escrow")
-        router.refresh()
+
+        window.setTimeout(() => {
+          setIsProcessing(false)
+          toast.success("Contribution secured in escrow")
+          router.refresh()
+        }, 1800)
       } catch (e) {
+        setIsProcessing(false)
         toast.error(e instanceof Error ? e.message : "Something went wrong")
       }
     })
@@ -164,6 +190,37 @@ export function DonateWidget({
       <p className="text-xs text-muted-foreground">
         Funds are held in escrow and released only as milestones are verified.
       </p>
+
+      {isProcessing && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/75 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-[1.5rem] border border-primary/20 bg-card p-6 shadow-2xl shadow-primary/10">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-foreground">Simulating secure payment</p>
+                <p className="text-xs text-muted-foreground">Your contribution is being prepared for escrow.</p>
+              </div>
+            </div>
+
+            <div className="mt-5 rounded-2xl border border-border/70 bg-muted/60 p-3 text-sm text-foreground">
+              {paymentSteps[processingStep]}
+            </div>
+
+            <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted">
+              <div
+                className="h-full rounded-full bg-primary transition-all duration-500"
+                style={{ width: `${((processingStep + 1) / paymentSteps.length) * 100}%` }}
+              />
+            </div>
+
+            <p className="mt-3 text-center text-xs text-muted-foreground">
+              This preview makes the experience feel more practical while your contribution is secured.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
