@@ -17,6 +17,7 @@ import { FundingProgress } from "@/components/funding-progress"
 import { MilestoneTimeline } from "@/components/milestone-timeline"
 import { DonateWidget } from "@/components/donate-widget"
 import { DisputeForm } from "@/components/dispute-form"
+import { AuditTrailList } from "@/components/audit-trail-list"
 
 export const dynamic = "force-dynamic"
 
@@ -121,39 +122,7 @@ export default async function DashboardProjectDetailPage({
                   Audit Trail
                 </h2>
               </div>
-              {transactions.length === 0 ? (
-                <p className="py-2 text-xs font-semibold text-muted-foreground">
-                  No transactions recorded yet.
-                </p>
-              ) : (
-                <ul className="flex flex-col divide-y divide-border/60">
-                  {transactions.map((t) => {
-                    const isRelease = t.type === "release"
-                    return (
-                      <li key={t.id} className="flex items-center justify-between gap-3 py-3.5">
-                        <div className="min-w-0">
-                          <p className="truncate text-xs font-bold text-foreground">
-                            {t.note ?? t.type}
-                          </p>
-                          <p className="mt-0.5 text-[10px] font-bold capitalize text-muted-foreground">
-                            {t.type.replace("_", " ")} • {new Date(t.createdAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <span
-                          className={`text-xs font-bold ${
-                            isRelease
-                              ? "text-amber-600 dark:text-amber-400"
-                              : "text-emerald-600 dark:text-emerald-400"
-                          }`}
-                        >
-                          {isRelease ? "-" : "+"}
-                          {formatCurrency(t.amount)}
-                        </span>
-                      </li>
-                    )
-                  })}
-                </ul>
-              )}
+              <AuditTrailList transactions={transactions} />
             </Card>
           </div>
 

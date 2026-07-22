@@ -19,6 +19,7 @@ import { FundingProgress } from "@/components/funding-progress"
 import { MilestoneTimeline } from "@/components/milestone-timeline"
 import { DonateWidget } from "@/components/donate-widget"
 import { DisputeForm } from "@/components/dispute-form"
+import { AuditTrailList } from "@/components/audit-trail-list"
 
 export const dynamic = "force-dynamic"
 
@@ -166,43 +167,7 @@ export default async function ProjectDetailPage({
                   Audit Trail
                 </h2>
               </div>
-              {transactions.length === 0 ? (
-                <p className="text-sm text-muted-foreground py-2">
-                  No transactions recorded yet.
-                </p>
-              ) : (
-                <ul className="flex flex-col divide-y divide-border/60">
-                  {transactions.map((t) => {
-                    const isRelease = t.type === "release"
-                    return (
-                      <li
-                        key={t.id}
-                        className="flex items-center justify-between gap-3 py-3.5"
-                      >
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-semibold text-foreground">
-                            {t.note ?? t.type}
-                          </p>
-                          <p className="text-xs capitalize text-muted-foreground mt-0.5">
-                            {t.type.replace("_", " ")} •{" "}
-                            {new Date(t.createdAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <span
-                          className={`text-sm font-bold ${
-                            isRelease
-                              ? "text-amber-600 dark:text-amber-400"
-                              : "text-emerald-600 dark:text-emerald-400"
-                          }`}
-                        >
-                          {isRelease ? "-" : "+"}
-                          {formatCurrency(t.amount)}
-                        </span>
-                      </li>
-                    )
-                  })}
-                </ul>
-              )}
+              <AuditTrailList transactions={transactions} />
             </Card>
           </div>
 
