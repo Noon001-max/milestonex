@@ -9,6 +9,8 @@ import {
   FileSearch,
   Banknote,
   ArrowRight,
+  Quote,
+  Star,
 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { getSession } from "@/lib/session"
@@ -57,6 +59,24 @@ export default async function HomePage() {
       icon: Banknote,
       title: "Funds release per milestone",
       body: "Only approved milestones unlock their portion of funds. Failed milestones keep money secured.",
+    },
+  ]
+
+  const reviews = [
+    {
+      name: "Amina K.",
+      role: "Community donor",
+      quote: "The milestone tracking made me feel confident every time funds were released. It is clear, fair, and transparent.",
+    },
+    {
+      name: "Daniel R.",
+      role: "Project owner",
+      quote: "Launching my project here was simple. I could show progress, build trust, and keep supporters updated without friction.",
+    },
+    {
+      name: "Sofia M.",
+      role: "Verifier",
+      quote: "The verification flow is strong and easy to follow. It gives the community a real voice in how funds are used.",
     },
   ]
 
@@ -293,6 +313,39 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="mx-auto w-full max-w-6xl px-4 py-20 lg:py-28">
+        <div className="mb-12 text-center">
+          <span className="text-sm font-semibold uppercase tracking-[0.32em] text-primary">
+            Testimonials
+          </span>
+          <h2 className="mt-4 text-4xl font-bold text-foreground">Trusted by donors, owners, and verifiers</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-lg text-muted-foreground">
+            A few sample voices from people using Milestone X to fund and deliver community projects with confidence.
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {reviews.map((review) => (
+            <div key={review.name} className="rounded-[1.75rem] border border-border/70 bg-card p-6 shadow-sm shadow-primary/5">
+              <div className="flex items-center gap-1 text-amber-500">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <Star key={index} className="size-4 fill-current" />
+                ))}
+              </div>
+              <div className="mt-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <Quote className="size-5" />
+              </div>
+              <p className="mt-5 text-base leading-7 text-muted-foreground">“{review.quote}”</p>
+              <div className="mt-6">
+                <p className="font-semibold text-foreground">{review.name}</p>
+                <p className="text-sm text-muted-foreground">{review.role}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
